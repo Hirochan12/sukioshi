@@ -1,0 +1,10 @@
+{
+  "name": "sukioshi",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "test": "node --experimental-sqlite --no-warnings scripts/local-test.mjs"
+  },
+  "engines": { "node": ">=20" }
+}

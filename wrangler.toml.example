@@ -1,0 +1,18 @@
+# 参考用。Cloudflare の管理画面で設定する場合はこのファイルは不要です。
+# コマンド（wrangler）で管理したくなったら wrangler.toml に名前を変えて使います。
+# Cloudflare Pages の設定
+name = "sukioshi"
+pages_build_output_dir = "dist"
+compatibility_date = "2026-09-01"
+
+# 投票を保存するデータベース（D1）
+# database_id は Cloudflare で D1 を作ったあとに表示されるIDに書き換える
+[[d1_databases]]
+binding = "DB"
+database_name = "sukioshi"
+database_id = "ここにD1のデータベースIDを入れる"
+
+[vars]
+SITE_URL = "https://sukioshi.pages.dev"
+# 秘密の値（RAKUTEN_APP_ID / RAKUTEN_ACCESS_KEY / RAKUTEN_AFFILIATE_ID / ADMIN_KEY / HASH_SALT）は
+# ここには書かず、Cloudflare の管理画面で「シークレット」として登録する

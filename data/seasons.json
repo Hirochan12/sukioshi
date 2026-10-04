@@ -1,0 +1,561 @@
+{
+  "current": "2026-autumn",
+  "seasons": [
+    {
+      "id": "2026-summer",
+      "name": "2026夏",
+      "label": "2026夏アニメ",
+      "months": "2026年7〜9月",
+      "eventName": "2026夏アニメ原作 振り返り総選挙",
+      "voteStart": "2026-10-01",
+      "voteEnd": "2026-10-31",
+      "article": "",
+      "works": [
+        {
+          "workId": "w001",
+          "note": "2期"
+        },
+        {
+          "workId": "w002",
+          "note": ""
+        },
+        {
+          "workId": "w003",
+          "note": ""
+        },
+        {
+          "workId": "w004",
+          "note": ""
+        },
+        {
+          "workId": "w005",
+          "note": ""
+        },
+        {
+          "workId": "w006",
+          "note": ""
+        },
+        {
+          "workId": "w007",
+          "note": "2期"
+        },
+        {
+          "workId": "w008",
+          "note": "2クール目"
+        },
+        {
+          "workId": "w009",
+          "note": ""
+        },
+        {
+          "workId": "w010",
+          "note": "3期"
+        },
+        {
+          "workId": "w011",
+          "note": ""
+        },
+        {
+          "workId": "w012",
+          "note": "Season3"
+        },
+        {
+          "workId": "w013",
+          "note": "2期"
+        },
+        {
+          "workId": "w014",
+          "note": "2クール目"
+        },
+        {
+          "workId": "w015",
+          "note": ""
+        },
+        {
+          "workId": "w016",
+          "note": ""
+        },
+        {
+          "workId": "w017",
+          "note": ""
+        },
+        {
+          "workId": "w018",
+          "note": ""
+        },
+        {
+          "workId": "w019",
+          "note": "2期"
+        },
+        {
+          "workId": "w020",
+          "note": ""
+        },
+        {
+          "workId": "w021",
+          "note": ""
+        },
+        {
+          "workId": "w022",
+          "note": ""
+        },
+        {
+          "workId": "w023",
+          "note": ""
+        },
+        {
+          "workId": "w024",
+          "note": ""
+        },
+        {
+          "workId": "w025",
+          "note": "2期"
+        },
+        {
+          "workId": "w026",
+          "note": ""
+        },
+        {
+          "workId": "w027",
+          "note": "2クール目"
+        },
+        {
+          "workId": "w028",
+          "note": ""
+        },
+        {
+          "workId": "w029",
+          "note": "2期"
+        },
+        {
+          "workId": "w030",
+          "note": ""
+        },
+        {
+          "workId": "w031",
+          "note": ""
+        },
+        {
+          "workId": "w032",
+          "note": "2期"
+        },
+        {
+          "workId": "w033",
+          "note": "2期"
+        },
+        {
+          "workId": "w034",
+          "note": ""
+        },
+        {
+          "workId": "w035",
+          "note": ""
+        },
+        {
+          "workId": "w036",
+          "note": "4期 2クール目"
+        },
+        {
+          "workId": "w037",
+          "note": "2クール目"
+        },
+        {
+          "workId": "w038",
+          "note": ""
+        },
+        {
+          "workId": "w039",
+          "note": "2クール目"
+        },
+        {
+          "workId": "w040",
+          "note": "2クール目"
+        },
+        {
+          "workId": "w041",
+          "note": ""
+        },
+        {
+          "workId": "w042",
+          "note": ""
+        },
+        {
+          "workId": "w043",
+          "note": ""
+        },
+        {
+          "workId": "w044",
+          "note": ""
+        },
+        {
+          "workId": "w045",
+          "note": "2期"
+        },
+        {
+          "workId": "w046",
+          "note": ""
+        },
+        {
+          "workId": "w047",
+          "note": "2期"
+        },
+        {
+          "workId": "w048",
+          "note": "2期"
+        },
+        {
+          "workId": "w049",
+          "note": ""
+        },
+        {
+          "workId": "w050",
+          "note": ""
+        },
+        {
+          "workId": "w051",
+          "note": ""
+        },
+        {
+          "workId": "w052",
+          "note": ""
+        },
+        {
+          "workId": "w053",
+          "note": ""
+        },
+        {
+          "workId": "w054",
+          "note": ""
+        },
+        {
+          "workId": "w055",
+          "note": ""
+        },
+        {
+          "workId": "w056",
+          "note": ""
+        },
+        {
+          "workId": "w057",
+          "note": "4期 2クール目"
+        },
+        {
+          "workId": "w058",
+          "note": ""
+        },
+        {
+          "workId": "w059",
+          "note": ""
+        },
+        {
+          "workId": "w060",
+          "note": ""
+        },
+        {
+          "workId": "w061",
+          "note": ""
+        },
+        {
+          "workId": "w062",
+          "note": ""
+        },
+        {
+          "workId": "w063",
+          "note": ""
+        },
+        {
+          "workId": "w064",
+          "note": "2nd Season"
+        },
+        {
+          "workId": "w065",
+          "note": "2クール目"
+        },
+        {
+          "workId": "w066",
+          "note": ""
+        },
+        {
+          "workId": "w067",
+          "note": ""
+        },
+        {
+          "workId": "w068",
+          "note": "3期"
+        },
+        {
+          "workId": "w069",
+          "note": "2期"
+        },
+        {
+          "workId": "w070",
+          "note": ""
+        },
+        {
+          "workId": "w071",
+          "note": "4th season 2クール目"
+        },
+        {
+          "workId": "w072",
+          "note": ""
+        },
+        {
+          "workId": "w073",
+          "note": ""
+        },
+        {
+          "workId": "w074",
+          "note": ""
+        }
+      ]
+    },
+    {
+      "id": "2026-autumn",
+      "name": "2026秋",
+      "label": "2026秋アニメ",
+      "months": "2026年10〜12月",
+      "eventName": "",
+      "voteStart": "2026-10-01",
+      "voteEnd": "2026-12-31",
+      "article": "",
+      "works": [
+        {
+          "workId": "w075",
+          "note": "2期"
+        },
+        {
+          "workId": "w076",
+          "note": "2期"
+        },
+        {
+          "workId": "w077",
+          "note": ""
+        },
+        {
+          "workId": "w078",
+          "note": ""
+        },
+        {
+          "workId": "w079",
+          "note": ""
+        },
+        {
+          "workId": "w080",
+          "note": ""
+        },
+        {
+          "workId": "w081",
+          "note": ""
+        },
+        {
+          "workId": "w082",
+          "note": "2期"
+        },
+        {
+          "workId": "w083",
+          "note": "Season2"
+        },
+        {
+          "workId": "w084",
+          "note": ""
+        },
+        {
+          "workId": "w085",
+          "note": "2期"
+        },
+        {
+          "workId": "w086",
+          "note": ""
+        },
+        {
+          "workId": "w087",
+          "note": ""
+        },
+        {
+          "workId": "w088",
+          "note": "決勝メンバー決定戦"
+        },
+        {
+          "workId": "w089",
+          "note": "2nd & 3rd STAGE"
+        },
+        {
+          "workId": "w090",
+          "note": ""
+        },
+        {
+          "workId": "w091",
+          "note": ""
+        },
+        {
+          "workId": "w092",
+          "note": ""
+        },
+        {
+          "workId": "w093",
+          "note": "Second Season 2クール目"
+        },
+        {
+          "workId": "w094",
+          "note": ""
+        },
+        {
+          "workId": "w095",
+          "note": ""
+        },
+        {
+          "workId": "w096",
+          "note": ""
+        },
+        {
+          "workId": "w097",
+          "note": "三天戦争編"
+        },
+        {
+          "workId": "w098",
+          "note": "日光・華厳の滝編"
+        },
+        {
+          "workId": "w099",
+          "note": "ビルス"
+        },
+        {
+          "workId": "w100",
+          "note": ""
+        },
+        {
+          "workId": "w101",
+          "note": ""
+        },
+        {
+          "workId": "w102",
+          "note": ""
+        },
+        {
+          "workId": "w103",
+          "note": "2nd Season"
+        },
+        {
+          "workId": "w104",
+          "note": ""
+        },
+        {
+          "workId": "w105",
+          "note": "2期"
+        },
+        {
+          "workId": "w106",
+          "note": ""
+        },
+        {
+          "workId": "w107",
+          "note": ""
+        },
+        {
+          "workId": "w108",
+          "note": ""
+        },
+        {
+          "workId": "w109",
+          "note": "2期 2クール目"
+        },
+        {
+          "workId": "w110",
+          "note": "3期"
+        },
+        {
+          "workId": "w111",
+          "note": ""
+        },
+        {
+          "workId": "w112",
+          "note": ""
+        },
+        {
+          "workId": "w113",
+          "note": "3期"
+        },
+        {
+          "workId": "w114",
+          "note": "2期"
+        },
+        {
+          "workId": "w115",
+          "note": ""
+        },
+        {
+          "workId": "w116",
+          "note": ""
+        },
+        {
+          "workId": "w117",
+          "note": ""
+        },
+        {
+          "workId": "w118",
+          "note": "Season2"
+        },
+        {
+          "workId": "w119",
+          "note": "2期"
+        },
+        {
+          "workId": "w120",
+          "note": ""
+        },
+        {
+          "workId": "w121",
+          "note": ""
+        },
+        {
+          "workId": "w122",
+          "note": "3期"
+        },
+        {
+          "workId": "w123",
+          "note": ""
+        },
+        {
+          "workId": "w124",
+          "note": "2期"
+        },
+        {
+          "workId": "w125",
+          "note": ""
+        },
+        {
+          "workId": "w126",
+          "note": ""
+        },
+        {
+          "workId": "w127",
+          "note": "2期"
+        },
+        {
+          "workId": "w128",
+          "note": ""
+        },
+        {
+          "workId": "w129",
+          "note": ""
+        },
+        {
+          "workId": "w130",
+          "note": "2期"
+        },
+        {
+          "workId": "w131",
+          "note": ""
+        },
+        {
+          "workId": "w132",
+          "note": ""
+        },
+        {
+          "workId": "w133",
+          "note": ""
+        }
+      ]
+    }
+  ]
+}

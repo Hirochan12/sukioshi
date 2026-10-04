@@ -1,0 +1,20 @@
+{
+  "name": "すきおし",
+  "tagline": "すきなもの おしえて",
+  "description": "今期アニメの原作漫画・ラノベに、タップ1回で「すき」を投票。いま何が流行っているかが分かるランキングサイトです。",
+  "url": "https://sukioshi.pages.dev",
+  "operator": "すきおし運営",
+  "contactEmail": "",
+  "contactFormUrl": "",
+  "xAccount": "",
+  "adsenseClient": "",
+  "establishedDate": "2026-10-05",
+  "privacyUpdated": "2026-10-05",
+  "termsUpdated": "2026-10-05",
+  "adSlots": {
+    "top-bottom": "",
+    "season-bottom": "",
+    "work-bottom": "",
+    "ranking-inline": ""
+  }
+}

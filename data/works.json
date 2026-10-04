@@ -1,0 +1,933 @@
+[
+  {
+    "id": "w001",
+    "title": "アズールレーン びそくぜんしんっ！",
+    "type": "manga",
+    "rakutenQuery": "アズールレーン びそくぜんしんっ",
+    "intro": ""
+  },
+  {
+    "id": "w002",
+    "title": "いびってこない義母と義姉",
+    "type": "manga",
+    "rakutenQuery": "いびってこない義母と義姉",
+    "intro": ""
+  },
+  {
+    "id": "w003",
+    "title": "岩元先輩ノ推薦",
+    "type": "manga",
+    "rakutenQuery": "岩元先輩ノ推薦",
+    "intro": ""
+  },
+  {
+    "id": "w004",
+    "title": "うしろの正面カムイさん",
+    "type": "manga",
+    "rakutenQuery": "うしろの正面カムイさん",
+    "intro": ""
+  },
+  {
+    "id": "w005",
+    "title": "うちの弟どもがすみません",
+    "type": "manga",
+    "rakutenQuery": "うちの弟どもがすみません",
+    "intro": ""
+  },
+  {
+    "id": "w006",
+    "title": "乙女怪獣キャラメリゼ",
+    "type": "manga",
+    "rakutenQuery": "乙女怪獣キャラメリゼ",
+    "intro": ""
+  },
+  {
+    "id": "w007",
+    "title": "株式会社マジルミエ",
+    "type": "manga",
+    "rakutenQuery": "株式会社マジルミエ",
+    "intro": ""
+  },
+  {
+    "id": "w008",
+    "title": "神の雫",
+    "type": "manga",
+    "rakutenQuery": "神の雫",
+    "intro": ""
+  },
+  {
+    "id": "w009",
+    "title": "きみが死ぬまで恋をしたい",
+    "type": "manga",
+    "rakutenQuery": "きみが死ぬまで恋をしたい",
+    "intro": ""
+  },
+  {
+    "id": "w010",
+    "title": "君のことが大大大大大好きな100人の彼女",
+    "type": "manga",
+    "rakutenQuery": "君のことが大大大大大好きな100人の彼女",
+    "intro": ""
+  },
+  {
+    "id": "w011",
+    "title": "「きみを愛する気はない」と言った次期公爵様がなぜか溺愛してきます",
+    "type": "manga",
+    "rakutenQuery": "きみを愛する気はない 次期公爵様",
+    "intro": ""
+  },
+  {
+    "id": "w012",
+    "title": "ぐらんぶる",
+    "type": "manga",
+    "rakutenQuery": "ぐらんぶる",
+    "intro": ""
+  },
+  {
+    "id": "w013",
+    "title": "クレバテス -魔獣の王と偽りの勇者伝承-",
+    "type": "manga",
+    "rakutenQuery": "クレバテス",
+    "intro": ""
+  },
+  {
+    "id": "w014",
+    "title": "黒猫と魔女の教室",
+    "type": "manga",
+    "rakutenQuery": "黒猫と魔女の教室",
+    "intro": ""
+  },
+  {
+    "id": "w015",
+    "title": "攻殻機動隊 THE GHOST IN THE SHELL",
+    "type": "manga",
+    "rakutenQuery": "攻殻機動隊",
+    "intro": ""
+  },
+  {
+    "id": "w016",
+    "title": "これ描いて死ね",
+    "type": "manga",
+    "rakutenQuery": "これ描いて死ね",
+    "intro": ""
+  },
+  {
+    "id": "w017",
+    "title": "サンダー3",
+    "type": "manga",
+    "rakutenQuery": "サンダー3",
+    "intro": ""
+  },
+  {
+    "id": "w018",
+    "title": "スーパーの裏でヤニ吸うふたり",
+    "type": "manga",
+    "rakutenQuery": "スーパーの裏でヤニ吸うふたり",
+    "intro": ""
+  },
+  {
+    "id": "w019",
+    "title": "正反対な君と僕",
+    "type": "manga",
+    "rakutenQuery": "正反対な君と僕",
+    "intro": ""
+  },
+  {
+    "id": "w020",
+    "title": "天は赤い河のほとり",
+    "type": "manga",
+    "rakutenQuery": "天は赤い河のほとり",
+    "intro": ""
+  },
+  {
+    "id": "w021",
+    "title": "対ありでした。 ～お嬢さまは格闘ゲームなんてしない～",
+    "type": "manga",
+    "rakutenQuery": "対ありでした",
+    "intro": ""
+  },
+  {
+    "id": "w022",
+    "title": "鉄鍋のジャン！",
+    "type": "manga",
+    "rakutenQuery": "鉄鍋のジャン",
+    "intro": ""
+  },
+  {
+    "id": "w023",
+    "title": "天幕のジャードゥーガル",
+    "type": "manga",
+    "rakutenQuery": "天幕のジャードゥーガル",
+    "intro": ""
+  },
+  {
+    "id": "w024",
+    "title": "盗掘王",
+    "type": "manga",
+    "rakutenQuery": "盗掘王",
+    "intro": ""
+  },
+  {
+    "id": "w025",
+    "title": "逃げ上手の若君",
+    "type": "manga",
+    "rakutenQuery": "逃げ上手の若君",
+    "intro": ""
+  },
+  {
+    "id": "w026",
+    "title": "パーフェクトアディクション",
+    "type": "manga",
+    "rakutenQuery": "パーフェクトアディクション",
+    "intro": ""
+  },
+  {
+    "id": "w027",
+    "title": "刃牙道",
+    "type": "manga",
+    "rakutenQuery": "刃牙道",
+    "intro": ""
+  },
+  {
+    "id": "w028",
+    "title": "花織さんは転生しても喧嘩がしたい",
+    "type": "manga",
+    "rakutenQuery": "花織さんは転生しても喧嘩がしたい",
+    "intro": ""
+  },
+  {
+    "id": "w029",
+    "title": "花ざかりの君たちへ",
+    "type": "manga",
+    "rakutenQuery": "花ざかりの君たちへ",
+    "intro": ""
+  },
+  {
+    "id": "w030",
+    "title": "BLACK TORCH",
+    "type": "manga",
+    "rakutenQuery": "BLACK TORCH",
+    "intro": ""
+  },
+  {
+    "id": "w031",
+    "title": "BLEACH 千年血戦篇 -禍進譚-",
+    "type": "manga",
+    "rakutenQuery": "BLEACH",
+    "intro": ""
+  },
+  {
+    "id": "w032",
+    "title": "文豪ストレイドッグス わん！",
+    "type": "manga",
+    "rakutenQuery": "文豪ストレイドッグス わん",
+    "intro": ""
+  },
+  {
+    "id": "w033",
+    "title": "北斗の拳 拳王軍ザコたちの挽歌",
+    "type": "manga",
+    "rakutenQuery": "北斗の拳 拳王軍ザコたちの挽歌",
+    "intro": ""
+  },
+  {
+    "id": "w034",
+    "title": "北斗の拳 -FIST OF THE NORTH STAR-",
+    "type": "manga",
+    "rakutenQuery": "北斗の拳",
+    "intro": ""
+  },
+  {
+    "id": "w035",
+    "title": "炎の闘球女 ドッジ弾子",
+    "type": "manga",
+    "rakutenQuery": "炎の闘球女 ドッジ弾子",
+    "intro": ""
+  },
+  {
+    "id": "w036",
+    "title": "魔入りました！入間くん",
+    "type": "manga",
+    "rakutenQuery": "魔入りました！入間くん",
+    "intro": ""
+  },
+  {
+    "id": "w037",
+    "title": "MAO",
+    "type": "manga",
+    "rakutenQuery": "MAO 高橋留美子",
+    "intro": ""
+  },
+  {
+    "id": "w038",
+    "title": "ヤニねこ",
+    "type": "manga",
+    "rakutenQuery": "ヤニねこ",
+    "intro": ""
+  },
+  {
+    "id": "w039",
+    "title": "黄泉のツガイ",
+    "type": "manga",
+    "rakutenQuery": "黄泉のツガイ",
+    "intro": ""
+  },
+  {
+    "id": "w040",
+    "title": "LIAR GAME",
+    "type": "manga",
+    "rakutenQuery": "LIAR GAME",
+    "intro": ""
+  },
+  {
+    "id": "w041",
+    "title": "THE RIBBON HERO",
+    "type": "manga",
+    "rakutenQuery": "リボンヒーロー",
+    "intro": ""
+  },
+  {
+    "id": "w042",
+    "title": "令和のダラさん",
+    "type": "manga",
+    "rakutenQuery": "令和のダラさん",
+    "intro": ""
+  },
+  {
+    "id": "w043",
+    "title": "レッツゴー怪奇組",
+    "type": "manga",
+    "rakutenQuery": "レッツゴー怪奇組",
+    "intro": ""
+  },
+  {
+    "id": "w044",
+    "title": "ワールド イズ ダンシング",
+    "type": "manga",
+    "rakutenQuery": "ワールドイズダンシング",
+    "intro": ""
+  },
+  {
+    "id": "w045",
+    "title": "乙女ゲー世界はモブに厳しい世界です",
+    "type": "novel",
+    "rakutenQuery": "乙女ゲー世界はモブに厳しい世界です",
+    "intro": ""
+  },
+  {
+    "id": "w046",
+    "title": "鬼の花嫁",
+    "type": "novel",
+    "rakutenQuery": "鬼の花嫁",
+    "intro": ""
+  },
+  {
+    "id": "w047",
+    "title": "骸骨騎士様、只今異世界へお出掛け中",
+    "type": "novel",
+    "rakutenQuery": "骸骨騎士様、只今異世界へお出掛け中",
+    "intro": ""
+  },
+  {
+    "id": "w048",
+    "title": "片田舎のおっさん、剣聖になる",
+    "type": "novel",
+    "rakutenQuery": "片田舎のおっさん、剣聖になる",
+    "intro": ""
+  },
+  {
+    "id": "w049",
+    "title": "ここは俺に任せて先に行けと言ってから10年がたったら伝説になっていた。",
+    "type": "novel",
+    "rakutenQuery": "ここは俺に任せて先に行けと言ってから10年がたったら伝説になっていた",
+    "intro": ""
+  },
+  {
+    "id": "w050",
+    "title": "最強出涸らし皇子の暗躍帝位争い",
+    "type": "novel",
+    "rakutenQuery": "最強出涸らし皇子の暗躍帝位争い",
+    "intro": ""
+  },
+  {
+    "id": "w051",
+    "title": "才女のお世話",
+    "type": "novel",
+    "rakutenQuery": "才女のお世話",
+    "intro": ""
+  },
+  {
+    "id": "w052",
+    "title": "捨てられ聖女の異世界ごはん旅",
+    "type": "novel",
+    "rakutenQuery": "捨てられ聖女の異世界ごはん旅",
+    "intro": ""
+  },
+  {
+    "id": "w053",
+    "title": "世界最強の後衛 ～迷宮国の新人探索者～",
+    "type": "novel",
+    "rakutenQuery": "世界最強の後衛",
+    "intro": ""
+  },
+  {
+    "id": "w054",
+    "title": "追放された転生重騎士はゲーム知識で無双する",
+    "type": "novel",
+    "rakutenQuery": "追放された転生重騎士はゲーム知識で無双する",
+    "intro": ""
+  },
+  {
+    "id": "w055",
+    "title": "手札が多めのビクトリア",
+    "type": "novel",
+    "rakutenQuery": "手札が多めのビクトリア",
+    "intro": ""
+  },
+  {
+    "id": "w056",
+    "title": "転校先の清楚可憐な美少女が、昔男子と思って一緒に遊んだ幼馴染だった件",
+    "type": "novel",
+    "rakutenQuery": "転校先の清楚可憐な美少女が、昔男子と思って一緒に遊んだ幼馴染だった件",
+    "intro": ""
+  },
+  {
+    "id": "w057",
+    "title": "転生したらスライムだった件",
+    "type": "novel",
+    "rakutenQuery": "転生したらスライムだった件",
+    "intro": ""
+  },
+  {
+    "id": "w058",
+    "title": "透明な夜に駆ける君と、目に見えない恋をした。",
+    "type": "novel",
+    "rakutenQuery": "透明な夜に駆ける君と、目に見えない恋をした",
+    "intro": ""
+  },
+  {
+    "id": "w059",
+    "title": "二十世紀電氣目録 -ユーレカ・エヴリカ-",
+    "type": "novel",
+    "rakutenQuery": "二十世紀電氣目録",
+    "intro": ""
+  },
+  {
+    "id": "w060",
+    "title": "猫と竜",
+    "type": "novel",
+    "rakutenQuery": "猫と竜",
+    "intro": ""
+  },
+  {
+    "id": "w061",
+    "title": "ヒロイン？聖女？いいえ、オールワークスメイドです〈誇〉！",
+    "type": "novel",
+    "rakutenQuery": "オールワークスメイドです",
+    "intro": ""
+  },
+  {
+    "id": "w062",
+    "title": "ブチ切れ令嬢は報復を誓いました。",
+    "type": "novel",
+    "rakutenQuery": "ブチ切れ令嬢は報復を誓いました",
+    "intro": ""
+  },
+  {
+    "id": "w063",
+    "title": "ふつつかな悪女ではございますが",
+    "type": "novel",
+    "rakutenQuery": "ふつつかな悪女ではございますが",
+    "intro": ""
+  },
+  {
+    "id": "w064",
+    "title": "ヘルモード ～やり込み好きのゲーマーは廃設定の異世界で無双する～",
+    "type": "novel",
+    "rakutenQuery": "ヘルモード やり込み好きのゲーマー",
+    "intro": ""
+  },
+  {
+    "id": "w065",
+    "title": "本好きの下剋上 第三部 領主の養女",
+    "type": "novel",
+    "rakutenQuery": "本好きの下剋上",
+    "intro": ""
+  },
+  {
+    "id": "w066",
+    "title": "身代わり令嬢を救ったのは冷酷無慈悲な氷の王子の愛でした",
+    "type": "novel",
+    "rakutenQuery": "身代わり令嬢を救ったのは冷酷無慈悲な氷の王子の愛でした",
+    "intro": ""
+  },
+  {
+    "id": "w067",
+    "title": "無自覚聖女は今日も無意識に力を垂れ流す",
+    "type": "novel",
+    "rakutenQuery": "無自覚聖女は今日も無意識に力を垂れ流す",
+    "intro": ""
+  },
+  {
+    "id": "w068",
+    "title": "無職転生 ～異世界行ったら本気だす～",
+    "type": "novel",
+    "rakutenQuery": "無職転生",
+    "intro": ""
+  },
+  {
+    "id": "w069",
+    "title": "幼女戦記",
+    "type": "novel",
+    "rakutenQuery": "幼女戦記",
+    "intro": ""
+  },
+  {
+    "id": "w070",
+    "title": "落第賢者の学院無双 ～二度目の転生、Sランクチート魔術師冒険録～",
+    "type": "novel",
+    "rakutenQuery": "落第賢者の学院無双",
+    "intro": ""
+  },
+  {
+    "id": "w071",
+    "title": "Re:ゼロから始める異世界生活",
+    "type": "novel",
+    "rakutenQuery": "Re:ゼロから始める異世界生活",
+    "intro": ""
+  },
+  {
+    "id": "w072",
+    "title": "領民0人スタートの辺境領主様",
+    "type": "novel",
+    "rakutenQuery": "領民0人スタートの辺境領主様",
+    "intro": ""
+  },
+  {
+    "id": "w073",
+    "title": "LV999の村人",
+    "type": "novel",
+    "rakutenQuery": "LV999の村人",
+    "intro": ""
+  },
+  {
+    "id": "w074",
+    "title": "ONE PIECE HEROINES",
+    "type": "novel",
+    "rakutenQuery": "ONE PIECE novel HEROINES",
+    "intro": ""
+  },
+  {
+    "id": "w075",
+    "title": "アオアシ",
+    "type": "manga",
+    "rakutenQuery": "アオアシ",
+    "intro": ""
+  },
+  {
+    "id": "w076",
+    "title": "アオのハコ",
+    "type": "manga",
+    "rakutenQuery": "アオのハコ",
+    "intro": ""
+  },
+  {
+    "id": "w077",
+    "title": "FX戦士くるみちゃん",
+    "type": "manga",
+    "rakutenQuery": "FX戦士くるみちゃん",
+    "intro": ""
+  },
+  {
+    "id": "w078",
+    "title": "おじさんはカワイイものがお好き。",
+    "type": "manga",
+    "rakutenQuery": "おじさんはカワイイものがお好き",
+    "intro": ""
+  },
+  {
+    "id": "w079",
+    "title": "ガールズ＆パンツァー もっとらぶらぶ作戦です！",
+    "type": "manga",
+    "rakutenQuery": "ガールズ＆パンツァー もっとらぶらぶ作戦です",
+    "intro": ""
+  },
+  {
+    "id": "w080",
+    "title": "彼方から",
+    "type": "manga",
+    "rakutenQuery": "彼方から ひかわきょうこ",
+    "intro": ""
+  },
+  {
+    "id": "w081",
+    "title": "彼女の友達",
+    "type": "manga",
+    "rakutenQuery": "彼女の友達",
+    "intro": ""
+  },
+  {
+    "id": "w082",
+    "title": "帰還者の魔法は特別です",
+    "type": "manga",
+    "rakutenQuery": "帰還者の魔法は特別です",
+    "intro": ""
+  },
+  {
+    "id": "w083",
+    "title": "傷だらけ聖女より報復をこめて",
+    "type": "manga",
+    "rakutenQuery": "傷だらけ聖女より報復をこめて",
+    "intro": ""
+  },
+  {
+    "id": "w084",
+    "title": "ケロロ軍曹☆",
+    "type": "manga",
+    "rakutenQuery": "ケロロ軍曹",
+    "intro": ""
+  },
+  {
+    "id": "w085",
+    "title": "氷の城壁",
+    "type": "manga",
+    "rakutenQuery": "氷の城壁",
+    "intro": ""
+  },
+  {
+    "id": "w086",
+    "title": "PSYREN -サイレン-",
+    "type": "manga",
+    "rakutenQuery": "PSYREN",
+    "intro": ""
+  },
+  {
+    "id": "w087",
+    "title": "朱色の仮面",
+    "type": "manga",
+    "rakutenQuery": "朱色の仮面",
+    "intro": ""
+  },
+  {
+    "id": "w088",
+    "title": "新テニスの王子様 U-17 WORLD CUP",
+    "type": "manga",
+    "rakutenQuery": "新テニスの王子様",
+    "intro": ""
+  },
+  {
+    "id": "w089",
+    "title": "STEEL BALL RUN ジョジョの奇妙な冒険",
+    "type": "manga",
+    "rakutenQuery": "STEEL BALL RUN",
+    "intro": ""
+  },
+  {
+    "id": "w090",
+    "title": "生徒会にも穴はある！",
+    "type": "manga",
+    "rakutenQuery": "生徒会にも穴はある",
+    "intro": ""
+  },
+  {
+    "id": "w091",
+    "title": "#ゾンビさがしてます",
+    "type": "manga",
+    "rakutenQuery": "ゾンビさがしてます",
+    "intro": ""
+  },
+  {
+    "id": "w092",
+    "title": "ダークサモナーとデキている",
+    "type": "manga",
+    "rakutenQuery": "ダークサモナーとデキている",
+    "intro": ""
+  },
+  {
+    "id": "w093",
+    "title": "ダイヤのA actⅡ",
+    "type": "manga",
+    "rakutenQuery": "ダイヤのA actII",
+    "intro": ""
+  },
+  {
+    "id": "w094",
+    "title": "タヌキとキツネ",
+    "type": "manga",
+    "rakutenQuery": "タヌキとキツネ",
+    "intro": ""
+  },
+  {
+    "id": "w095",
+    "title": "TANK CHAIR -戦車椅子-",
+    "type": "manga",
+    "rakutenQuery": "TANK CHAIR",
+    "intro": ""
+  },
+  {
+    "id": "w096",
+    "title": "転生ゴブリンだけど質問ある？",
+    "type": "manga",
+    "rakutenQuery": "転生ゴブリンだけど質問ある",
+    "intro": ""
+  },
+  {
+    "id": "w097",
+    "title": "東京卍リベンジャーズ",
+    "type": "manga",
+    "rakutenQuery": "東京卍リベンジャーズ",
+    "intro": ""
+  },
+  {
+    "id": "w098",
+    "title": "桃源暗鬼",
+    "type": "manga",
+    "rakutenQuery": "桃源暗鬼",
+    "intro": ""
+  },
+  {
+    "id": "w099",
+    "title": "ドラゴンボール超",
+    "type": "manga",
+    "rakutenQuery": "ドラゴンボール超",
+    "intro": ""
+  },
+  {
+    "id": "w100",
+    "title": "dreamland ドリームランド",
+    "type": "manga",
+    "rakutenQuery": "dreamland",
+    "intro": ""
+  },
+  {
+    "id": "w101",
+    "title": "鳴海の平日 怪獣8号",
+    "type": "manga",
+    "rakutenQuery": "怪獣8号",
+    "intro": ""
+  },
+  {
+    "id": "w102",
+    "title": "フールナイト",
+    "type": "manga",
+    "rakutenQuery": "フールナイト",
+    "intro": ""
+  },
+  {
+    "id": "w103",
+    "title": "ブラッククローバー",
+    "type": "manga",
+    "rakutenQuery": "ブラッククローバー",
+    "intro": ""
+  },
+  {
+    "id": "w104",
+    "title": "ホタルの嫁入り",
+    "type": "manga",
+    "rakutenQuery": "ホタルの嫁入り",
+    "intro": ""
+  },
+  {
+    "id": "w105",
+    "title": "ホテル・インヒューマンズ",
+    "type": "manga",
+    "rakutenQuery": "ホテル・インヒューマンズ",
+    "intro": ""
+  },
+  {
+    "id": "w106",
+    "title": "魔法騎士レイアース",
+    "type": "manga",
+    "rakutenQuery": "魔法騎士レイアース",
+    "intro": ""
+  },
+  {
+    "id": "w107",
+    "title": "マロニエ王国の七人の騎士",
+    "type": "manga",
+    "rakutenQuery": "マロニエ王国の七人の騎士",
+    "intro": ""
+  },
+  {
+    "id": "w108",
+    "title": "ゆうさんち！from 遊ハち",
+    "type": "manga",
+    "rakutenQuery": "ゆうさんち",
+    "intro": ""
+  },
+  {
+    "id": "w109",
+    "title": "夜桜さんちの大作戦",
+    "type": "manga",
+    "rakutenQuery": "夜桜さんちの大作戦",
+    "intro": ""
+  },
+  {
+    "id": "w110",
+    "title": "らんま1/2",
+    "type": "manga",
+    "rakutenQuery": "らんま1/2",
+    "intro": ""
+  },
+  {
+    "id": "w111",
+    "title": "貸した魔力は【リボ払い】で強制徴収",
+    "type": "novel",
+    "rakutenQuery": "貸した魔力は リボ払い で強制徴収",
+    "intro": ""
+  },
+  {
+    "id": "w112",
+    "title": "凶乱令嬢ニア・リストン",
+    "type": "novel",
+    "rakutenQuery": "凶乱令嬢ニア・リストン",
+    "intro": ""
+  },
+  {
+    "id": "w113",
+    "title": "薬屋のひとりごと",
+    "type": "novel",
+    "rakutenQuery": "薬屋のひとりごと",
+    "intro": ""
+  },
+  {
+    "id": "w114",
+    "title": "佐々木とピーちゃん",
+    "type": "novel",
+    "rakutenQuery": "佐々木とピーちゃん",
+    "intro": ""
+  },
+  {
+    "id": "w115",
+    "title": "塩対応の佐藤さんが俺にだけ甘い",
+    "type": "novel",
+    "rakutenQuery": "塩対応の佐藤さんが俺にだけ甘い",
+    "intro": ""
+  },
+  {
+    "id": "w116",
+    "title": "信者ゼロの女神サマと始める異世界攻略",
+    "type": "novel",
+    "rakutenQuery": "信者ゼロの女神サマと始める異世界攻略",
+    "intro": ""
+  },
+  {
+    "id": "w117",
+    "title": "世界最強の魔女、始めました",
+    "type": "novel",
+    "rakutenQuery": "世界最強の魔女、始めました",
+    "intro": ""
+  },
+  {
+    "id": "w118",
+    "title": "探偵はもう、死んでいる。",
+    "type": "novel",
+    "rakutenQuery": "探偵はもう、死んでいる",
+    "intro": ""
+  },
+  {
+    "id": "w119",
+    "title": "千歳くんはラムネ瓶のなか",
+    "type": "novel",
+    "rakutenQuery": "千歳くんはラムネ瓶のなか",
+    "intro": ""
+  },
+  {
+    "id": "w120",
+    "title": "追放されたチート付与魔術師は気ままなセカンドライフを謳歌する。",
+    "type": "novel",
+    "rakutenQuery": "追放されたチート付与魔術師は気ままなセカンドライフを謳歌する",
+    "intro": ""
+  },
+  {
+    "id": "w121",
+    "title": "デモンズ・クレスト",
+    "type": "novel",
+    "rakutenQuery": "デモンズ・クレスト",
+    "intro": ""
+  },
+  {
+    "id": "w122",
+    "title": "転生貴族、鑑定スキルで成り上がる",
+    "type": "novel",
+    "rakutenQuery": "転生貴族、鑑定スキルで成り上がる",
+    "intro": ""
+  },
+  {
+    "id": "w123",
+    "title": "転生した大聖女は、聖女であることをひた隠す",
+    "type": "novel",
+    "rakutenQuery": "転生した大聖女は、聖女であることをひた隠す",
+    "intro": ""
+  },
+  {
+    "id": "w124",
+    "title": "転生したら剣でした",
+    "type": "novel",
+    "rakutenQuery": "転生したら剣でした",
+    "intro": ""
+  },
+  {
+    "id": "w125",
+    "title": "とある暗部の少女共棲",
+    "type": "novel",
+    "rakutenQuery": "とある暗部の少女共棲",
+    "intro": ""
+  },
+  {
+    "id": "w126",
+    "title": "どうも、好きな人に惚れ薬を依頼された魔女です。",
+    "type": "novel",
+    "rakutenQuery": "好きな人に惚れ薬を依頼された魔女です",
+    "intro": ""
+  },
+  {
+    "id": "w127",
+    "title": "冰剣の魔術師が世界を統べる",
+    "type": "novel",
+    "rakutenQuery": "冰剣の魔術師が世界を統べる",
+    "intro": ""
+  },
+  {
+    "id": "w128",
+    "title": "魔法少女育成計画 restart",
+    "type": "novel",
+    "rakutenQuery": "魔法少女育成計画 restart",
+    "intro": ""
+  },
+  {
+    "id": "w129",
+    "title": "目覚めたら最強装備と宇宙船持ちだったので、一戸建て目指して傭兵として自由に生きたい",
+    "type": "novel",
+    "rakutenQuery": "目覚めたら最強装備と宇宙船持ちだったので",
+    "intro": ""
+  },
+  {
+    "id": "w130",
+    "title": "野生のラスボスが現れた！",
+    "type": "novel",
+    "rakutenQuery": "野生のラスボスが現れた",
+    "intro": ""
+  },
+  {
+    "id": "w131",
+    "title": "弱気MAX令嬢なのに、辣腕婚約者様の賭けに乗ってしまった",
+    "type": "novel",
+    "rakutenQuery": "弱気MAX令嬢なのに、辣腕婚約者様の賭けに乗ってしまった",
+    "intro": ""
+  },
+  {
+    "id": "w132",
+    "title": "ロメリア戦記",
+    "type": "novel",
+    "rakutenQuery": "ロメリア戦記",
+    "intro": ""
+  },
+  {
+    "id": "w133",
+    "title": "どこよりも遠い場所にいる君へ",
+    "type": "novel",
+    "rakutenQuery": "どこよりも遠い場所にいる君へ",
+    "intro": ""
+  }
+]
