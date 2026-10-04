@@ -4,6 +4,7 @@
 import { WORKS, json, errorJson } from '../_lib/common.js';
 
 const ENDPOINT = 'https://openapi.rakuten.co.jp/services/api/BooksBook/Search/20170404';
+const ENDPOINT_TOTAL = 'https://openapi.rakuten.co.jp/services/api/BooksTotal/Search/20170404'; // キーワード検索（最後の手段）
 const GENRE = { manga: '001001', novel: '001017' }; // 楽天ブックス: コミック / ライトノベル
 const CACHE_SECONDS = 60 * 60 * 24; // 1日
 
@@ -12,7 +13,7 @@ export async function onRequestGet({ request, env, waitUntil }) {
   const work = WORKS.get(id);
   if (!work) return errorJson(404, 'unknown_work', '作品が見つかりません。');
 
-  const cacheKey = new Request(`https://cache.sukioshi/book/v2/${id}`);
+  const cacheKey = new Request(`https://cache.sukioshi/book/v3/${id}`);
   const cache = caches.default;
   const hit = await cache.match(cacheKey);
   if (hit) return hit;
@@ -30,31 +31,36 @@ export async function onRequestGet({ request, env, waitUntil }) {
     { title: query, booksGenreId: '001' },
   ];
   if (short && short !== query) attempts.push({ title: short, booksGenreId: GENRE[work.type] || '001' });
+  attempts.push({ keyword: query, booksGenreId: '001', _total: true }); // 4) 書籍全体をキーワードで
 
   // 楽天に登録した自分のサイトのURLを名乗る（楽天の「許可されたWebサイト」と一致させる）
   const site = env.SITE_URL || new URL(request.url).origin;
   let data = null;
+  const tried = []; // 調査用：各回の応答（ステータス:件数）
   for (let i = 0; i < attempts.length; i++) {
     if (i > 0) await new Promise((r) => setTimeout(r, 1100)); // 楽天APIは1秒に1回まで
+    const { _total, ...cond } = attempts[i];
     const params = new URLSearchParams({
       applicationId: env.RAKUTEN_APP_ID,
       accessKey: env.RAKUTEN_ACCESS_KEY,
-      ...attempts[i],
+      ...cond,
       sort: '+releaseDate', // 古い順 → 1巻が先に来やすい
       hits: '10',
       outOfStockFlag: '1',
       formatVersion: '2',
     });
-    if (work.rakutenAuthor) params.set('author', work.rakutenAuthor);
+    if (work.rakutenAuthor && !_total) params.set('author', work.rakutenAuthor);
     if (env.RAKUTEN_AFFILIATE_ID) params.set('affiliateId', env.RAKUTEN_AFFILIATE_ID);
     try {
-      const res = await fetch(`${ENDPOINT}?${params}`, { headers: { Origin: site, Referer: site + '/' } });
+      const res = await fetch(`${_total ? ENDPOINT_TOTAL : ENDPOINT}?${params}`, { headers: { Origin: site, Referer: site + '/' } });
+      tried.push(res.status);
       if (!res.ok) {
         // 404 は「0件」の意味。それ以外（429など）は混雑なので、あとでもう一度
         if (res.status === 404) continue;
         return json({ ok: false, code: res.status === 429 ? 'busy' : 'api_error', status: res.status });
       }
       const body = await res.json();
+      tried[tried.length - 1] += ':' + (body.Items || []).length;
       if ((body.Items || []).length) { data = body; break; }
     } catch {
       return json({ ok: false, code: 'api_error' });
@@ -75,7 +81,7 @@ export async function onRequestGet({ request, env, waitUntil }) {
         imageUrl: item.largeImageUrl ? item.largeImageUrl.replace(/_ex=\d+x\d+/, '_ex=300x300') : '',
         url: item.affiliateUrl || item.itemUrl,
       }
-    : { ok: false, code: 'not_found' };
+    : { ok: false, code: 'not_found', tried };
 
   // 見つからなかった結果は短めに保存（作品データを直したらすぐ反映されるように）
   const maxAge = out.ok ? CACHE_SECONDS : 60 * 30;
