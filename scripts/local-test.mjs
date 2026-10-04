@@ -76,6 +76,7 @@ const routes = {
   '/api/vote': await import(pathToFileURL(join(ROOT, 'functions/api/vote.js'))),
   '/api/ranking': await import(pathToFileURL(join(ROOT, 'functions/api/ranking.js'))),
   '/api/book': await import(pathToFileURL(join(ROOT, 'functions/api/book.js'))),
+  '/api/tags': await import(pathToFileURL(join(ROOT, 'functions/api/tags.js'))),
   '/api/admin/weekly': await import(pathToFileURL(join(ROOT, 'functions/api/admin/weekly.js'))),
 };
 const env = {
@@ -238,6 +239,39 @@ async function runTests() {
   assert.equal(closed.status, 403);
   assert.match((await closed.json()).message, /終了/);
   ok('投票期間が終わったシーズンには投票できない');
+
+  // 「ここがおすすめ」タグ
+  const postTags = (workId, tags, ck) =>
+    call('/api/tags', {
+      method: 'POST',
+      headers: { 'content-type': 'application/json', origin: `http://localhost:${PORT}`, ...(ck ? { cookie: ck } : {}) },
+      body: JSON.stringify({ season: '2026-autumn', workId, tags }),
+    }, '5.5.5.5');
+  const tagCookie = 'sk_vid=22222222-2222-4222-8222-222222222222';
+  assert.equal((await postTags(w1, ['sakuga'], tagCookie)).status, 403); // まだ「すき」を送っていない
+  await vote('2026-autumn', w1, tagCookie, '5.5.5.5');
+  assert.equal((await postTags(w1, ['sakuga', 'naku', 'warau', 'kawaii'], tagCookie)).status, 400); // 4つは多すぎ
+  assert.equal((await postTags(w1, ['<script>'], tagCookie)).status, 400); // 存在しないタグ
+  let tg = await (await postTags(w1, ['sakuga', 'naku'], tagCookie)).json();
+  assert.equal(tg.added, 2);
+  tg = await (await postTags(w1, ['naku', 'warau', 'kawaii'], tagCookie)).json();
+  assert.equal(tg.added, 1); // 1日3つまで（naku は重複、kawaii は上限超え）
+  assert.equal(tg.tags.reduce((a, t) => a + t.count, 0), 3);
+  const otherCookie = 'sk_vid=33333333-3333-4333-8333-333333333333';
+  await vote('2026-autumn', w2, otherCookie, '6.6.6.6');
+  await call('/api/tags', { method: 'POST', headers: { 'content-type': 'application/json', origin: `http://localhost:${PORT}`, cookie: otherCookie }, body: JSON.stringify({ season: '2026-autumn', workId: w2, tags: ['naku'] }) }, '6.6.6.6');
+  await vote('2026-autumn', w2, tagCookie, '5.5.5.5');
+  await postTags(w2, ['naku'], tagCookie);
+  clearCache();
+  r = await (await call('/api/ranking?season=2026-autumn&tag=naku')).json();
+  assert.equal(r.tag, 'naku');
+  assert.equal(r.rows[0].workId, w2);
+  assert.equal(r.rows[0].count, 2);
+  assert.equal(r.rows[1].workId, w1);
+  const g = await (await call(`/api/tags?season=2026-autumn&workId=${w1}`)).json();
+  assert.equal(g.tags[0].count, 1);
+  assert.ok(g.tags.every((t) => t.label));
+  ok('おすすめタグ：すきの後だけ・1日3つまで・存在しないタグは断る・タグ別ランキング');
 
   // 楽天の表紙
   let book = await (await call(`/api/book?id=${w1}`)).json();

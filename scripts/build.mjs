@@ -13,6 +13,7 @@ const readJson = (p) => JSON.parse(readFileSync(join(ROOT, p), 'utf8'));
 const site = readJson('data/site.json');
 const { current: CURRENT, seasons } = readJson('data/seasons.json');
 const works = readJson('data/works.json');
+const tags = readJson('data/tags.json');
 const workById = new Map(works.map((w) => [w.id, w]));
 const SITE_URL = (process.env.SITE_URL || site.url).replace(/\/$/, '');
 const BUILD_DATE = new Date(Date.now() + 9 * 3600e3).toISOString().slice(0, 10);
@@ -40,6 +41,15 @@ if (problems.length) {
 const esc = (s = '') =>
   String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
 const TYPE_LABEL = { manga: '漫画', novel: 'ラノベ' };
+const MAX_TAGS = 3;
+const TAG_GROUPS = [['story', '作品の魅力'], ['anime', 'アニメの魅力']];
+function tagChipsHtml() {
+  return TAG_GROUPS.map(([g, label]) => `    <p class="tag-group-label">${label}</p>
+    <div class="tag-chips">
+${tags.filter((t) => t.group === g).map((t) => `      <button type="button" class="tag-chip" data-tag-pick="${t.id}" aria-pressed="false">${esc(t.label)}</button>`).join('\n')}
+    </div>`).join('\n');
+}
+
 const TYPE_LONG = { manga: '漫画', novel: 'ライトノベル' };
 const seasonsOf = (workId) => seasons.filter((s) => s.works.some((e) => e.workId === workId));
 const noteOf = (season, workId) => season.works.find((e) => e.workId === workId)?.note || '';
@@ -112,6 +122,19 @@ ${body}
   </div>
 </footer>
 <div class="toast" role="status" aria-live="polite" hidden></div>
+<div class="sheet-backdrop" data-tag-sheet hidden>
+  <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="tag-sheet-title">
+    <p class="sheet-kicker" data-tag-sheet-work></p>
+    <h2 id="tag-sheet-title" class="sheet-title">どこがすき？</h2>
+    <p class="sheet-lead">おすすめポイントを${MAX_TAGS}つまで選んでください</p>
+${tagChipsHtml()}
+    <p class="form-error" data-tag-sheet-error hidden></p>
+    <div class="sheet-actions">
+      <button type="button" class="btn" data-tag-skip>あとで</button>
+      <button type="button" class="btn btn-pink" data-tag-send>送る</button>
+    </div>
+  </div>
+</div>
 <script src="/assets/app.js?v=${v}" defer></script>
 </body>
 </html>
@@ -152,6 +175,13 @@ function rankingSection(season, { headingTag = 'h2', heading } = {}) {
     <button type="button" class="chip" data-type-filter="all" aria-pressed="true">すべて</button>
     <button type="button" class="chip" data-type-filter="manga" aria-pressed="false">漫画</button>
     <button type="button" class="chip" data-type-filter="novel" aria-pressed="false">ラノベ</button>
+  </div>
+  <div class="tag-filter" role="group" aria-label="おすすめポイントで探す">
+    <span class="tag-filter-label">おすすめポイントで探す</span>
+    <div class="tag-filter-row">
+      <button type="button" class="chip" data-tag-filter="" aria-pressed="true">指定なし</button>
+${tags.map((t) => `      <button type="button" class="chip" data-tag-filter="${t.id}" aria-pressed="false">${esc(t.label)}</button>`).join('\n')}
+    </div>
   </div>
   <p class="rank-status" data-rank-status>ランキングを読み込んでいます…</p>
   <ol class="rank-list" data-rank-list>
@@ -285,6 +315,12 @@ function buildWork(w) {
   </div>
 
   ${w.intro ? `<section class="prose work-intro"><h2>どんな作品？</h2>${w.intro}</section>` : ''}
+
+  <section class="work-tags" data-work-tags data-season="${main.id}">
+    <h2>みんなのおすすめポイント</h2>
+    <p class="fine" data-work-tags-empty>まだ選ばれていません。「すき」を送ったあとに、おすすめポイントを選べます。</p>
+    <ul class="tag-bars" data-work-tags-list></ul>
+  </section>
 
   <section class="work-history">
     <h2>シーズンごとの順位</h2>
@@ -496,7 +532,7 @@ if (site.adsenseClient) {
 // ブラウザ用の設定（JSが使う公開情報だけ）
 writeFileSync(
   join(OUT, 'assets/config.json'),
-  JSON.stringify({ adsenseClient: site.adsenseClient, adSlots: site.adSlots || {}, siteUrl: SITE_URL }, null, 0)
+  JSON.stringify({ adsenseClient: site.adsenseClient, adSlots: site.adSlots || {}, siteUrl: SITE_URL, tags, maxTags: MAX_TAGS }, null, 0)
 );
 
 console.log(`生成しました: ${pages.length + 1} ページ（作品 ${works.length}、シーズン ${seasons.length}）→ dist/`);

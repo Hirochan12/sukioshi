@@ -1,0 +1,13 @@
+[
+  { "id": "sakuga", "label": "作画がすごい", "group": "anime" },
+  { "id": "seiyu", "label": "声優が豪華", "group": "anime" },
+  { "id": "music", "label": "音楽・主題歌がいい", "group": "anime" },
+  { "id": "yujo", "label": "友情・努力・勝利", "group": "story" },
+  { "id": "kawaii", "label": "キャラがかわいい", "group": "story" },
+  { "id": "kakkoii", "label": "キャラがかっこいい", "group": "story" },
+  { "id": "naku", "label": "泣ける", "group": "story" },
+  { "id": "warau", "label": "笑える", "group": "story" },
+  { "id": "dokidoki", "label": "ドキドキ（恋愛）", "group": "story" },
+  { "id": "tsuzuki", "label": "続きが気になる", "group": "story" },
+  { "id": "sekai", "label": "世界観がすごい", "group": "story" }
+]

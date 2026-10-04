@@ -70,7 +70,7 @@ export async function onRequestPost({ request, env }) {
     const cache = caches.default;
     await Promise.all(
       ['today', 'week', 'season'].flatMap((p) =>
-        ['all', 'manga', 'novel'].map((t) => cache.delete(new Request(`https://cache.sukioshi/ranking/${season.id}/${p}/${t}`)))
+        ['all', 'manga', 'novel'].map((t) => cache.delete(new Request(`https://cache.sukioshi/ranking/${season.id}/${p}/${t}/-`)))
       )
     );
   }

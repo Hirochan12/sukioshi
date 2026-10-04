@@ -18,3 +18,16 @@ CREATE INDEX IF NOT EXISTS ix_votes_season_day ON votes (season, day, work_id);
 -- 連打・大量投票の検出用
 CREATE INDEX IF NOT EXISTS ix_votes_ip_time ON votes (ip_hash, created_at);
 CREATE INDEX IF NOT EXISTS ix_votes_voter_time ON votes (voter, created_at);
+
+-- 「ここがおすすめ」タグ。1作品につき1端末1日、タグごとに1回まで
+CREATE TABLE IF NOT EXISTS tag_votes (
+  id         INTEGER PRIMARY KEY AUTOINCREMENT,
+  season     TEXT    NOT NULL,
+  work_id    TEXT    NOT NULL,
+  day        TEXT    NOT NULL,
+  voter      TEXT    NOT NULL,
+  tag        TEXT    NOT NULL,
+  created_at INTEGER NOT NULL
+);
+CREATE UNIQUE INDEX IF NOT EXISTS ux_tag_votes_once ON tag_votes (season, work_id, day, voter, tag);
+CREATE INDEX IF NOT EXISTS ix_tag_votes_season_day ON tag_votes (season, day, tag, work_id);

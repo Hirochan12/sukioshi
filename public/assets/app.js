@@ -137,7 +137,7 @@
   // ---------- ランキング ----------
   function setupRanking(section) {
     const season = section.dataset.season;
-    const state = { period: 'season', type: 'all', phase: phase(section.dataset.voteStart, section.dataset.voteEnd) };
+    const state = { period: 'season', type: 'all', tag: '', phase: phase(section.dataset.voteStart, section.dataset.voteEnd) };
     const list = $('[data-rank-list]', section);
     const status = $('[data-rank-status]', section);
     const items = new Map($$('.rank-item', list).map((li) => [li.dataset.work, li]));
@@ -168,13 +168,21 @@
         load();
       })
     );
+    $$('[data-tag-filter]', section).forEach((btn) =>
+      btn.addEventListener('click', () => {
+        state.tag = btn.dataset.tagFilter;
+        $$('[data-tag-filter]', section).forEach((b) => b.setAttribute('aria-pressed', String(b === btn)));
+        section.classList.toggle('is-tag-mode', Boolean(state.tag));
+        load();
+      })
+    );
 
     let reqNo = 0;
     async function load() {
       const my = ++reqNo;
       status.textContent = 'ランキングを読み込んでいます…';
       try {
-        const data = await getJson(`/api/ranking?season=${encodeURIComponent(season)}&period=${state.period}&type=${state.type}`);
+        const data = await getJson(`/api/ranking?season=${encodeURIComponent(season)}&period=${state.period}&type=${state.type}${state.tag ? '&tag=' + state.tag : ''}`);
         if (my !== reqNo) return; // 古い応答は捨てる
         if (!data.ok) throw new Error(data.code || 'error');
         render(data.rows);
@@ -200,6 +208,7 @@
         li.dataset.rank = r.rank ?? '';
         $('.rank-no', li).textContent = r.rank ?? '–';
         $('[data-count]', li).textContent = fmt(r.count);
+        $('.rank-count', li).lastChild.textContent = state.tag ? ' 人がおすすめ' : ' すき';
         list.appendChild(li);
         n++;
         // 10作品ごとに広告枠（審査に通るまでは何も出ない）
@@ -215,6 +224,13 @@
       }
       const total = rows.reduce((s, r) => s + r.count, 0);
       const label = { today: '今日', week: '直近7日間', season: state.phase === 'closed' ? '最終結果' : 'シーズン全体' }[state.period];
+      if (state.tag) {
+        const tagLabel = (config.tags || []).find((t) => t.id === state.tag)?.label || '';
+        status.textContent = total === 0
+          ? `「${tagLabel}」を選んだ人はまだいません。「すき」を送ったあとに選べます。`
+          : `「${tagLabel}」を選んだ人が多い順（${label}）`;
+        return;
+      }
       if (total === 0) {
         status.textContent = state.phase === 'open'
           ? `${label}の投票はまだありません。最初の1票をどうぞ。`
@@ -261,7 +277,8 @@
     const { season, work } = btn.dataset;
     const title = btn.parentElement.closest('[data-work], [data-work-page]')?.querySelector('.rank-title, h1')?.textContent?.trim() || 'この作品';
     if (btn.classList.contains('is-voted')) {
-      toast('今日はもう「すき」を送りました。明日また送れます。');
+      if (!isTagged(season, work)) openTagSheet(season, work, title);
+      else toast('今日はもう「すき」を送りました。明日また送れます。');
       return;
     }
     btn.classList.add('is-busy');
@@ -283,19 +300,121 @@
       markVoted(season, work);
       $$(`[data-vote][data-season="${season}"][data-work="${work}"]`).forEach(setVoted);
       if (data.status === 'already') {
-        toast('今日はもう「すき」を送りました。明日また送れます。');
+        if (!isTagged(season, work)) openTagSheet(season, work, title);
+        else toast('今日はもう「すき」を送りました。明日また送れます。');
         return;
       }
       flyHeart(btn);
       toast(data.rank ? `『${title}』にすきを送りました。いま${data.rank}位です` : `『${title}』にすきを送りました`);
       $$(`[data-ranking][data-season="${season}"]`).forEach((s) => s.dispatchEvent(new CustomEvent('sukioshi:voted')));
       $$(`[data-work-rank][data-season="${season}"]`).forEach((el) => loadWorkRank(el, data));
+      setTimeout(() => openTagSheet(season, work, title), 700);
     } catch {
       toast('通信できませんでした。電波の良いところでもう一度お試しください。');
     } finally {
       btn.classList.remove('is-busy');
     }
   });
+
+  // ---------- 「ここがおすすめ」タグ ----------
+  const TAGGED_KEY = 'sukioshi:tagged';
+  const taggedToday = () => {
+    const v = store.get(TAGGED_KEY, {});
+    return v.day === jstDay() ? v : { day: jstDay(), works: {} };
+  };
+  const isTagged = (season, work) => Boolean(taggedToday().works[`${season}:${work}`]);
+  const markTagged = (season, work) => {
+    const v = taggedToday();
+    v.works[`${season}:${work}`] = 1;
+    store.set(TAGGED_KEY, v);
+  };
+
+  const sheet = $('[data-tag-sheet]');
+  let sheetTarget = null;
+  function openTagSheet(season, work, title) {
+    if (!sheet) return;
+    sheetTarget = { season, work };
+    $('[data-tag-sheet-work]', sheet).textContent = `『${title}』`;
+    $$('[data-tag-pick]', sheet).forEach((b) => b.setAttribute('aria-pressed', 'false'));
+    $('[data-tag-sheet-error]', sheet).hidden = true;
+    sheet.hidden = false;
+    document.body.classList.add('no-scroll');
+    $('[data-tag-pick]', sheet)?.focus();
+  }
+  function closeTagSheet() {
+    if (!sheet) return;
+    sheet.hidden = true;
+    document.body.classList.remove('no-scroll');
+    sheetTarget = null;
+  }
+  if (sheet) {
+    const max = () => config.maxTags || 3;
+    sheet.addEventListener('click', async (ev) => {
+      if (ev.target === sheet) { closeTagSheet(); return; }
+      const pick = ev.target.closest('[data-tag-pick]');
+      const err = $('[data-tag-sheet-error]', sheet);
+      if (pick) {
+        const on = pick.getAttribute('aria-pressed') === 'true';
+        const count = $$('[data-tag-pick][aria-pressed="true"]', sheet).length;
+        if (!on && count >= max()) {
+          err.textContent = `選べるのは${max()}つまでです。`;
+          err.hidden = false;
+          return;
+        }
+        err.hidden = true;
+        pick.setAttribute('aria-pressed', String(!on));
+        return;
+      }
+      if (ev.target.closest('[data-tag-skip]')) { closeTagSheet(); return; }
+      if (ev.target.closest('[data-tag-send]') && sheetTarget) {
+        const tags = $$('[data-tag-pick][aria-pressed="true"]', sheet).map((b) => b.dataset.tagPick);
+        if (!tags.length) {
+          err.textContent = 'おすすめポイントを1つ以上選んでください。';
+          err.hidden = false;
+          return;
+        }
+        const { season, work } = sheetTarget;
+        try {
+          const data = await getJson('/api/tags', {
+            method: 'POST',
+            headers: { 'content-type': 'application/json' },
+            body: JSON.stringify({ season, workId: work, tags }),
+            credentials: 'same-origin',
+          });
+          if (!data.ok) {
+            err.textContent = data.message || '送れませんでした。';
+            err.hidden = false;
+            return;
+          }
+          markTagged(season, work);
+          closeTagSheet();
+          toast('おすすめポイントを送りました。ありがとう！');
+          const box = $(`[data-work-tags][data-season="${season}"]`);
+          if (box && workPage?.dataset.workPage === work) renderWorkTags(box, data.tags);
+        } catch {
+          err.textContent = '通信できませんでした。もう一度お試しください。';
+          err.hidden = false;
+        }
+      }
+    });
+    document.addEventListener('keydown', (ev) => { if (ev.key === 'Escape' && !sheet.hidden) closeTagSheet(); });
+  }
+
+  function renderWorkTags(box, list) {
+    const ul = $('[data-work-tags-list]', box);
+    const empty = $('[data-work-tags-empty]', box);
+    ul.innerHTML = '';
+    empty.hidden = list.length > 0;
+    const top = Math.max(1, ...list.map((t) => t.count));
+    for (const t of list) {
+      const li = document.createElement('li');
+      li.innerHTML = '<span class="tb-label"></span><span class="tb-bar"><span class="tb-fill"></span></span><span class="tb-count"></span>';
+      $('.tb-label', li).textContent = t.label;
+      $('.tb-fill', li).style.width = `${Math.round((t.count / top) * 100)}%`;
+      $('.tb-count', li).textContent = `${fmt(t.count)}人`;
+      ul.appendChild(li);
+    }
+  }
 
   // ---------- 作品ページ ----------
   const workPage = $('[data-work-page]');
@@ -325,6 +444,12 @@
       if (note && ph === 'closed') note.hidden = false;
     }
     loadWorkRank(rankEl);
+    const tagBox = $('[data-work-tags]', workPage);
+    if (tagBox) {
+      getJson(`/api/tags?season=${encodeURIComponent(tagBox.dataset.season)}&workId=${encodeURIComponent(id)}`)
+        .then((d) => { if (d.ok) renderWorkTags(tagBox, d.tags); })
+        .catch(() => {});
+    }
     $$('[data-history]', workPage).forEach(async (li) => {
       try {
         const mine = (await seasonRows(li.dataset.season)).find((r) => r.workId === id);

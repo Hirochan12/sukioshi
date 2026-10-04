@@ -1,10 +1,13 @@
 // サーバー側（Pages Functions）で共通に使う処理
 import seasonsData from '../../data/seasons.json';
 import works from '../../data/works.json';
+import tags from '../../data/tags.json';
 
 export const SEASONS = seasonsData.seasons;
 export const CURRENT_SEASON = seasonsData.current;
 export const WORKS = new Map(works.map((w) => [w.id, w]));
+export const TAGS = new Map(tags.map((t) => [t.id, t]));
+export const MAX_TAGS = 3;
 
 export function getSeason(id) {
   return SEASONS.find((s) => s.id === id) || null;
@@ -71,13 +74,16 @@ export function periodRange(season, period, today = jstDay()) {
 }
 
 // 指定範囲の作品ごとの票数を数え、順位付きで返す（0票の作品も含む）
-export async function countVotes(db, season, from, to, type = 'all') {
-  const { results } = await db
-    .prepare(
-      'SELECT work_id, COUNT(*) AS n FROM votes WHERE season = ?1 AND day >= ?2 AND day <= ?3 GROUP BY work_id'
-    )
-    .bind(season.id, from, to)
-    .all();
+// tag を指定すると「そのタグを選んだ人数」で数える
+export async function countVotes(db, season, from, to, type = 'all', tag = null) {
+  const stmt = tag
+    ? db
+        .prepare('SELECT work_id, COUNT(*) AS n FROM tag_votes WHERE season = ?1 AND day >= ?2 AND day <= ?3 AND tag = ?4 GROUP BY work_id')
+        .bind(season.id, from, to, tag)
+    : db
+        .prepare('SELECT work_id, COUNT(*) AS n FROM votes WHERE season = ?1 AND day >= ?2 AND day <= ?3 GROUP BY work_id')
+        .bind(season.id, from, to);
+  const { results } = await stmt.all();
   const counts = new Map(results.map((r) => [r.work_id, r.n]));
   const rows = season.works
     .map((w) => ({ workId: w.workId, count: counts.get(w.workId) || 0 }))
