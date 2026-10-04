@@ -242,3 +242,8 @@ img[data-cover]:not([src]) { visibility: hidden; }
   .hero h1 { font-size: 30px; }
   .rank-item { grid-template-columns: 44px 60px minmax(0, 1fr) auto; gap: 14px; }
 }
+
+/* 表紙が見つからなかった作品 */
+.cover.no-image, .work-cover.no-image { display: flex; align-items: center; justify-content: center; }
+.cover.no-image::after, .work-cover.no-image::after { content: "♡"; color: var(--pink-line); font-size: 28px; }
+.cover.no-image img, .work-cover.no-image img { display: none; }
