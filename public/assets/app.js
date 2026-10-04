@@ -53,7 +53,7 @@
   }
 
   let config = { adsenseClient: '', adSlots: {}, siteUrl: location.origin };
-  const configReady = getJson('/assets/config.json').then((c) => { config = { ...config, ...c }; }).catch(() => {});
+  const configReady = getJson('/assets/config.json', { cache: 'no-cache' }).then((c) => { config = { ...config, ...c }; }).catch(() => {});
 
   // ---------- 表紙画像（楽天ブックス） ----------
   const bookCache = new Map();
@@ -64,7 +64,7 @@
   function loadBook(id) {
     if (bookCache.has(id)) return bookCache.get(id);
     let saved = null;
-    try { saved = JSON.parse(sessionStorage.getItem('sukioshi:book:' + id) || 'null'); } catch { /* 無視 */ }
+    try { saved = JSON.parse(sessionStorage.getItem('sukioshi:book3:' + id) || 'null'); } catch { /* 無視 */ }
     const p = saved ? Promise.resolve(saved) : new Promise((resolve) => { queue.push({ id, resolve, tries: 0 }); pump(); });
     bookCache.set(id, p);
     return p;
@@ -73,7 +73,7 @@
     while (running < MAX_PARALLEL && queue.length) {
       const job = queue.shift();
       running++;
-      getJson('/api/book?id=' + encodeURIComponent(job.id))
+      getJson('/api/book?id=' + encodeURIComponent(job.id) + '&v=3')
         .catch(() => ({ ok: false, code: 'network' }))
         .then((data) => {
           if (!data.ok && (data.code === 'busy' || data.code === 'network') && job.tries < 3) {
@@ -81,7 +81,7 @@
             setTimeout(() => { queue.push(job); pump(); }, 1500 * job.tries);
             return;
           }
-          if (data.ok) { try { sessionStorage.setItem('sukioshi:book:' + job.id, JSON.stringify(data)); } catch { /* 無視 */ } }
+          if (data.ok) { try { sessionStorage.setItem('sukioshi:book3:' + job.id, JSON.stringify(data)); } catch { /* 無視 */ } }
           job.resolve(data);
         })
         .finally(() => { running--; setTimeout(pump, 350); });
