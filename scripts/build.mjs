@@ -51,6 +51,9 @@ ${tags.filter((t) => t.group === g).map((t) => `      <button type="button" clas
 }
 
 const TYPE_LONG = { manga: '漫画', novel: 'ライトノベル' };
+const TYPE_SHORT = { manga: '漫画', novel: 'ラノベ' };
+const plain = (html) => String(html || '').replace(/<[^>]+>/g, '').replace(/\s+/g, ' ').trim();
+const clip = (t, n) => (t.length > n ? t.slice(0, n - 1) + '…' : t);
 const seasonsOf = (workId) => seasons.filter((s) => s.works.some((e) => e.workId === workId));
 const noteOf = (season, workId) => season.works.find((e) => e.workId === workId)?.note || '';
 const ordered = [...seasons].sort((a, b) => b.voteStart.localeCompare(a.voteStart) || b.id.localeCompare(a.id));
@@ -256,7 +259,27 @@ ${s.article || ''}
 ${rankingSection(s, { heading: isEvent ? '投票・ランキング' : `${s.label}原作ランキング` })}
 ${adSlot('season-bottom')}
 <p class="back-link"><a href="/seasons/">ほかのシーズンを見る</a></p>`;
-  addPage(`/season/${s.id}/`, layout({ path: `/season/${s.id}/`, title: h1, description: desc, body }), { priority: s.id === CURRENT ? 0.9 : 0.7 });
+  const pageTitle = isEvent ? h1 : `${s.label}の原作 人気ランキング｜漫画・ラノベ${s.works.length}作品一覧`;
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@graph': [
+      {
+        '@type': 'ItemList',
+        name: `${s.label}の原作漫画・ライトノベル`,
+        numberOfItems: s.works.length,
+        itemListElement: s.works.map((e, i) => ({ '@type': 'ListItem', position: i + 1, name: workById.get(e.workId).title, url: `${SITE_URL}/works/${e.workId}/` })),
+      },
+      {
+        '@type': 'BreadcrumbList',
+        itemListElement: [
+          { '@type': 'ListItem', position: 1, name: 'トップ', item: SITE_URL + '/' },
+          { '@type': 'ListItem', position: 2, name: 'シーズン', item: `${SITE_URL}/seasons/` },
+          { '@type': 'ListItem', position: 3, name: s.name, item: `${SITE_URL}/season/${s.id}/` },
+        ],
+      },
+    ],
+  };
+  addPage(`/season/${s.id}/`, layout({ path: `/season/${s.id}/`, title: pageTitle, description: desc, body, jsonLd }), { priority: s.id === CURRENT ? 0.9 : 0.7 });
 }
 
 function buildSeasonList() {
@@ -284,7 +307,9 @@ function buildWork(w) {
   const main = ss[0];
   const note = noteOf(main, w.id);
   const typeLong = TYPE_LONG[w.type];
-  const desc = `『${w.title}』は${main.label}にアニメが放送された${typeLong}原作の作品です。すきおしで今の順位を確認して、「すき」を投票できます。`;
+  const desc = w.intro
+    ? clip(`『${w.title}』の原作${TYPE_SHORT[w.type]}はどんな話？ ${plain(w.intro)}`, 118)
+    : `『${w.title}』は${main.label}にアニメが放送された${typeLong}原作の作品です。すきおしで今の順位を確認して、「すき」を投票できます。`;
   const related = main.works
     .filter((e) => e.workId !== w.id && workById.get(e.workId).type === w.type)
     .slice(0, 6)
@@ -341,17 +366,31 @@ ${related.map((r) => `      <li><a href="/works/${r.id}/">${esc(r.title)}</a></l
 </article>`;
   addPage(`/works/${w.id}/`, layout({
     path: `/works/${w.id}/`,
-    title: `${w.title}（${typeLong}原作）の人気・順位`,
+    title: `${w.title}の原作${TYPE_SHORT[w.type]}｜${w.intro ? 'あらすじ・' : ''}人気順位`,
     description: desc,
     body,
     ogType: 'article',
     jsonLd: {
       '@context': 'https://schema.org',
-      '@type': 'BreadcrumbList',
-      itemListElement: [
-        { '@type': 'ListItem', position: 1, name: 'トップ', item: SITE_URL + '/' },
-        { '@type': 'ListItem', position: 2, name: main.name, item: `${SITE_URL}/season/${main.id}/` },
-        { '@type': 'ListItem', position: 3, name: w.title, item: `${SITE_URL}/works/${w.id}/` },
+      '@graph': [
+        {
+          '@type': 'Book',
+          '@id': `${SITE_URL}/works/${w.id}/#book`,
+          name: w.title,
+          genre: typeLong,
+          inLanguage: 'ja',
+          url: `${SITE_URL}/works/${w.id}/`,
+          ...(w.rakutenAuthor ? { author: { '@type': 'Person', name: w.rakutenAuthor } } : {}),
+          ...(w.intro ? { description: clip(plain(w.intro), 200) } : {}),
+        },
+        {
+          '@type': 'BreadcrumbList',
+          itemListElement: [
+            { '@type': 'ListItem', position: 1, name: 'トップ', item: SITE_URL + '/' },
+            { '@type': 'ListItem', position: 2, name: main.name, item: `${SITE_URL}/season/${main.id}/` },
+            { '@type': 'ListItem', position: 3, name: w.title, item: `${SITE_URL}/works/${w.id}/` },
+          ],
+        },
       ],
     },
   }), { priority: 0.6 });
