@@ -103,6 +103,7 @@ ${adsense}
     <a class="logo" href="/" aria-label="${esc(site.name)} トップへ"><span class="logo-heart" aria-hidden="true">♥</span>${esc(site.name)}</a>
     <nav class="nav" aria-label="メニュー">
       <a href="/">ランキング</a>
+      <a href="/search/">さがす</a>
       <a href="/seasons/">シーズン</a>
       <a href="/about/">このサイトについて</a>
     </nav>
@@ -124,6 +125,7 @@ ${body}
     <p class="fine">&copy; ${new Date().getFullYear()} ${esc(site.name)}</p>
   </div>
 </footer>
+<button type="button" class="to-top" data-to-top aria-label="ページの一番上に戻る" hidden><span aria-hidden="true">↑</span></button>
 <div class="toast" role="status" aria-live="polite" hidden></div>
 <div class="sheet-backdrop" data-tag-sheet hidden>
   <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="tag-sheet-title">
@@ -132,6 +134,11 @@ ${body}
     <p class="sheet-lead">おすすめポイントを${MAX_TAGS}つまで選んでください</p>
 ${tagChipsHtml()}
     <p class="form-error" data-tag-sheet-error hidden></p>
+    <div class="sheet-share" data-sheet-share hidden>
+      <span class="share-label">推しをみんなに広めよう</span>
+      <a class="btn btn-share" data-sheet-share-x href="#" target="_blank" rel="noopener">Xでシェア</a>
+      <a class="btn btn-line" data-sheet-share-line href="#" target="_blank" rel="noopener">LINEで送る</a>
+    </div>
     <div class="sheet-actions">
       <button type="button" class="btn" data-tag-skip>あとで</button>
       <button type="button" class="btn btn-pink" data-tag-send>送る</button>
@@ -154,7 +161,7 @@ function rankingSection(season, { headingTag = 'h2', heading } = {}) {
   const items = season.works
     .map(({ workId, note }) => {
       const w = workById.get(workId);
-      return `<li class="rank-item" data-work="${w.id}" data-type="${w.type}">
+      return `<li class="rank-item" data-work="${w.id}" data-type="${w.type}" data-search-keys="${esc([w.title, w.searchKana || ''].join(' '))}">
   <span class="rank-no" aria-label="順位">–</span>
   <a class="cover" data-cover-link href="/works/${w.id}/" tabindex="-1" aria-hidden="true"><img data-cover="${w.id}" alt="" width="60" height="84" decoding="async"></a>
   <div class="rank-body">
@@ -186,6 +193,10 @@ function rankingSection(season, { headingTag = 'h2', heading } = {}) {
 ${tags.map((t) => `      <button type="button" class="chip" data-tag-filter="${t.id}" aria-pressed="false">${esc(t.label)}</button>`).join('\n')}
     </div>
   </div>
+  <div class="rank-search">
+    <input type="search" class="search-input" data-rank-search placeholder="作品名でさがす（例：薬屋）" aria-label="このランキングの作品名でさがす" autocomplete="off" enterkeyhint="search">
+  </div>
+  <p class="rank-search-empty" data-rank-search-empty hidden>見つかりませんでした。<a href="/search/">すべてのシーズンからさがす</a></p>
   <p class="rank-status" data-rank-status>ランキングを読み込んでいます…</p>
   <ol class="rank-list" data-rank-list>
 ${items}
@@ -199,6 +210,20 @@ function addPage(path, html, { priority = 0.5, noindex = false } = {}) {
 }
 
 // ---- トップページ ----
+
+// ---- シェアボタン（X・LINE・リンクをコピー） ----
+function shareBar(path, text, { label = 'シェアする' } = {}) {
+  const url = `${SITE_URL}${path}`;
+  const x = `https://x.com/intent/post?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`;
+  const line = `https://social-plugins.line.me/lineit/share?url=${encodeURIComponent(url)}&text=${encodeURIComponent(text)}`;
+  return `<div class="share-bar" aria-label="${esc(label)}">
+  <span class="share-label">${esc(label)}</span>
+  <a class="btn btn-share" href="${x}" target="_blank" rel="noopener">Xでシェア</a>
+  <a class="btn btn-line" href="${line}" target="_blank" rel="noopener">LINEで送る</a>
+  <button type="button" class="btn" data-copy-url="${esc(url)}">リンクをコピー</button>
+</div>`;
+}
+
 function buildIndex() {
   const event = seasons.find((s) => s.eventName && s.id !== CURRENT);
   const banner = event
@@ -216,6 +241,7 @@ function buildIndex() {
 </section>
 ${banner}
 ${rankingSection(currentSeason, { heading: `${currentSeason.label}原作 人気ランキング` })}
+${shareBar('/', `${currentSeason.label}の原作、どれがすき？ 推しに「すき」を送ろう♡ #すきおし`, { label: 'このランキングをシェア' })}
 ${adSlot('top-bottom')}
 <section class="section-links">
   <h2>シーズンを選ぶ</h2>
@@ -257,6 +283,7 @@ ${s.article || ''}
   </div>
 </article>
 ${rankingSection(s, { heading: isEvent ? '投票・ランキング' : `${s.label}原作ランキング` })}
+${shareBar(`/season/${s.id}/`, `${isEvent ? s.eventName : `${s.label}の原作 人気ランキング`} 推しに「すき」を送ろう♡ #すきおし`, { label: 'このランキングをシェア' })}
 ${adSlot('season-bottom')}
 <p class="back-link"><a href="/seasons/">ほかのシーズンを見る</a></p>`;
   const pageTitle = isEvent ? h1 : `${s.label}の原作 人気ランキング｜漫画・ラノベ${s.works.length}作品一覧`;
@@ -301,6 +328,39 @@ ${ordered
   addPage('/seasons/', layout({ path: '/seasons/', title: 'シーズン一覧', description: 'すきおしのアニメ放送シーズン一覧。各シーズンの原作漫画・ラノベの人気ランキングと最終順位を見られます。', body }), { priority: 0.6 });
 }
 
+
+// ---- さがすページ（全シーズンの作品から検索） ----
+function buildSearch() {
+  const list = works
+    .filter((w) => seasonsOf(w.id).length)
+    .map((w) => {
+      const ss = seasonsOf(w.id).sort((a, b) => b.voteStart.localeCompare(a.voteStart));
+      const keys = [w.title, w.rakutenQuery || '', w.searchKana || ''].join(' ');
+      return `  <li class="search-item" data-search-keys="${esc(keys)}" data-type="${w.type}">
+    <a href="/works/${w.id}/"><span class="si-title">${esc(w.title)}</span>
+    <span class="si-meta"><span class="tag tag-${w.type}">${TYPE_LABEL[w.type]}</span>${ss.map((s) => `<span>${esc(s.label)}${noteOf(s, w.id) ? `（${esc(noteOf(s, w.id))}）` : ''}</span>`).join('')}</span></a>
+  </li>`;
+    })
+    .join('\n');
+  const body = `
+<nav class="crumbs" aria-label="パンくずリスト"><a href="/">トップ</a><span aria-hidden="true">›</span><span>さがす</span></nav>
+<h1>アニメ・原作をさがす</h1>
+<p>すきおしにのっている、すべてのシーズンのアニメ原作（漫画・ラノベ）から作品名でさがせます。ひらがな・カタカナどちらでも大丈夫です。</p>
+<div class="site-search" data-site-search>
+  <input type="search" class="search-input search-input-large" data-site-search-input placeholder="作品名を入力（例：スライム、薬屋）" aria-label="作品名でさがす" autocomplete="off" enterkeyhint="search">
+  <div class="filters" role="group" aria-label="原作の種類">
+    <button type="button" class="chip" data-search-type="all" aria-pressed="true">すべて</button>
+    <button type="button" class="chip" data-search-type="manga" aria-pressed="false">漫画</button>
+    <button type="button" class="chip" data-search-type="novel" aria-pressed="false">ラノベ</button>
+  </div>
+  <p class="rank-status" data-site-search-status aria-live="polite"></p>
+  <ul class="search-list">
+${list}
+  </ul>
+</div>`;
+  addPage('/search/', layout({ path: '/search/', title: 'アニメ・原作をさがす', description: 'すきおしにのっているアニメ原作の漫画・ライトノベルを作品名でさがせます。今のシーズンも過去のシーズンも検索できます。', body }), { priority: 0.5 });
+}
+
 // ---- 作品ページ ----
 function buildWork(w) {
   const ss = seasonsOf(w.id).sort((a, b) => b.voteStart.localeCompare(a.voteStart));
@@ -336,8 +396,9 @@ function buildWork(w) {
 
   <div class="work-actions">
     <a class="btn btn-rakuten" data-book-link href="#" rel="sponsored noopener" target="_blank">楽天ブックスで原作を見る</a>
-    <a class="btn btn-share" href="https://x.com/intent/post?text=${encodeURIComponent(share)}&url=${encodeURIComponent(`${SITE_URL}/works/${w.id}/`)}" data-share-work target="_blank" rel="noopener">Xでシェア</a>
   </div>
+
+  ${shareBar(`/works/${w.id}/`, share, { label: 'この作品をシェア' })}
 
   ${w.intro ? `<section class="prose work-intro"><h2>どんな作品？</h2>${w.intro}</section>` : ''}
 
@@ -543,6 +604,7 @@ const ASSET_VERSION = hashFile(join(ROOT, 'public/assets/style.css')).slice(0, 4
 
 buildIndex();
 buildSeasonList();
+buildSearch();
 for (const s of seasons) buildSeason(s);
 for (const w of works) if (seasonsOf(w.id).length) buildWork(w);
 buildStatic();

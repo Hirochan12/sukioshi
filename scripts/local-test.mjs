@@ -334,7 +334,7 @@ async function runTests() {
       if (!existsSync(p)) broken.add(`${f.replace(DIST, '')} → ${href}`);
     }
     const t = src.match(/<title>([^<]+)<\/title>/)?.[1];
-    if (!f.endsWith('404.html')) {
+    if (!f.endsWith('404.html') && !/[\/]google[0-9a-f]+\.html$/.test(f)) { // Search Console の確認ファイルは対象外
       assert.equal((src.match(/<h1[ >]/g) || []).length, 1, `h1は1つ: ${f}`);
       if (titles.has(t)) throw new Error(`titleが重複: ${t}`);
       titles.set(t, f);
