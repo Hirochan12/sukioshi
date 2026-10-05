@@ -34,6 +34,12 @@
   };
   const isVoted = (season, work) => Boolean(votedToday().works[`${season}:${work}`]);
 
+  // 検索用：全角半角・カタカナ/ひらがな・記号や空白の違いを吸収する
+  const normKey = (t) => String(t || '')
+    .normalize('NFKC').toLowerCase()
+    .replace(/[\u30a1-\u30f6]/g, (c) => String.fromCharCode(c.charCodeAt(0) - 0x60))
+    .replace(/[\s・\-ー～〜!！?？、。,.:：;；'"“”‘’「」『』【】（）()\[\]#＃☆★♪]/g, '');
+
   let toastTimer;
   function toast(msg) {
     const el = $('.toast');
@@ -193,14 +199,31 @@
       }
     }
 
+    // 種類・ランキングで外れた行は data-off="1"。検索はその上で作品名でしぼりこむ
     function filterOnly() {
-      for (const li of items.values()) li.hidden = state.type !== 'all' && li.dataset.type !== state.type;
+      for (const li of items.values()) li.dataset.off = state.type !== 'all' && li.dataset.type !== state.type ? '1' : '';
+      applySearch();
     }
+
+    const searchBox = $('[data-rank-search]', section);
+    const searchEmpty = $('[data-rank-search-empty]', section);
+    for (const li of items.values()) li.dataset.key = normKey(li.dataset.searchKeys || $('.rank-title', li)?.textContent);
+    function applySearch() {
+      const q = normKey(searchBox?.value);
+      let shown = 0;
+      for (const li of items.values()) {
+        li.hidden = li.dataset.off === '1' || (q && !li.dataset.key.includes(q));
+        if (!li.hidden) shown++;
+      }
+      $$('.ad-slot', list).forEach((a) => { a.style.display = q ? 'none' : ''; });
+      if (searchEmpty) searchEmpty.hidden = !q || shown > 0;
+    }
+    searchBox?.addEventListener('input', applySearch);
 
     function render(rows) {
       $$('.ad-slot', list).forEach((a) => a.remove());
       const shown = new Set(rows.map((r) => r.workId));
-      for (const [id, li] of items) li.hidden = !shown.has(id);
+      for (const [id, li] of items) li.dataset.off = shown.has(id) ? '' : '1';
       let n = 0;
       for (const r of rows) {
         const li = items.get(r.workId);
@@ -222,6 +245,7 @@
           fillAd(ad);
         }
       }
+      applySearch();
       const total = rows.reduce((s, r) => s + r.count, 0);
       const label = { today: '今日', week: '直近7日間', season: state.phase === 'closed' ? '最終結果' : 'シーズン全体' }[state.period];
       if (state.tag) {
@@ -308,11 +332,72 @@
       toast(data.rank ? `『${title}』にすきを送りました。いま${data.rank}位です` : `『${title}』にすきを送りました`);
       $$(`[data-ranking][data-season="${season}"]`).forEach((s) => s.dispatchEvent(new CustomEvent('sukioshi:voted')));
       $$(`[data-work-rank][data-season="${season}"]`).forEach((el) => loadWorkRank(el, data));
-      setTimeout(() => openTagSheet(season, work, title), 700);
+      setTimeout(() => openTagSheet(season, work, title, { rank: data.rank }), 700);
     } catch {
       toast('通信できませんでした。電波の良いところでもう一度お試しください。');
     } finally {
       btn.classList.remove('is-busy');
+    }
+  });
+
+  // ---------- ページの一番上に戻る ----------
+  const toTop = $('[data-to-top]');
+  if (toTop) {
+    const onScroll = () => { toTop.hidden = window.scrollY < 600; };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+    toTop.addEventListener('click', () => {
+      const smooth = !window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+      window.scrollTo({ top: 0, behavior: smooth ? 'smooth' : 'auto' });
+      $('#main')?.focus?.({ preventScroll: true });
+    });
+  }
+
+  // ---------- さがすページ ----------
+  const siteSearch = $('[data-site-search]');
+  if (siteSearch) {
+    const input = $('[data-site-search-input]', siteSearch);
+    const status = $('[data-site-search-status]', siteSearch);
+    const rows = $$('.search-item', siteSearch).map((li) => ({ li, key: normKey(li.dataset.searchKeys), type: li.dataset.type }));
+    let type = 'all';
+    const run = () => {
+      const q = normKey(input.value);
+      let n = 0;
+      for (const r of rows) {
+        r.li.hidden = (type !== 'all' && r.type !== type) || (q && !r.key.includes(q));
+        if (!r.li.hidden) n++;
+      }
+      status.textContent = q ? (n ? `${n}作品が見つかりました` : '見つかりませんでした。ひらがなや短いことばでも試してみてください。') : `${n}作品`;
+      const u = new URL(location.href);
+      if (input.value) u.searchParams.set('q', input.value); else u.searchParams.delete('q');
+      history.replaceState(null, '', u);
+    };
+    $$('[data-search-type]', siteSearch).forEach((b) => b.addEventListener('click', () => {
+      type = b.dataset.searchType;
+      $$('[data-search-type]', siteSearch).forEach((x) => x.setAttribute('aria-pressed', String(x === b)));
+      run();
+    }));
+    input.value = new URLSearchParams(location.search).get('q') || '';
+    input.addEventListener('input', run);
+    run();
+    if (!input.value && window.matchMedia?.('(pointer: fine)').matches) input.focus();
+  }
+
+  // ---------- リンクをコピー ----------
+  document.addEventListener('click', async (ev) => {
+    const b = ev.target.closest('[data-copy-url]');
+    if (!b) return;
+    const url = b.dataset.copyUrl;
+    try {
+      if (navigator.share && matchMedia('(pointer: coarse)').matches) {
+        await navigator.share({ url, title: document.title });
+        return;
+      }
+      await navigator.clipboard.writeText(url);
+      toast('リンクをコピーしました');
+    } catch (e) {
+      if (e && e.name === 'AbortError') return;
+      window.prompt('このリンクをコピーしてください', url);
     }
   });
 
@@ -331,8 +416,20 @@
 
   const sheet = $('[data-tag-sheet]');
   let sheetTarget = null;
-  function openTagSheet(season, work, title) {
+  // 投票した直後だけ、シート内にシェアボタンを出す（rank があれば順位も入れる）
+  function setSheetShare(work, title, rank) {
+    const box = sheet && $('[data-sheet-share]', sheet);
+    if (!box) return;
+    if (!work) { box.hidden = true; return; }
+    const url = `${config.siteUrl || location.origin}/works/${work}/`;
+    const text = rank ? `私の推しは${title}！ いま${rank}位 #すきおし` : `私の推しは${title}！ #すきおし`;
+    $('[data-sheet-share-x]', box).href = 'https://x.com/intent/post?text=' + encodeURIComponent(text) + '&url=' + encodeURIComponent(url);
+    $('[data-sheet-share-line]', box).href = 'https://social-plugins.line.me/lineit/share?url=' + encodeURIComponent(url) + '&text=' + encodeURIComponent(text);
+    box.hidden = false;
+  }
+  function openTagSheet(season, work, title, share) {
     if (!sheet) return;
+    setSheetShare(share ? work : null, title, share && share.rank);
     sheetTarget = { season, work };
     $('[data-tag-sheet-work]', sheet).textContent = `『${title}』`;
     $$('[data-tag-pick]', sheet).forEach((b) => b.setAttribute('aria-pressed', 'false'));
