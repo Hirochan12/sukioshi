@@ -40,7 +40,7 @@ if (problems.length) {
 // ---- 小さな道具 ----
 const esc = (s = '') =>
   String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
-const TYPE_LABEL = { manga: '漫画', novel: 'ラノベ' };
+const TYPE_LABEL = { manga: '漫画', novel: '小説／ラノベ' };
 const MAX_TAGS = 3;
 const TAG_GROUPS = [['story', '作品の魅力'], ['anime', 'アニメの魅力']];
 function tagChipsHtml() {
@@ -50,7 +50,7 @@ ${tags.filter((t) => t.group === g).map((t) => `      <button type="button" clas
     </div>`).join('\n');
 }
 
-const TYPE_LONG = { manga: '漫画', novel: 'ライトノベル' };
+const TYPE_LONG = { manga: '漫画', novel: '小説／ラノベ' };
 const TYPE_SHORT = { manga: '漫画', novel: 'ラノベ' };
 const plain = (html) => String(html || '').replace(/<[^>]+>/g, '').replace(/\s+/g, ' ').trim();
 const clip = (t, n) => (t.length > n ? t.slice(0, n - 1) + '…' : t);
@@ -184,7 +184,7 @@ function rankingSection(season, { headingTag = 'h2', heading } = {}) {
   <div class="filters" role="group" aria-label="原作の種類">
     <button type="button" class="chip" data-type-filter="all" aria-pressed="true">すべて</button>
     <button type="button" class="chip" data-type-filter="manga" aria-pressed="false">漫画</button>
-    <button type="button" class="chip" data-type-filter="novel" aria-pressed="false">ラノベ</button>
+    <button type="button" class="chip" data-type-filter="novel" aria-pressed="false">小説／ラノベ</button>
   </div>
   <div class="tag-filter" role="group" aria-label="おすすめポイントで探す">
     <span class="tag-filter-label">おすすめポイントで探す</span>
@@ -351,7 +351,7 @@ function buildSearch() {
   <div class="filters" role="group" aria-label="原作の種類">
     <button type="button" class="chip" data-search-type="all" aria-pressed="true">すべて</button>
     <button type="button" class="chip" data-search-type="manga" aria-pressed="false">漫画</button>
-    <button type="button" class="chip" data-search-type="novel" aria-pressed="false">ラノベ</button>
+    <button type="button" class="chip" data-search-type="novel" aria-pressed="false">小説／ラノベ</button>
   </div>
   <p class="rank-status" data-site-search-status aria-live="polite"></p>
   <ul class="search-list">
