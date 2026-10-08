@@ -143,7 +143,7 @@
   // ---------- ランキング ----------
   function setupRanking(section) {
     const season = section.dataset.season;
-    const state = { period: 'season', type: 'all', tag: '', phase: phase(section.dataset.voteStart, section.dataset.voteEnd) };
+    const state = { period: 'season', type: 'all', tag: '', expanded: false, phase: phase(section.dataset.voteStart, section.dataset.voteEnd) };
     const list = $('[data-rank-list]', section);
     const status = $('[data-rank-status]', section);
     const items = new Map($$('.rank-item', list).map((li) => [li.dataset.work, li]));
@@ -208,16 +208,25 @@
     const searchBox = $('[data-rank-search]', section);
     const searchEmpty = $('[data-rank-search-empty]', section);
     for (const li of items.values()) li.dataset.key = normKey(li.dataset.searchKeys || $('.rank-title', li)?.textContent);
-    function applySearch() {
-      const q = normKey(searchBox?.value);
-      let shown = 0;
-      for (const li of items.values()) {
-        li.hidden = li.dataset.off === '1' || (q && !li.dataset.key.includes(q));
-        if (!li.hidden) shown++;
-      }
-      $$('.ad-slot', list).forEach((a) => { a.style.display = q ? 'none' : ''; });
-      if (searchEmpty) searchEmpty.hidden = !q || shown > 0;
+    const TOP = 10;
+  const moreBtn = document.createElement('button');
+  moreBtn.type = 'button';
+  moreBtn.className = 'btn rank-more';
+  moreBtn.addEventListener('click', () => { state.expanded = !state.expanded; applySearch(); });
+  list.after(moreBtn);
+  function applySearch() {
+    const q = normKey(searchBox?.value);
+    let total = 0;
+    for (const li of $$('.rank-item', list)) {
+      const match = li.dataset.off !== '1' && (!q || li.dataset.key.includes(q));
+      if (match) total++;
+      li.hidden = !match || (!q && !state.expanded && total > TOP);
     }
+    $$('.ad-slot', list).forEach((a) => { a.style.display = q || !state.expanded ? 'none' : ''; });
+    if (searchEmpty) searchEmpty.hidden = !q || total > 0;
+    moreBtn.hidden = Boolean(q) || total <= TOP;
+    moreBtn.textContent = state.expanded ? '上位10作品だけにする' : `11位以降もひらく（あと${total - TOP}作品）`;
+  }
     searchBox?.addEventListener('input', applySearch);
 
     function render(rows) {
