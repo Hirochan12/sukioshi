@@ -125,9 +125,9 @@
     if (!config.adsenseClient || slotEl.dataset.filled) return;
     const name = slotEl.dataset.adSlot;
     const unit = (config.adSlots || {})[name] || (config.adSlots || {})['ranking-inline'];
+    if (!unit) return; // 手動の広告ユニットIDがなければ枠は出さない（自動広告に任せる）
     slotEl.hidden = false;
     slotEl.dataset.filled = '1';
-    if (!unit) return; // ユニットIDがなければ自動広告に任せ、場所だけ確保
     const ins = document.createElement('ins');
     ins.className = 'adsbygoogle';
     ins.style.display = 'block';
