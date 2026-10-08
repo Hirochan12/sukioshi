@@ -279,11 +279,12 @@ function buildSeason(s) {
   <h1>${esc(h1)}</h1>
   <div class="prose">
 ${seasonIntro(s)}
-${s.article || ''}
+
   </div>
 </article>
 ${rankingSection(s, { heading: isEvent ? '投票・ランキング' : `${s.label}原作ランキング` })}
 ${shareBar(`/season/${s.id}/`, `${isEvent ? s.eventName : `${s.label}の原作 人気ランキング`} 推しに「すき」を送ろう♡ #すきおし`, { label: 'このランキングをシェア' })}
+${s.article ? `<details class="season-more"><summary>${esc(s.label)}の原作まとめを読む</summary><div class="prose">${s.article}</div></details>` : ''}
 ${adSlot('season-bottom')}
 <p class="back-link"><a href="/seasons/">ほかのシーズンを見る</a></p>`;
   const pageTitle = isEvent ? h1 : `${s.label}の原作 人気ランキング｜漫画・ラノベ${s.works.length}作品一覧`;
