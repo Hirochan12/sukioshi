@@ -318,3 +318,19 @@ body.no-scroll { overflow: hidden; }
   display: flex; align-items: center; justify-content: center;
 }
 .to-top:hover { background: var(--pink-soft); }
+
+/* ---- 上位10作品だけ先に見せる／原作まとめの折りたたみ ---- */
+.rank-more { display: flex; width: 100%; margin: 14px 0 4px; border-color: var(--pink-line); color: var(--pink-dark); background: var(--pink-soft); }
+.rank-more:hover { background: var(--pink-line); color: var(--pink-dark); }
+.season-intro p { margin: 0 0 0.8em; color: var(--text-sub); font-size: 15px; }
+.season-more { margin: 28px 0 8px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--bg); }
+.season-more > summary { cursor: pointer; padding: 14px 16px; font-weight: 700; min-height: var(--tap); list-style: none; display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.season-more > summary::-webkit-details-marker { display: none; }
+.season-more > summary::after { content: "＋"; color: var(--pink); font-size: 18px; }
+.season-more[open] > summary::after { content: "－"; }
+.season-more > .prose { padding: 0 16px 16px; }
+.season-more table { width: 100%; border-collapse: collapse; font-size: 14px; margin: 0 0 1em; }
+.season-more th, .season-more td { border: 1px solid var(--line); padding: 8px 10px; text-align: left; }
+.season-more td:not(:first-child), .season-more th:not(:first-child) { text-align: right; white-space: nowrap; }
+.season-more th { background: var(--bg-soft); }
+.season-more li small { color: var(--text-sub); }
