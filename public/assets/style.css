@@ -191,6 +191,7 @@ img[data-cover]:not([src]) { visibility: hidden; }
 .work-info h1 { font-size: 21px; margin: 0 0 6px; }
 .work-tags { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; font-size: 13px; color: var(--text-sub); margin: 0 0 4px; }
 .work-author { margin: 0; font-size: 13px; color: var(--text-sub); }
+.work-credit { margin: 0; font-size: 13px; color: var(--text-sub); }
 .work-rank { display: grid; grid-template-columns: auto auto; justify-content: start; column-gap: 12px; align-items: baseline; margin-top: 10px; }
 .wr-label { grid-column: 1 / -1; font-size: 12px; color: var(--text-faint); }
 .wr-value { font-size: 30px; white-space: nowrap; font-weight: 700; line-height: 1.2; }
