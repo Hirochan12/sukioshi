@@ -40,6 +40,14 @@ if (problems.length) {
 // ---- 小さな道具 ----
 const esc = (s = '') =>
   String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
+const creditLine = (w) => {
+  const m = w.magazine || '';
+  const p = w.publisher || '';
+  if (!m && !p) return '';
+  const label = m ? (w.type === 'manga' ? '掲載誌' : 'レーベル') : '出版社';
+  const text = m && p ? `${m}（${p}）` : m || p;
+  return `\n      <p class="work-credit">${label}：${esc(text)}</p>`;
+};
 const TYPE_LABEL = { manga: '漫画', novel: '小説／ラノベ' };
 const MAX_TAGS = 3;
 const TAG_GROUPS = [['story', '作品の魅力'], ['anime', 'アニメの魅力']];
@@ -384,7 +392,7 @@ function buildWork(w) {
     <div class="work-info">
       <h1>${esc(w.title)}</h1>
       <p class="work-tags"><span class="tag tag-${w.type}">${typeLong}原作</span><span>${esc(main.label)}${note ? '・' + esc(note) : ''}</span></p>
-      <p class="work-author" data-book-author hidden></p>
+      <p class="work-author" data-book-author hidden></p>${creditLine(w)}
       <div class="work-rank" data-work-rank data-season="${main.id}" data-vote-start="${main.voteStart}" data-vote-end="${main.voteEnd}">
         <span class="wr-label">${esc(main.name)}の順位</span>
         <span class="wr-value"><span data-wr-rank>–</span><small>位</small></span>
