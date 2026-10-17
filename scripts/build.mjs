@@ -511,10 +511,15 @@ ${genreLinks}
     const path = `/recommend/${g.id}/`;
     const items = g.items.map((it) => {
       const w = it.workId && workById.get(it.workId);
-      return `<h2 id="${it.workId || ''}">${w ? `<a href="/works/${w.id}/">${esc(it.title)}</a>` : esc(it.title)}</h2>
+      return `<div class="rec-item">
+${w ? `<a class="work-cover" data-cover-link href="/works/${w.id}/" aria-label="${esc(it.title)}の表紙"><img data-cover="${w.id}" data-cover-size="large" alt="${esc(it.title)}の表紙" width="120" height="168"></a>` : ''}
+<div class="rec-body">
+<h2 id="${it.workId || ''}">${w ? `<a href="/works/${w.id}/">${esc(it.title)}</a>` : esc(it.title)}</h2>
 ${it.meta ? `<p class="fine">${esc(it.meta)}</p>` : ''}
 ${it.paras.map((t) => `<p>${esc(t)}</p>`).join('\n')}
-${w ? `<p><a class="btn" href="/works/${w.id}/">『${esc(it.title)}』に「すき」を送る</a></p>` : ''}`;
+${w ? `<p><a class="btn" href="/works/${w.id}/">『${esc(it.title)}』に「すき」を送る</a></p>` : ''}
+</div>
+</div>`;
     }).join('\n');
     const others = r.genres.filter((x) => x.id !== g.id);
     const body = `
