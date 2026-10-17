@@ -27,7 +27,7 @@ for (const w of works) {
   if (!['manga', 'novel'].includes(w.type)) problems.push(`種類が不正: ${w.id} ${w.type}`);
 }
 for (const s of seasons) {
-  if (!/^\d{4}-(winter|spring|summer|autumn)$/.test(s.id)) problems.push(`シーズンIDの形が不正: ${s.id}`);
+  if (s.id !== 'recommend' && !/^\d{4}-(winter|spring|summer|autumn)$/.test(s.id)) problems.push(`シーズンIDの形が不正: ${s.id}`);
   if (!(s.voteStart <= s.voteEnd)) problems.push(`投票期間が不正: ${s.id}`);
   for (const e of s.works) if (!workById.has(e.workId)) problems.push(`${s.id} に存在しない作品: ${e.workId}`);
 }
@@ -66,6 +66,8 @@ const seasonsOf = (workId) => seasons.filter((s) => s.works.some((e) => e.workId
 const noteOf = (season, workId) => season.works.find((e) => e.workId === workId)?.note || '';
 const ordered = [...seasons].sort((a, b) => b.voteStart.localeCompare(a.voteStart) || b.id.localeCompare(a.id));
 const currentSeason = seasons.find((s) => s.id === CURRENT);
+const airText = (s) => (s.id === 'recommend' ? '過去の作品もふくむ' : `${s.months}放送`);
+const fmtPeriod = (s) => (s.id === 'recommend' ? '期限なし（いつでも投票できます）' : `${fmtDate(s.voteStart)}〜${fmtDate(s.voteEnd)}`);
 const fmtDate = (d) => {
   const [y, m, day] = d.split('-').map(Number);
   return `${y}年${m}月${day}日`;
@@ -112,6 +114,7 @@ ${adsense}
     <nav class="nav" aria-label="メニュー">
       <a href="/">ランキング</a>
       <a href="/search/">さがす</a>
+      <a href="/recommend/">おすすめ</a>
       <a href="/seasons/">シーズン</a>
       <a href="/about/">このサイトについて</a>
     </nav>
@@ -183,7 +186,7 @@ function rankingSection(season, { headingTag = 'h2', heading } = {}) {
     .join('\n');
   return `<section class="ranking" data-ranking data-season="${season.id}" data-vote-start="${season.voteStart}" data-vote-end="${season.voteEnd}" aria-labelledby="rk-${season.id}">
   <${headingTag} id="rk-${season.id}" class="ranking-heading">${esc(heading || `${season.label}原作ランキング`)}</${headingTag}>
-  <p class="vote-period" data-period-note>投票期間：${fmtDate(season.voteStart)}〜${fmtDate(season.voteEnd)}</p>
+  <p class="vote-period" data-period-note>投票期間：${fmtPeriod(season)}</p>
   <div class="tabs" role="tablist" aria-label="集計期間" data-period-tabs>
     <button type="button" role="tab" data-period="today" aria-selected="false">今日</button>
     <button type="button" role="tab" data-period="week" aria-selected="false">今週</button>
@@ -254,7 +257,7 @@ ${adSlot('top-bottom')}
 <section class="section-links">
   <h2>シーズンを選ぶ</h2>
   <ul class="season-cards">
-${ordered.map((s) => `    <li><a href="/season/${s.id}/"><span class="sc-name">${esc(s.label)}</span><span class="sc-meta">${esc(s.months)}・${s.works.length}作品</span></a></li>`).join('\n')}
+${ordered.map((s) => `    <li><a href="/season/${s.id}/"><span class="sc-name">${esc(s.label)}</span><span class="sc-meta">${esc(s.id === 'recommend' ? 'いつでも' : s.months)}・${s.works.length}作品</span></a></li>`).join('\n')}
   </ul>
 </section>`;
   addPage('/', layout({
@@ -271,7 +274,7 @@ function seasonIntro(s) {
   const m = s.works.filter((e) => workById.get(e.workId).type === 'manga').length;
   const n = s.works.length - m;
   const sequels = s.works.filter((e) => /期|Season|season|クール|STAGE/.test(e.note)).length;
-  return `<p>${esc(s.label)}（${esc(s.months)}放送）のうち、漫画が原作の${m}作品と、ライトノベルが原作の${n}作品を集めました。${sequels ? `そのうち${sequels}作品は、続編や2クール目の放送です。` : ''}</p>
+  return `<p>${esc(s.label)}（${esc(airText(s))}）のうち、漫画が原作の${m}作品と、ライトノベルが原作の${n}作品を集めました。${sequels ? `そのうち${sequels}作品は、続編や2クール目の放送です。` : ''}</p>
 <p>アニメを見て原作が気になった作品や、原作から追いかけている作品に「すき」を送ってください。票は1作品につき1日1回まで入れられ、毎日の積み重ねで順位が決まります。</p>`;
 }
 
@@ -279,8 +282,8 @@ function buildSeason(s) {
   const isEvent = Boolean(s.eventName);
   const h1 = isEvent ? s.eventName : `${s.label}の原作 人気ランキング`;
   const desc = isEvent
-    ? `${s.label}（${s.months}放送）の原作漫画・ラノベ${s.works.length}作品から、いちばん「すき」な作品を選ぶ振り返り投票。${fmtDate(s.voteEnd)}まで投票できます。`
-    : `${s.label}（${s.months}放送）の原作漫画・ラノベ${s.works.length}作品の人気ランキング。タップ1回で「すき」を投票でき、今日・今週・シーズン全体の順位が見られます。`;
+    ? `${s.label}（${airText(s)}）の原作漫画・ラノベ${s.works.length}作品から、いちばん「すき」な作品を選ぶ振り返り投票。${s.id === 'recommend' ? 'いつでも' : fmtDate(s.voteEnd) + 'まで'}投票できます。`
+    : `${s.label}（${airText(s)}）の原作漫画・ラノベ${s.works.length}作品の人気ランキング。タップ1回で「すき」を投票でき、今日・今週・シーズン全体の順位が見られます。`;
   const body = `
 <nav class="crumbs" aria-label="パンくずリスト"><a href="/">トップ</a><span aria-hidden="true">›</span><a href="/seasons/">シーズン</a><span aria-hidden="true">›</span><span>${esc(s.name)}</span></nav>
 <article class="season-article">
@@ -328,7 +331,7 @@ ${ordered
   .map(
     (s) => `  <li data-season-row data-vote-start="${s.voteStart}" data-vote-end="${s.voteEnd}">
     <a href="/season/${s.id}/"><span class="st-name">${esc(s.eventName || s.label + '原作ランキング')}</span>
-    <span class="st-meta">${esc(s.months)}放送・${s.works.length}作品・投票 ${fmtDate(s.voteStart)}〜${fmtDate(s.voteEnd)}</span>
+    <span class="st-meta">${esc(airText(s))}・${s.works.length}作品・投票 ${fmtPeriod(s)}</span>
     <span class="st-status" data-season-status></span></a>
   </li>`
   )
@@ -488,6 +491,44 @@ function contactHtml() {
   return parts.join('\n');
 }
 
+// ---- 運営者おすすめ ----
+function buildRecommend() {
+  if (!existsSync(join(ROOT, 'data/recommend.json'))) return;
+  const r = readJson('data/recommend.json');
+  const crumbs = (last) => `<nav class="crumbs" aria-label="パンくずリスト"><a href="/">トップ</a><span aria-hidden="true">›</span>${last ? `<a href="/recommend/">${esc(r.title)}</a><span aria-hidden="true">›</span><span>${esc(last)}</span>` : `<span>${esc(r.title)}</span>`}</nav>`;
+  const genreLinks = r.genres.map((g) => `<li><a href="/recommend/${g.id}/">${esc(g.name)}</a>（${g.items.length}作品）</li>`).join('\n');
+  addPage('/recommend/', layout({ path: '/recommend/', title: r.title, description: r.description, body: `
+${crumbs('')}
+<article class="prose page">
+<h1>${esc(r.title)}</h1>
+<p>${esc(r.intro)}</p>
+<h2>ジャンルから選ぶ</h2>
+<ul>
+${genreLinks}
+</ul>
+</article>` }), { priority: 0.7 });
+  for (const g of r.genres) {
+    const path = `/recommend/${g.id}/`;
+    const items = g.items.map((it) => {
+      const w = it.workId && workById.get(it.workId);
+      return `<h2 id="${it.workId || ''}">${w ? `<a href="/works/${w.id}/">${esc(it.title)}</a>` : esc(it.title)}</h2>
+${it.meta ? `<p class="fine">${esc(it.meta)}</p>` : ''}
+${it.paras.map((t) => `<p>${esc(t)}</p>`).join('\n')}
+${w ? `<p><a class="btn" href="/works/${w.id}/">『${esc(it.title)}』に「すき」を送る</a></p>` : ''}`;
+    }).join('\n');
+    const others = r.genres.filter((x) => x.id !== g.id);
+    const body = `
+${crumbs(g.name)}
+<article class="prose page">
+<h1>運営者おすすめの${esc(g.name)}アニメ</h1>
+<p>${esc(g.lead)}</p>
+${items}
+${others.length ? `<h2>ほかのジャンル</h2>\n<ul>${others.map((x) => `<li><a href="/recommend/${x.id}/">${esc(x.name)}</a></li>`).join('')}</ul>` : ''}
+</article>`;
+    addPage(path, layout({ path, title: `運営者おすすめの${g.name}アニメ`, description: g.description, body }), { priority: 0.7 });
+  }
+}
+
 function buildStatic() {
   simplePage('/about/', 'このサイトについて', 'すきおしは、今期アニメの原作漫画・ラノベにタップで「すき」を投票できるランキングサイトです。運営者情報と投票の数え方を説明します。', `
 <p>すきおしは、放送中のアニメの<strong>原作の漫画・ライトノベル</strong>に「すき」を送って、いまどの作品が好かれているかを見られるサイトです。アニメを見て原作が気になったときの作品選びや、推しの作品を応援する場所として使ってください。</p>
@@ -617,6 +658,7 @@ buildSearch();
 for (const s of seasons) buildSeason(s);
 for (const w of works) if (seasonsOf(w.id).length) buildWork(w);
 buildStatic();
+buildRecommend();
 
 for (const p of pages) {
   const dir = join(OUT, p.path);
