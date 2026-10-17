@@ -335,3 +335,8 @@ body.no-scroll { overflow: hidden; }
 .season-more td:not(:first-child), .season-more th:not(:first-child) { text-align: right; white-space: nowrap; }
 .season-more th { background: var(--bg-soft); }
 .season-more li small { color: var(--text-sub); }
+
+/* ---- 運営者おすすめ ---- */
+.rec-item { display: grid; grid-template-columns: 96px minmax(0, 1fr); gap: 14px; margin: 1.8em 0; align-items: start; }
+@media (min-width: 560px) { .rec-item { grid-template-columns: 130px minmax(0, 1fr); gap: 22px; } }
+.rec-item .rec-body h2 { margin-top: 0; }
