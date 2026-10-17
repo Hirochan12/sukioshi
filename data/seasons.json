@@ -1052,6 +1052,98 @@
           "note": "2期"
         }
       ]
+    },
+    {
+      "id": "2027-winter",
+      "name": "2027冬",
+      "label": "2027冬アニメ",
+      "months": "2027年1〜3月",
+      "eventName": "",
+      "voteStart": "2026-10-17",
+      "voteEnd": "2027-03-31",
+      "article": "<h2>2027冬アニメの原作まとめ</h2><p>2027年1月から始まる冬アニメのうち、原作がある作品を一覧にしました。発表されている作品のうち、漫画15作品、小説5作品の計20作品です。気になる作品名を押すと、作品ページで「すき」の投票と原作の情報を見られます。放送前の発表をもとにした一覧で、今後追加する場合があります。</p><h2>続編・新シリーズ</h2><p>『ゴールデンカムイ』『あかね噺』『マリッジトキシン』『魔入りました！入間くん』（スピンオフの『if Episode of 魔フィア』）は、すでにサイトで紹介している作品の続きです。『ONE PIECE』は第1話から新たにアニメ化されます。</p><h2>原作が漫画のアニメ</h2><ul><li><a href=\"/works/w235/\">SAKAMOTO DAYS</a></li><li><a href=\"/works/w236/\">ONE PIECE</a></li><li><a href=\"/works/w237/\">シャングリラ・フロンティア</a></li><li><a href=\"/works/w238/\">マッシュル-MASHLE-</a></li><li><a href=\"/works/w239/\">ヒストリエ</a></li><li><a href=\"/works/w240/\">ひらやすみ</a></li><li><a href=\"/works/w241/\">気になってる人が男じゃなかった</a></li><li><a href=\"/works/w242/\">ラーメン赤猫</a></li><li><a href=\"/works/w246/\">MURCIÉLAGO-ムルシエラゴ-</a></li><li><a href=\"/works/w248/\">黒岩メダカに私の可愛いが通じない</a></li><li><a href=\"/works/w249/\">地雷なんですか？地原さん</a></li><li><a href=\"/works/w137/\">ゴールデンカムイ</a></li><li><a href=\"/works/w149/\">あかね噺</a></li><li><a href=\"/works/w216/\">マリッジトキシン</a></li><li><a href=\"/works/w036/\">魔入りました！入間くん</a></li></ul><h2>原作が小説のアニメ</h2><ul><li><a href=\"/works/w243/\">業物語</a></li><li><a href=\"/works/w244/\">茉莉花官吏伝</a></li><li><a href=\"/works/w245/\">結界師の一輪華</a></li><li><a href=\"/works/w247/\">世界最高の暗殺者、異世界貴族に転生する</a></li><li><a href=\"/works/w250/\">姫騎士様のヒモ</a></li></ul>",
+      "works": [
+        {
+          "workId": "w235",
+          "note": ""
+        },
+        {
+          "workId": "w236",
+          "note": ""
+        },
+        {
+          "workId": "w237",
+          "note": ""
+        },
+        {
+          "workId": "w238",
+          "note": ""
+        },
+        {
+          "workId": "w239",
+          "note": ""
+        },
+        {
+          "workId": "w240",
+          "note": ""
+        },
+        {
+          "workId": "w241",
+          "note": ""
+        },
+        {
+          "workId": "w242",
+          "note": ""
+        },
+        {
+          "workId": "w243",
+          "note": ""
+        },
+        {
+          "workId": "w244",
+          "note": ""
+        },
+        {
+          "workId": "w245",
+          "note": ""
+        },
+        {
+          "workId": "w246",
+          "note": ""
+        },
+        {
+          "workId": "w247",
+          "note": ""
+        },
+        {
+          "workId": "w248",
+          "note": ""
+        },
+        {
+          "workId": "w249",
+          "note": ""
+        },
+        {
+          "workId": "w250",
+          "note": ""
+        },
+        {
+          "workId": "w137",
+          "note": "最終章"
+        },
+        {
+          "workId": "w149",
+          "note": "2期"
+        },
+        {
+          "workId": "w216",
+          "note": "2期"
+        },
+        {
+          "workId": "w036",
+          "note": "if Episode of 魔フィア"
+        }
+      ]
     }
   ]
 }
