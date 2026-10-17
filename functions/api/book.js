@@ -13,7 +13,7 @@ export async function onRequestGet({ request, env, waitUntil }) {
   const work = WORKS.get(id);
   if (!work) return errorJson(404, 'unknown_work', '作品が見つかりません。');
 
-  const cacheKey = new Request(`https://cache.sukioshi/book/v3/${id}`);
+  const cacheKey = new Request(`https://cache.sukioshi/book/v3/${id}${work.coverRev ? '-r' + work.coverRev : ''}`);
   const cache = caches.default;
   const hit = await cache.match(cacheKey);
   if (hit) return hit;
