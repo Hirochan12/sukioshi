@@ -306,6 +306,9 @@ function seasonIntro(s) {
 <p>アニメを見て原作が気になった作品や、原作から追いかけている作品に「すき」を送ってください。票は1作品につき1日1回まで入れられ、毎日の積み重ねで順位が決まります。</p>`;
 }
 
+const genreGrid = (genres) => `<ul class="genre-grid">${genres.map((g) => `<li><a class="btn" href="/recommend/${g.id}/"><span>${esc(g.name)}</span><small>${g.items.length}作品</small></a></li>`).join('')}</ul>`;
+const REC_GENRES = existsSync(join(ROOT, 'data/recommend.json')) ? readJson('data/recommend.json').genres : [];
+
 function buildSeason(s) {
   const isEvent = Boolean(s.eventName);
   const h1 = isEvent ? s.eventName : `${s.label}の原作 人気ランキング`;
@@ -321,6 +324,7 @@ ${seasonIntro(s)}
 
   </div>
 </article>
+${s.id === 'recommend' && REC_GENRES.length ? `<section class="genre-pick"><h2>ジャンルから選ぶ</h2>${genreGrid(REC_GENRES)}</section>` : ''}
 ${rankingSection(s, { heading: isEvent ? '投票・ランキング' : `${s.label}原作ランキング` })}
 ${shareBar(`/season/${s.id}/`, `${isEvent ? s.eventName : `${s.label}の原作 人気ランキング`} 推しに「すき」を送ろう♡ #すきおし`, { label: 'このランキングをシェア' })}
 ${s.article ? `<details class="season-more"><summary>${esc(s.label)}の原作まとめを読む</summary><div class="prose">${s.article}</div></details>` : ''}
@@ -531,9 +535,7 @@ ${crumbs('')}
 <h1>${esc(r.title)}</h1>
 <p>${esc(r.intro)}</p>
 <h2>ジャンルから選ぶ</h2>
-<ul>
-${genreLinks}
-</ul>
+${genreGrid(r.genres)}
 </article>` }), { priority: 0.7 });
   for (const g of r.genres) {
     const path = `/recommend/${g.id}/`;
