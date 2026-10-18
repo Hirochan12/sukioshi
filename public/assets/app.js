@@ -451,6 +451,200 @@
     });
   }
 
+  // ---------- マイすきカード（コレクションから5作品を選んで、カードにして共有する） ----------
+  const meRoot = $('[data-me]');
+  if (meRoot) {
+    const ME_KEY = 'sukioshi:me';
+    const ME_MAX = 5;
+    const ME_TYPE = { manga: '漫画', novel: 'ラノベ' };
+    const q = (s) => $(s, meRoot);
+    const mk = (tag, cls, text) => {
+      const e = document.createElement(tag);
+      if (cls) e.className = cls;
+      if (text != null) e.textContent = text;
+      return e;
+    };
+    const cleanComment = (t) => Array.from(String(t || '').replace(/[\u0000-\u001f\u007f]/g, ' ').trim()).slice(0, 40).join('');
+    const cardUrl = (ids, c) => `${location.origin}/me/?w=${ids.join(',')}${c ? '&c=' + encodeURIComponent(c) : ''}`;
+    const errEl = q('[data-me-error]');
+
+    // 作品の行（順位・表紙・作品名・種類）。decorate で操作ボタンを足せる
+    function renderCard(ol, ids, index, { link = false, decorate = null } = {}) {
+      ol.replaceChildren(...ids.map((id, i) => {
+        const w = index.works[id];
+        const li = mk('li', 'me-row');
+        const main = link ? mk('a', 'me-link') : mk('div', 'me-link');
+        if (link) main.href = `/works/${id}/`;
+        const img = document.createElement('img');
+        img.dataset.cover = id; img.alt = ''; img.width = 96; img.height = 134;
+        const cv = mk('span', 'col-cover me-cover');
+        cv.append(img);
+        main.append(mk('span', 'me-rank', String(i + 1)), cv, mk('span', 'me-name', w[0]), mk('span', `col-type col-type-${w[1]}`, ME_TYPE[w[1]] || ''));
+        li.append(main);
+        if (decorate) decorate(li, i);
+        return li;
+      }));
+      observeCovers(ol);
+    }
+
+    // 共有用の画像（作品名と一言だけ。表紙は含めない）
+    async function drawImage(ids, comment, index) {
+      try { await document.fonts?.ready; } catch { /* 無視 */ }
+      const W = 1200, H = 675;
+      const cv = document.createElement('canvas');
+      cv.width = W; cv.height = H;
+      const g = cv.getContext('2d');
+      const font = getComputedStyle(document.body).fontFamily || 'sans-serif';
+      g.fillStyle = '#fff'; g.fillRect(0, 0, W, H);
+      g.fillStyle = '#fbeaf0'; g.fillRect(0, 0, W, 120);
+      g.fillStyle = '#d4537e'; g.fillRect(0, 0, 14, H);
+      g.textBaseline = 'middle';
+      g.fillStyle = '#993556'; g.font = `700 50px ${font}`;
+      g.fillText(`わたしのすき${ids.length}選`, 56, 62);
+      const fit = (text, max, size) => {
+        let s = size;
+        g.font = `700 ${s}px ${font}`;
+        while (s > 24 && g.measureText(text).width > max) { s -= 2; g.font = `700 ${s}px ${font}`; }
+        if (g.measureText(text).width <= max) return text;
+        let t = Array.from(text);
+        while (t.length > 1 && g.measureText(t.join('') + '…').width > max) t.pop();
+        return t.join('') + '…';
+      };
+      const rowH = 78;
+      ids.forEach((id, i) => {
+        const y = 170 + i * rowH;
+        g.fillStyle = '#d4537e';
+        g.beginPath(); g.arc(80, y, 28, 0, Math.PI * 2); g.fill();
+        g.fillStyle = '#fff'; g.font = `700 32px ${font}`; g.textAlign = 'center';
+        g.fillText(String(i + 1), 80, y + 1);
+        g.textAlign = 'left'; g.fillStyle = '#2c2c2a';
+        g.fillText(fit(index.works[id][0], 960, 38), 132, y + 1);
+      });
+      if (comment) {
+        g.fillStyle = '#6b6a65'; g.font = `400 30px ${font}`;
+        g.fillText(fit(`「${comment}」`, 1060, 30), 56, 590);
+      }
+      g.fillStyle = '#9a988f'; g.font = `700 26px ${font}`; g.textAlign = 'right';
+      g.fillText('すきおし  sukioshi.com', W - 40, H - 28);
+      return cv;
+    }
+
+    function setupEdit(index) {
+      const editEl = q('[data-me-edit]');
+      editEl.hidden = false;
+      const emptyEl = q('[data-me-empty]');
+      const workEl = q('[data-me-work]');
+      const pickEl = q('[data-me-pick]');
+      const selEl = q('[data-me-sel]');
+      const selHint = q('[data-me-sel-hint]');
+      const input = q('[data-me-input]');
+      const lenEl = q('[data-me-len]');
+      const actions = q('[data-me-actions]');
+      const col = getCollection();
+      const mine = Object.entries(col.items).filter(([id]) => index.works[id]).sort((a, b) => (b[1].t || 0) - (a[1].t || 0)).map(([id]) => id);
+      if (!mine.length) { emptyEl.hidden = false; workEl.hidden = true; return; }
+      const saved = store.get(ME_KEY, { w: [], c: '' });
+      let sel = (saved.w || []).filter((id, i, a) => mine.includes(id) && a.indexOf(id) === i).slice(0, ME_MAX);
+      input.value = cleanComment(saved.c);
+      const save = () => store.set(ME_KEY, { w: sel, c: cleanComment(input.value) });
+
+      pickEl.replaceChildren(...mine.map((id) => {
+        const w = index.works[id];
+        const li = mk('li', 'me-pick-item');
+        const b = mk('button', 'me-pick-btn');
+        b.type = 'button'; b.dataset.id = id;
+        const img = document.createElement('img');
+        img.dataset.cover = id; img.alt = ''; img.width = 96; img.height = 134;
+        const cvr = mk('span', 'col-cover');
+        cvr.append(img);
+        b.append(cvr, mk('span', 'col-name', w[0]));
+        li.append(b);
+        return li;
+      }));
+      observeCovers(pickEl);
+
+      function refresh() {
+        $$('.me-pick-btn', pickEl).forEach((b) => b.setAttribute('aria-pressed', String(sel.includes(b.dataset.id))));
+        selHint.textContent = sel.length ? `${sel.length} / ${ME_MAX} 作品えらびました` : 'まだえらんでいません。上の作品をタップしてください。';
+        renderCard(selEl, sel, index, {
+          decorate: (li, i) => {
+            const bar = mk('span', 'me-ctl');
+            const btn = (label, aria, fn, disabled) => {
+              const b = mk('button', 'me-ctl-btn', label);
+              b.type = 'button'; b.setAttribute('aria-label', aria); b.disabled = Boolean(disabled);
+              b.addEventListener('click', fn);
+              return b;
+            };
+            bar.append(
+              btn('↑', '1つ上へ', () => { [sel[i - 1], sel[i]] = [sel[i], sel[i - 1]]; save(); refresh(); }, i === 0),
+              btn('↓', '1つ下へ', () => { [sel[i + 1], sel[i]] = [sel[i], sel[i + 1]]; save(); refresh(); }, i === sel.length - 1),
+              btn('外す', 'この作品を外す', () => { sel.splice(i, 1); save(); refresh(); }),
+            );
+            li.append(bar);
+          },
+        });
+        actions.hidden = sel.length === 0;
+        lenEl.textContent = `${Array.from(input.value).length} / 40`;
+      }
+
+      pickEl.addEventListener('click', (ev) => {
+        const b = ev.target.closest('.me-pick-btn');
+        if (!b) return;
+        const id = b.dataset.id;
+        if (sel.includes(id)) sel = sel.filter((x) => x !== id);
+        else if (sel.length >= ME_MAX) { toast(`えらべるのは${ME_MAX}作品までです`); return; }
+        else sel.push(id);
+        save(); refresh();
+      });
+      input.addEventListener('input', () => {
+        const c = Array.from(input.value);
+        if (c.length > 40) input.value = c.slice(0, 40).join('');
+        save(); lenEl.textContent = `${Array.from(input.value).length} / 40`;
+      });
+
+      q('[data-me-x]').addEventListener('click', () => {
+        const c = cleanComment(input.value);
+        const text = `わたしのすき${sel.length}選${c ? `\n${c}` : ''}\n#すきおし`;
+        window.open(`https://x.com/intent/post?text=${encodeURIComponent(text)}&url=${encodeURIComponent(cardUrl(sel, c))}`, '_blank', 'noopener');
+      });
+      q('[data-me-copy]').addEventListener('click', async () => {
+        try { await navigator.clipboard.writeText(cardUrl(sel, cleanComment(input.value))); toast('リンクをコピーしました'); }
+        catch { toast('コピーできませんでした'); }
+      });
+      q('[data-me-image]').addEventListener('click', async () => {
+        const cvs = await drawImage(sel, cleanComment(input.value), index);
+        cvs.toBlob(async (blob) => {
+          if (!blob) { toast('画像を作れませんでした'); return; }
+          const file = new File([blob], 'sukioshi-my-suki.png', { type: 'image/png' });
+          try {
+            if (matchMedia('(pointer: coarse)').matches && navigator.canShare?.({ files: [file] })) { await navigator.share({ files: [file] }); return; }
+          } catch (e) { if (e && e.name === 'AbortError') return; }
+          const a = document.createElement('a');
+          a.href = URL.createObjectURL(blob); a.download = 'sukioshi-my-suki.png';
+          document.body.append(a); a.click(); a.remove();
+          setTimeout(() => URL.revokeObjectURL(a.href), 4000);
+          toast('画像を保存しました');
+        }, 'image/png');
+      });
+      refresh();
+    }
+
+    function setupView(index, ids, comment) {
+      q('[data-me-view]').hidden = false;
+      renderCard(q('[data-me-card]'), ids, index, { link: true });
+      const c = q('[data-me-comment]');
+      if (comment) { c.textContent = `「${comment}」`; c.hidden = false; }
+      q('[data-me-view-lead]').textContent = `「すき」を${ids.length}作品、えらんだカードです。`;
+    }
+
+    const params = new URLSearchParams(location.search);
+    getJson(meRoot.dataset.index).then((index) => {
+      const ids = (params.get('w') || '').split(',').filter((id, i, a) => /^w\d{1,4}$/.test(id) && index.works[id] && a.indexOf(id) === i).slice(0, ME_MAX);
+      if (ids.length && !params.get('new')) setupView(index, ids, cleanComment(params.get('c')));
+      else setupEdit(index);
+    }).catch(() => { errEl.hidden = false; });
+  }
+
   // ---------- ページの一番上に戻る ----------
   const toTop = $('[data-to-top]');
   if (toTop) {
