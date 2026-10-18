@@ -48,7 +48,7 @@ const creditLine = (w) => {
   const text = m && p ? `${m}（${p}）` : m || p;
   return `\n      <p class="work-credit">${label}：${esc(text)}</p>`;
 };
-const TYPE_LABEL = { manga: '漫画', novel: '小説／ラノベ' };
+const TYPE_LABEL = { manga: '漫画', novel: '小説/ライトノベル' };
 const MAX_TAGS = 3;
 const TAG_GROUPS = [['story', '作品の魅力'], ['anime', 'アニメの魅力']];
 function tagChipsHtml() {
@@ -58,8 +58,8 @@ ${tags.filter((t) => t.group === g).map((t) => `      <button type="button" clas
     </div>`).join('\n');
 }
 
-const TYPE_LONG = { manga: '漫画', novel: '小説／ラノベ' };
-const TYPE_SHORT = { manga: '漫画', novel: 'ラノベ' };
+const TYPE_LONG = { manga: '漫画', novel: '小説/ライトノベル' };
+const TYPE_SHORT = { manga: '漫画', novel: '小説/ライトノベル' };
 const plain = (html) => String(html || '').replace(/<[^>]+>/g, '').replace(/\s+/g, ' ').trim();
 const clip = (t, n) => (t.length > n ? t.slice(0, n - 1) + '…' : t);
 const seasonsOf = (workId) => seasons.filter((s) => s.works.some((e) => e.workId === workId));
@@ -197,7 +197,7 @@ function rankingSection(season, { headingTag = 'h2', heading } = {}) {
   <div class="filters" role="group" aria-label="原作の種類">
     <button type="button" class="chip" data-type-filter="all" aria-pressed="true">すべて</button>
     <button type="button" class="chip" data-type-filter="manga" aria-pressed="false">漫画</button>
-    <button type="button" class="chip" data-type-filter="novel" aria-pressed="false">小説／ラノベ</button>
+    <button type="button" class="chip" data-type-filter="novel" aria-pressed="false">小説/ライトノベル</button>
   </div>
   <div class="tag-filter" role="group" aria-label="おすすめポイントで探す">
     <span class="tag-filter-label">おすすめポイントで探す</span>
@@ -276,7 +276,7 @@ function seasonIntro(s) {
   const m = s.works.filter((e) => workById.get(e.workId).type === 'manga').length;
   const n = s.works.length - m;
   const sequels = s.works.filter((e) => /期|Season|season|クール|STAGE/.test(e.note)).length;
-  return `<p>${esc(s.label)}（${esc(airText(s))}）のうち、漫画が原作の${m}作品と、ライトノベルが原作の${n}作品を集めました。${sequels ? `そのうち${sequels}作品は、続編や2クール目の放送です。` : ''}</p>
+  return `<p>${esc(s.label)}（${esc(airText(s))}）のうち、漫画が原作の${m}作品と、小説/ライトノベルが原作の${n}作品を集めました。${sequels ? `そのうち${sequels}作品は、続編や2クール目の放送です。` : ''}</p>
 <p>アニメを見て原作が気になった作品や、原作から追いかけている作品に「すき」を送ってください。票は1作品につき1日1回まで入れられ、毎日の積み重ねで順位が決まります。</p>`;
 }
 
@@ -284,8 +284,8 @@ function buildSeason(s) {
   const isEvent = Boolean(s.eventName);
   const h1 = isEvent ? s.eventName : `${s.label}の原作 人気ランキング`;
   const desc = isEvent
-    ? `${s.label}（${airText(s)}）の原作漫画・ラノベ${s.works.length}作品から、いちばん「すき」な作品を選ぶ振り返り投票。${s.id === 'recommend' ? 'いつでも' : fmtDate(s.voteEnd) + 'まで'}投票できます。`
-    : `${s.label}（${airText(s)}）の原作漫画・ラノベ${s.works.length}作品の人気ランキング。タップ1回で「すき」を投票でき、今日・今週・シーズン全体の順位が見られます。`;
+    ? `${s.label}（${airText(s)}）の原作漫画・小説/ライトノベル${s.works.length}作品から、いちばん「すき」な作品を選ぶ振り返り投票。${s.id === 'recommend' ? 'いつでも' : fmtDate(s.voteEnd) + 'まで'}投票できます。`
+    : `${s.label}（${airText(s)}）の原作漫画・小説/ライトノベル${s.works.length}作品の人気ランキング。タップ1回で「すき」を投票でき、今日・今週・シーズン全体の順位が見られます。`;
   const body = `
 <nav class="crumbs" aria-label="パンくずリスト"><a href="/">トップ</a><span aria-hidden="true">›</span><a href="/seasons/">シーズン</a><span aria-hidden="true">›</span><span>${esc(s.name)}</span></nav>
 <article class="season-article">
@@ -300,13 +300,13 @@ ${shareBar(`/season/${s.id}/`, `${isEvent ? s.eventName : `${s.label}の原作 �
 ${s.article ? `<details class="season-more"><summary>${esc(s.label)}の原作まとめを読む</summary><div class="prose">${s.article}</div></details>` : ''}
 ${adSlot('season-bottom')}
 <p class="back-link"><a href="/seasons/">ほかのシーズンを見る</a></p>`;
-  const pageTitle = isEvent ? h1 : `${s.label}の原作 人気ランキング｜漫画・ラノベ${s.works.length}作品一覧`;
+  const pageTitle = isEvent ? h1 : `${s.label}の原作 人気ランキング｜漫画・小説/ライトノベル${s.works.length}作品一覧`;
   const jsonLd = {
     '@context': 'https://schema.org',
     '@graph': [
       {
         '@type': 'ItemList',
-        name: `${s.label}の原作漫画・ライトノベル`,
+        name: `${s.label}の原作漫画・小説/ライトノベル`,
         numberOfItems: s.works.length,
         itemListElement: s.works.map((e, i) => ({ '@type': 'ListItem', position: i + 1, name: workById.get(e.workId).title, url: `${SITE_URL}/works/${e.workId}/` })),
       },
@@ -339,7 +339,7 @@ ${ordered
   )
   .join('\n')}
 </ul>`;
-  addPage('/seasons/', layout({ path: '/seasons/', title: 'シーズン一覧', description: 'すきおしのアニメ放送シーズン一覧。各シーズンの原作漫画・ラノベの人気ランキングと最終順位を見られます。', body }), { priority: 0.6 });
+  addPage('/seasons/', layout({ path: '/seasons/', title: 'シーズン一覧', description: 'すきおしのアニメ放送シーズン一覧。各シーズンの原作漫画・小説/ライトノベルの人気ランキングと最終順位を見られます。', body }), { priority: 0.6 });
 }
 
 
@@ -359,20 +359,20 @@ function buildSearch() {
   const body = `
 <nav class="crumbs" aria-label="パンくずリスト"><a href="/">トップ</a><span aria-hidden="true">›</span><span>さがす</span></nav>
 <h1>アニメ・原作をさがす</h1>
-<p>すきおしにのっている、すべてのシーズンのアニメ原作（漫画・ラノベ）から作品名でさがせます。ひらがな・カタカナどちらでも大丈夫です。</p>
+<p>すきおしにのっている、すべてのシーズンのアニメ原作（漫画・小説/ライトノベル）から作品名でさがせます。ひらがな・カタカナどちらでも大丈夫です。</p>
 <div class="site-search" data-site-search>
   <input type="search" class="search-input search-input-large" data-site-search-input placeholder="作品名を入力（例：スライム、薬屋）" aria-label="作品名でさがす" autocomplete="off" enterkeyhint="search">
   <div class="filters" role="group" aria-label="原作の種類">
     <button type="button" class="chip" data-search-type="all" aria-pressed="true">すべて</button>
     <button type="button" class="chip" data-search-type="manga" aria-pressed="false">漫画</button>
-    <button type="button" class="chip" data-search-type="novel" aria-pressed="false">小説／ラノベ</button>
+    <button type="button" class="chip" data-search-type="novel" aria-pressed="false">小説/ライトノベル</button>
   </div>
   <p class="rank-status" data-site-search-status aria-live="polite"></p>
   <ul class="search-list">
 ${list}
   </ul>
 </div>`;
-  addPage('/search/', layout({ path: '/search/', title: 'アニメ・原作をさがす', description: 'すきおしにのっているアニメ原作の漫画・ライトノベルを作品名でさがせます。今のシーズンも過去のシーズンも検索できます。', body }), { priority: 0.5 });
+  addPage('/search/', layout({ path: '/search/', title: 'アニメ・原作をさがす', description: 'すきおしにのっているアニメ原作の漫画・小説/ライトノベルを作品名でさがせます。今のシーズンも過去のシーズンも検索できます。', body }), { priority: 0.5 });
 }
 
 // ---- 作品ページ ----
@@ -565,7 +565,7 @@ function buildCollection() {
 <div class="tag-filter-row" data-col-filters hidden>
 <button type="button" class="chip" data-col-type="all" aria-pressed="true">すべて</button>
 <button type="button" class="chip" data-col-type="manga" aria-pressed="false">漫画</button>
-<button type="button" class="chip" data-col-type="novel" aria-pressed="false">ラノベ</button>
+<button type="button" class="chip" data-col-type="novel" aria-pressed="false">小説/ライトノベル</button>
 </div>
 <div data-col-list></div>
 <div class="col-empty" data-col-empty hidden>
@@ -652,8 +652,8 @@ function buildMinna() {
 }
 
 function buildStatic() {
-  simplePage('/about/', 'このサイトについて', 'すきおしは、今期アニメの原作漫画・ラノベにタップで「すき」を投票できるランキングサイトです。運営者情報と投票の数え方を説明します。', `
-<p>すきおしは、放送中のアニメの<strong>原作の漫画・ライトノベル</strong>に「すき」を送って、いまどの作品が好かれているかを見られるサイトです。アニメを見て原作が気になったときの作品選びや、推しの作品を応援する場所として使ってください。</p>
+  simplePage('/about/', 'このサイトについて', 'すきおしは、今期アニメの原作漫画・小説/ライトノベルにタップで「すき」を投票できるランキングサイトです。運営者情報と投票の数え方を説明します。', `
+<p>すきおしは、放送中のアニメの<strong>原作の漫画・小説/ライトノベル</strong>に「すき」を送って、いまどの作品が好かれているかを見られるサイトです。アニメを見て原作が気になったときの作品選びや、推しの作品を応援する場所として使ってください。</p>
 <h2>投票の数え方</h2>
 <ul>
 <li>「すき」は、1つの作品につき1台の端末から1日1回まで送れます。日付は日本時間の0時に切り替わります。</li>
@@ -663,7 +663,7 @@ function buildStatic() {
 <li>シーズンの投票期間が終わると投票は締め切り、そのときの順位が最終順位になります。</li>
 </ul>
 <h2>対象になる作品</h2>
-<p>そのシーズンに放送されるテレビアニメ・配信アニメのうち、原作が漫画またはライトノベルの作品を対象にしています。映画、オリジナルアニメ、ゲームが原作の作品は対象外です。</p>
+<p>そのシーズンに放送されるテレビアニメ・配信アニメのうち、原作が漫画または小説/ライトノベルの作品を対象にしています。映画、オリジナルアニメ、ゲームが原作の作品は対象外です。</p>
 <h2>表紙画像と商品リンク</h2>
 <p>表紙画像と商品情報は、楽天ブックスのデータを使って表示しています。商品リンクから購入された場合、運営者が楽天アフィリエイトの紹介料を受け取ることがあります。ランキングの順位は投票だけで決まり、紹介料によって変わることはありません。</p>
 <h2>運営者情報</h2>
@@ -730,7 +730,7 @@ function buildStatic() {
 ${contactHtml()}
 <h2>よくある質問</h2>
 <h3>見たいアニメの原作が載っていません</h3>
-<p>原作が漫画またはライトノベルのアニメを対象にしています。対象のはずの作品が見つからないときは、作品名を添えてご連絡ください。</p>
+<p>原作が漫画または小説/ライトノベルのアニメを対象にしています。対象のはずの作品が見つからないときは、作品名を添えてご連絡ください。</p>
 <h3>投票ボタンが押せません</h3>
 <p>その作品には今日すでに投票しているか、シーズンの投票期間が終わっている可能性があります。日本時間の0時を過ぎると、また投票できます。</p>`, { priority: 0.3 });
 
