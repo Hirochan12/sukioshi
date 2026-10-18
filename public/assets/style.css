@@ -366,3 +366,24 @@ body.no-scroll { overflow: hidden; }
 .col-type-novel { background: var(--novel-soft); color: var(--novel); }
 .col-empty { background: var(--bg-soft); border-radius: var(--radius); padding: 20px 16px; margin: 16px 0; text-align: center; }
 @media (min-width: 560px) { .col-grid { grid-template-columns: repeat(5, minmax(0, 1fr)); } }
+
+/* マイすきカード */
+.me-h { font-size: 17px; margin: 24px 0 8px; }
+.me-pick { list-style: none; margin: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px 10px; max-height: 420px; overflow-y: auto; padding: 4px; }
+.me-pick-btn { display: flex; flex-direction: column; gap: 6px; width: 100%; text-align: left; font: inherit; color: var(--text); background: none; border: 2px solid transparent; border-radius: 8px; padding: 4px; cursor: pointer; }
+.me-pick-btn[aria-pressed="true"] { border-color: var(--pink); background: var(--pink-soft); }
+.me-card { list-style: none; padding: 0; margin: 12px 0; display: flex; flex-direction: column; gap: 10px; }
+.me-row { display: flex; align-items: center; gap: 8px; background: var(--bg-soft); border-radius: var(--radius); padding: 8px 10px; }
+.me-link { flex: 1 1 auto; min-width: 0; display: flex; align-items: center; gap: 10px; color: var(--text); text-decoration: none; }
+.me-rank { flex: 0 0 auto; width: 30px; height: 30px; border-radius: 50%; background: var(--pink); color: #fff; font-weight: 700; display: inline-flex; align-items: center; justify-content: center; }
+.me-cover { flex: 0 0 auto; width: 48px; }
+.me-name { flex: 1 1 auto; min-width: 0; font-weight: 700; line-height: 1.4; overflow-wrap: anywhere; }
+.me-ctl { flex: 0 0 auto; display: flex; gap: 4px; }
+.me-ctl-btn { min-width: 40px; min-height: 40px; font: inherit; font-size: 13px; background: #fff; border: 1px solid var(--line); border-radius: 8px; cursor: pointer; }
+.me-ctl-btn:disabled { opacity: .35; cursor: default; }
+.me-comment { font-size: 18px; font-weight: 700; color: var(--pink-dark); margin: 12px 0; }
+.me-input { width: 100%; max-width: 420px; min-height: var(--tap); padding: 8px 12px; font: inherit; font-size: 16px; border: 1px solid var(--line); border-radius: 8px; }
+.me-actions { display: flex; flex-wrap: wrap; gap: 8px; }
+@media (min-width: 560px) { .me-pick { grid-template-columns: repeat(5, minmax(0, 1fr)); } }
+@media (max-width: 420px) { .me-ctl-btn { min-width: 36px; } .me-row { flex-wrap: wrap; } .me-ctl { margin-left: 40px; } }
+.me-row .col-type { flex: 0 0 auto; white-space: nowrap; align-self: center; }
