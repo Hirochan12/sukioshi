@@ -626,6 +626,34 @@
           toast('画像を保存しました');
         }, 'image/png');
       });
+      // みんなのすきに載せる／更新／取り下げ（サーバーには作品IDとひとことだけが送られる）
+      const pubBtn = q('[data-me-pub]');
+      const unpubBtn = q('[data-me-unpub]');
+      const pubStatus = q('[data-me-pub-status]');
+      const PUB_KEY = 'sukioshi:me-pub';
+      const showPub = (on) => { unpubBtn.hidden = !on; pubBtn.textContent = on ? 'カードを更新する' : 'みんなのすきに載せる'; };
+      showPub(Boolean(store.get(PUB_KEY, false)));
+      const postCard = (payload) => getJson('/api/cards', {
+        method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(payload), credentials: 'same-origin',
+      });
+      pubBtn.addEventListener('click', async () => {
+        pubBtn.disabled = true; pubStatus.textContent = '送っています…';
+        try {
+          const d = await postCard({ w: sel, c: cleanComment(input.value) });
+          if (d.ok) { store.set(PUB_KEY, true); showPub(true); pubStatus.textContent = 'みんなのすきに載せました。'; toast('みんなのすきに載せました'); }
+          else pubStatus.textContent = d.message || '載せられませんでした。';
+        } catch { pubStatus.textContent = '載せられませんでした。時間をおいてもう一度ためしてください。'; }
+        pubBtn.disabled = false;
+      });
+      unpubBtn.addEventListener('click', async () => {
+        unpubBtn.disabled = true;
+        try {
+          const d = await postCard({ remove: true });
+          if (d.ok) { store.set(PUB_KEY, false); showPub(false); pubStatus.textContent = '取り下げました。'; }
+          else pubStatus.textContent = d.message || '取り下げられませんでした。';
+        } catch { pubStatus.textContent = '取り下げられませんでした。'; }
+        unpubBtn.disabled = false;
+      });
       refresh();
     }
 
@@ -643,6 +671,68 @@
       if (ids.length && !params.get('new')) setupView(index, ids, cleanComment(params.get('c')));
       else setupEdit(index);
     }).catch(() => { errEl.hidden = false; });
+  }
+
+  // ---------- みんなのすき（公開カードの一覧） ----------
+  const minnaRoot = $('[data-minna]');
+  if (minnaRoot) {
+    const listEl = $('[data-minna-list]', minnaRoot);
+    const emptyEl = $('[data-minna-empty]', minnaRoot);
+    const moreBtn = $('[data-minna-more]', minnaRoot);
+    const errEl = $('[data-minna-error]', minnaRoot);
+    const mk = (tag, cls, text) => { const e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; };
+    let index = null; let next = null; let shown = 0;
+
+    function cardEl(card) {
+      const box = mk('article', 'minna-card');
+      const href = `/me/?w=${card.w.join(',')}${card.c ? '&c=' + encodeURIComponent(card.c) : ''}`;
+      const a = mk('a', 'minna-link');
+      a.href = href;
+      const covers = mk('span', 'minna-covers');
+      card.w.forEach((id) => {
+        const img = document.createElement('img');
+        img.dataset.cover = id; img.alt = ''; img.width = 96; img.height = 134;
+        const cv = mk('span', 'col-cover minna-cover');
+        cv.append(img);
+        covers.append(cv);
+      });
+      const ol = mk('ol', 'minna-titles');
+      card.w.forEach((id) => { const li = mk('li', null, index.works[id][0]); ol.append(li); });
+      a.append(covers, ol);
+      box.append(a);
+      if (card.c) box.append(mk('p', 'minna-comment', `「${card.c}」`));
+      const rep = mk('button', 'minna-report', '通報');
+      rep.type = 'button';
+      rep.addEventListener('click', async () => {
+        if (!confirm('このカードを通報しますか？')) return;
+        try {
+          const d = await getJson('/api/cards', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ report: card.id }), credentials: 'same-origin' });
+          if (d.ok) { toast('通報しました。ありがとうございます'); rep.disabled = true; rep.textContent = '通報済み'; }
+          else toast(d.message || '通報できませんでした');
+        } catch { toast('通報できませんでした'); }
+      });
+      box.append(rep);
+      return box;
+    }
+
+    async function load() {
+      moreBtn.disabled = true;
+      try {
+        if (!index) index = await getJson(minnaRoot.dataset.index);
+        const d = await getJson('/api/cards' + (next ? `?before=${next}` : ''));
+        if (!d.ok) throw new Error('api');
+        const cards = (d.cards || []).filter((c) => c.w.every((id) => index.works[id]));
+        cards.forEach((c) => listEl.append(cardEl(c)));
+        shown += cards.length;
+        observeCovers(listEl);
+        next = d.next;
+        moreBtn.hidden = !next;
+        emptyEl.hidden = shown > 0;
+      } catch { errEl.hidden = false; }
+      moreBtn.disabled = false;
+    }
+    moreBtn.addEventListener('click', load);
+    load();
   }
 
   // ---------- ページの一番上に戻る ----------
