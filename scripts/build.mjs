@@ -89,6 +89,7 @@ const recHtml = (id) => {
     ps.forEach((t) => seen.add(t));
     if (ps.length) parts.push(ps.map((t) => `<p>${esc(t)}</p>`).join(''));
   }
+  if (!parts.length) return '';
   return `<h3>運営者のおすすめポイント</h3>${parts.join('')}<p class="fine"><a href="/recommend/">運営者おすすめの作品をもっと見る</a></p>`;
 };
 const SONGS = new Map(works.filter((w) => Array.isArray(w.songs) && w.songs.length).map((w) => [w.id, w.songs]));
