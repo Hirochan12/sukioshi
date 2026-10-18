@@ -67,13 +67,8 @@ const noteOf = (season, workId) => season.works.find((e) => e.workId === workId)
 const ordered = [...seasons].sort((a, b) => b.voteStart.localeCompare(a.voteStart) || b.id.localeCompare(a.id));
 const currentSeason = seasons.find((s) => s.id === CURRENT);
 
-// 作品ごとの主題歌（OP/ED）。シーズンのまとめ記事（article）にある一覧から取り出す。新しいシーズンの記載を優先
-const SONGS = new Map();
-for (const s of ordered) {
-  for (const [, id, html] of (s.article || '').matchAll(/<li><a href="\/works\/(w\d+)\/">[^<]*<\/a><br><small>(.*?)<\/small><\/li>/g).map((m) => m)) {
-    if (!SONGS.has(id)) SONGS.set(id, html.split(/　(?=(?:OP|ED)：)/).filter(Boolean));
-  }
-}
+// 作品ごとの主題歌（OP/ED）。works.json の songs（1行ずつのHTML）を使う
+const SONGS = new Map(works.filter((w) => Array.isArray(w.songs) && w.songs.length).map((w) => [w.id, w.songs]));
 const airText = (s) => (s.id === 'recommend' ? '過去の作品もふくむ' : `${s.months}放送`);
 const fmtPeriod = (s) => (s.id === 'recommend' ? '期限なし（いつでも投票できます）' : `${fmtDate(s.voteStart)}〜${fmtDate(s.voteEnd)}`);
 const fmtDate = (d) => {
