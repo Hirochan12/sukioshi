@@ -129,11 +129,12 @@ ${body}
     <nav class="footer-nav" aria-label="サイト情報">
       <a href="/about/">このサイトについて</a>
       <a href="/seasons/">シーズン一覧</a>
+      <a href="/minna/">みんなのすき</a>
       <a href="/privacy/">プライバシーポリシー</a>
       <a href="/terms/">利用規約</a>
       <a href="/contact/">お問い合わせ</a>
     </nav>
-    <p class="fine">当サイトは楽天アフィリエイトを利用しています。表紙画像と商品情報は楽天ブックスから提供されています。</p>
+    <p class="fine">当サイトは楽天アフィリエイトを利用しています。表紙画像と商品情報は楽天ブックスから提供されています。 <a href="https://webservice.rakuten.co.jp/" target="_blank" rel="noopener">Supported by Rakuten Developers</a></p>
     <p class="fine">&copy; ${new Date().getFullYear()} ${esc(site.name)}</p>
   </div>
 </footer>
@@ -592,7 +593,7 @@ function buildMe() {
 <p class="col-lead" data-me-view-lead></p>
 <ol class="me-card" data-me-card></ol>
 <p class="me-comment" data-me-comment hidden></p>
-<p><a class="btn btn-pink" href="/me/?new=1">自分のカードも作る</a>　<a class="btn" href="/">ランキングを見る</a></p>
+<p><a class="btn btn-pink" href="/me/?new=1">自分のカードも作る</a>　<a class="btn" href="/minna/">みんなのすきを見る</a></p>
 </div>
 <div data-me-edit hidden>
 <p class="col-lead">「すき」を押した作品の中から、いちばん好きな5作品を選んでカードにできます。</p>
@@ -612,6 +613,10 @@ function buildMe() {
 <h2 class="me-h">4. シェアする</h2>
 <p class="me-actions"><button type="button" class="btn btn-share" data-me-x>Xでシェア</button> <button type="button" class="btn" data-me-image>画像を保存</button> <button type="button" class="btn" data-me-copy>リンクをコピー</button></p>
 <p class="fine">共有リンクには、えらんだ作品とひとことだけが入ります。保存や登録はいりません。画像は作品名とひとことだけで作られます（表紙は入りません）。</p>
+<h2 class="me-h">5. みんなのすきに載せる（任意）</h2>
+<p class="fine">載せると、このカードとひとことが<a href="/minna/">みんなのすき</a>に公開されます。名前・リンク・連絡先は書かないでください。いつでも取り下げられます。載せるには、先に作品の「すき」を1回以上押している必要があります。</p>
+<p class="me-actions"><button type="button" class="btn btn-pink" data-me-pub>みんなのすきに載せる</button> <button type="button" class="btn" data-me-unpub hidden>取り下げる</button></p>
+<p class="fine" data-me-pub-status role="status"></p>
 </div>
 </div>
 </div>
@@ -620,6 +625,28 @@ function buildMe() {
   addPage(path, layout({
     path, title: 'わたしのすき5選｜マイすきカード',
     description: 'すきな作品を5つ選んで、カードにして共有できます。',
+    body, noindex: true,
+  }), { noindex: true });
+}
+
+// ---- みんなのすき（公開されたマイすきカードの一覧。中身はブラウザがAPIから読み込む） ----
+function buildMinna() {
+  const path = '/minna/';
+  const body = `
+<nav class="crumbs" aria-label="パンくずリスト"><a href="/">トップ</a><span aria-hidden="true">›</span><span>みんなのすき</span></nav>
+<article class="page minna" data-minna data-index="${worksIndexUrl}">
+<h1>みんなのすき</h1>
+<p class="col-lead">みんなが選んだ「すき5選」です。タップすると、カードを開けます。</p>
+<p><a class="btn btn-pink" href="/me/">自分のカードを作る</a></p>
+<div class="minna-list" data-minna-list></div>
+<p class="col-empty" data-minna-empty hidden>まだカードがありません。いちばん乗りで載せてみませんか？</p>
+<p><button type="button" class="btn" data-minna-more hidden>もっと見る</button></p>
+<p class="form-error" data-minna-error hidden>読みこめませんでした。時間をおいて、もう一度ひらいてください。</p>
+<p class="fine">ひとことは利用者が書いたもので、運営者が内容を保証するものではありません。不適切なカードは「通報」を押してください。複数の通報で自動的に非表示になります。</p>
+</article>`;
+  addPage(path, layout({
+    path, title: 'みんなのすき｜すき5選カード',
+    description: 'みんなが選んだ「すき5選」カードの一覧です。',
     body, noindex: true,
   }), { noindex: true });
 }
@@ -657,6 +684,8 @@ function buildStatic() {
 <li>投票した作品と日時</li>
 </ul>
 <p>これらは投票の集計と不正な投票の防止だけに使い、個人を特定する目的では使いません。お名前やメールアドレスなどの入力は求めていません。</p>
+<h2>「みんなのすき」に載せた内容</h2>
+<p>マイすきカードを「みんなのすき」に載せた場合に限り、えらんだ作品と、あなたが書いたひとことをサーバーに保存し、みんなに公開します。名前・連絡先などの入力は求めておらず、書かないでください。取り下げると削除されます。載せるのを選ばなければ、保存されません。</p>
 <h2>Cookieとブラウザへの保存</h2>
 <p>当サイトは、上記の端末IDのほか、投票済みの表示などのためにブラウザの保存領域を使います。ブラウザの設定でCookieを無効にできますが、その場合は投票できないことがあります。</p>
 <h2>広告について</h2>
@@ -756,6 +785,7 @@ buildStatic();
 buildRecommend();
 buildCollection();
 buildMe();
+buildMinna();
 
 for (const p of pages) {
   const dir = join(OUT, p.path);
