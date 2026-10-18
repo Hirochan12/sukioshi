@@ -536,6 +536,7 @@ ${others.length ? `<h2>ほかのジャンル</h2>\n<ul>${others.map((x) => `<li>
 }
 
 // ---- コレクション（「すき」を押した作品が、その人の端末にたまるページ） ----
+let worksIndexUrl = '';
 function buildCollection() {
   // ブラウザが作品名・種類・シーズン名を引くための一覧
   const index = {
@@ -545,6 +546,7 @@ function buildCollection() {
   const json = JSON.stringify(index);
   writeFileSync(join(OUT, 'assets/works-index.json'), json);
   const v = createHash('sha256').update(json).digest('hex').slice(0, 8);
+  worksIndexUrl = `/assets/works-index.json?v=${v}`;
   const path = '/collection/';
   const body = `
 <nav class="crumbs" aria-label="パンくずリスト"><a href="/">トップ</a><span aria-hidden="true">›</span><span>わたしのコレクション</span></nav>
@@ -557,7 +559,7 @@ function buildCollection() {
 <div class="col-progress" aria-hidden="true"><div class="col-bar" data-col-bar></div></div>
 <p class="fine" data-col-next></p>
 <ul class="col-badges" data-col-badges></ul>
-<p><button type="button" class="btn btn-share" data-col-share>Xでシェア</button></p>
+<p><button type="button" class="btn btn-share" data-col-share>Xでシェア</button>　<a class="btn btn-pink" href="/me/">マイすきカードを作る</a></p>
 </div>
 <div class="tag-filter-row" data-col-filters hidden>
 <button type="button" class="chip" data-col-type="all" aria-pressed="true">すべて</button>
@@ -575,6 +577,49 @@ function buildCollection() {
   addPage(path, layout({
     path, title: 'わたしのすきコレクション',
     description: '「すき」を押した作品が、この端末にたまっていくコレクションページです。',
+    body, noindex: true,
+  }), { noindex: true });
+}
+
+// ---- マイすきカード（コレクションから5作品を選び、カードにして共有する。データは端末とURLだけで持つ） ----
+function buildMe() {
+  const path = '/me/';
+  const body = `
+<nav class="crumbs" aria-label="パンくずリスト"><a href="/">トップ</a><span aria-hidden="true">›</span><span>マイすきカード</span></nav>
+<article class="page me" data-me data-index="${worksIndexUrl}">
+<h1>わたしのすき5選</h1>
+<div data-me-view hidden>
+<p class="col-lead" data-me-view-lead></p>
+<ol class="me-card" data-me-card></ol>
+<p class="me-comment" data-me-comment hidden></p>
+<p><a class="btn btn-pink" href="/me/?new=1">自分のカードも作る</a>　<a class="btn" href="/">ランキングを見る</a></p>
+</div>
+<div data-me-edit hidden>
+<p class="col-lead">「すき」を押した作品の中から、いちばん好きな5作品を選んでカードにできます。</p>
+<div class="col-empty" data-me-empty hidden>
+<p>まだコレクションに作品がありません。作品の「すき」を押すと、ここで選べるようになります。</p>
+<p><a class="btn btn-pink" href="/">ランキングを見る</a>　<a class="btn" href="/recommend/">運営者おすすめを見る</a></p>
+</div>
+<div data-me-work>
+<h2 class="me-h">1. 作品をえらぶ（5つまで）</h2>
+<ul class="me-pick" data-me-pick></ul>
+<h2 class="me-h">2. じゅんばんを決める</h2>
+<p class="fine" data-me-sel-hint></p>
+<ol class="me-card" data-me-sel></ol>
+<h2 class="me-h">3. ひとこと（40文字まで・なくてもOK）</h2>
+<p><input type="text" class="me-input" data-me-input maxlength="40" placeholder="例：全部推しです" autocomplete="off"> <span class="fine" data-me-len>0 / 40</span></p>
+<div data-me-actions hidden>
+<h2 class="me-h">4. シェアする</h2>
+<p class="me-actions"><button type="button" class="btn btn-share" data-me-x>Xでシェア</button> <button type="button" class="btn" data-me-image>画像を保存</button> <button type="button" class="btn" data-me-copy>リンクをコピー</button></p>
+<p class="fine">共有リンクには、えらんだ作品とひとことだけが入ります。保存や登録はいりません。画像は作品名とひとことだけで作られます（表紙は入りません）。</p>
+</div>
+</div>
+</div>
+<p class="form-error" data-me-error hidden>作品の一覧を読みこめませんでした。時間をおいて、もう一度ひらいてください。</p>
+</article>`;
+  addPage(path, layout({
+    path, title: 'わたしのすき5選｜マイすきカード',
+    description: 'すきな作品を5つ選んで、カードにして共有できます。',
     body, noindex: true,
   }), { noindex: true });
 }
@@ -710,6 +755,7 @@ for (const w of works) if (seasonsOf(w.id).length) buildWork(w);
 buildStatic();
 buildRecommend();
 buildCollection();
+buildMe();
 
 for (const p of pages) {
   const dir = join(OUT, p.path);
