@@ -68,6 +68,29 @@ const ordered = [...seasons].sort((a, b) => b.voteStart.localeCompare(a.voteStar
 const currentSeason = seasons.find((s) => s.id === CURRENT);
 
 // 作品ごとの主題歌（OP/ED）。works.json の songs（1行ずつのHTML）を使う
+for (const w of works) if (w.intro) w.intro = w.intro.replace(/<p>運営者のおすすめ作品です。[^<]*<\/p>/, '');
+// 運営者おすすめの理由を作品ページに出すための対応表（データは recommend.json の1か所だけ）
+const REC = new Map();
+if (existsSync(join(ROOT, 'data/recommend.json'))) {
+  for (const g of readJson('data/recommend.json').genres) {
+    for (const it of g.items) {
+      if (!it.workId) continue;
+      const list = REC.get(it.workId) || [];
+      list.push({ genreId: g.id, genreName: g.name, paras: it.paras });
+      REC.set(it.workId, list);
+    }
+  }
+}
+const recHtml = (id) => {
+  const seen = new Set();
+  const parts = [];
+  for (const r of REC.get(id)) {
+    const ps = r.paras.filter((t) => !seen.has(t));
+    ps.forEach((t) => seen.add(t));
+    if (ps.length) parts.push(ps.map((t) => `<p>${esc(t)}</p>`).join(''));
+  }
+  return `<h3>運営者のおすすめポイント</h3>${parts.join('')}<p class="fine"><a href="/recommend/">運営者おすすめの作品をもっと見る</a></p>`;
+};
 const SONGS = new Map(works.filter((w) => Array.isArray(w.songs) && w.songs.length).map((w) => [w.id, w.songs]));
 const airText = (s) => (s.id === 'recommend' ? '過去の作品もふくむ' : `${s.months}放送`);
 const fmtPeriod = (s) => (s.id === 'recommend' ? '期限なし（いつでも投票できます）' : `${fmtDate(s.voteStart)}〜${fmtDate(s.voteEnd)}`);
@@ -417,7 +440,7 @@ function buildWork(w) {
 
   ${shareBar(`/works/${w.id}/`, share, { label: 'この作品をシェア' })}
 
-  ${w.intro ? `<section class="prose work-intro"><h2>どんな作品？</h2>${w.intro}${SONGS.has(w.id) ? `<h3>主題歌</h3><ul class="work-songs">${SONGS.get(w.id).map((t) => `<li>${t}</li>`).join('')}</ul>` : ''}</section>` : ''}
+  ${w.intro ? `<section class="prose work-intro"><h2>どんな作品？</h2>${w.intro}${REC.has(w.id) ? recHtml(w.id) : ''}${SONGS.has(w.id) ? `<h3>主題歌</h3><ul class="work-songs">${SONGS.get(w.id).map((t) => `<li>${t}</li>`).join('')}</ul>` : ''}</section>` : ''}
 
   <section class="work-tags" data-work-tags data-season="${main.id}">
     <h2>みんなのおすすめポイント</h2>
