@@ -115,6 +115,7 @@ ${adsense}
       <a href="/">ランキング</a>
       <a href="/search/">さがす</a>
       <a href="/recommend/">おすすめ</a>
+      <a href="/collection/">コレクション</a>
       <a href="/seasons/">シーズン</a>
       <a href="/about/">このサイトについて</a>
     </nav>
@@ -534,6 +535,50 @@ ${others.length ? `<h2>ほかのジャンル</h2>\n<ul>${others.map((x) => `<li>
   }
 }
 
+// ---- コレクション（「すき」を押した作品が、その人の端末にたまるページ） ----
+function buildCollection() {
+  // ブラウザが作品名・種類・シーズン名を引くための一覧
+  const index = {
+    works: Object.fromEntries(works.map((w) => [w.id, [w.title, w.type]])),
+    seasons: Object.fromEntries(ordered.map((s) => [s.id, s.name])),
+  };
+  const json = JSON.stringify(index);
+  writeFileSync(join(OUT, 'assets/works-index.json'), json);
+  const v = createHash('sha256').update(json).digest('hex').slice(0, 8);
+  const path = '/collection/';
+  const body = `
+<nav class="crumbs" aria-label="パンくずリスト"><a href="/">トップ</a><span aria-hidden="true">›</span><span>わたしのコレクション</span></nav>
+<article class="page collection" data-collection data-index="/assets/works-index.json?v=${v}">
+<h1>わたしのすきコレクション</h1>
+<p class="col-lead">「すき」を押した作品が、ここにたまっていきます。ふえるほど、称号がもらえます。</p>
+<div class="col-summary" data-col-summary hidden>
+<p class="col-count"><strong data-col-count>0</strong><span>作品</span></p>
+<p class="col-title" data-col-title></p>
+<div class="col-progress" aria-hidden="true"><div class="col-bar" data-col-bar></div></div>
+<p class="fine" data-col-next></p>
+<ul class="col-badges" data-col-badges></ul>
+<p><button type="button" class="btn btn-share" data-col-share>Xでシェア</button></p>
+</div>
+<div class="tag-filter-row" data-col-filters hidden>
+<button type="button" class="chip" data-col-type="all" aria-pressed="true">すべて</button>
+<button type="button" class="chip" data-col-type="manga" aria-pressed="false">漫画</button>
+<button type="button" class="chip" data-col-type="novel" aria-pressed="false">ラノベ</button>
+</div>
+<div data-col-list></div>
+<div class="col-empty" data-col-empty hidden>
+<p>まだ作品がありません。作品の「すき」を押すと、ここに表紙がならびます。</p>
+<p><a class="btn btn-pink" href="/">ランキングを見る</a>　<a class="btn" href="/recommend/">運営者おすすめを見る</a></p>
+</div>
+<p class="form-error" data-col-error hidden>作品の一覧を読みこめませんでした。時間をおいて、もう一度ひらいてください。</p>
+<p class="fine">コレクションは、いま使っているこの端末のブラウザに保存されます。スマホとパソコンでは別々になり、ブラウザのデータを消すと消えます。</p>
+</article>`;
+  addPage(path, layout({
+    path, title: 'わたしのすきコレクション',
+    description: '「すき」を押した作品が、この端末にたまっていくコレクションページです。',
+    body, noindex: true,
+  }), { noindex: true });
+}
+
 function buildStatic() {
   simplePage('/about/', 'このサイトについて', 'すきおしは、今期アニメの原作漫画・ラノベにタップで「すき」を投票できるランキングサイトです。運営者情報と投票の数え方を説明します。', `
 <p>すきおしは、放送中のアニメの<strong>原作の漫画・ライトノベル</strong>に「すき」を送って、いまどの作品が好かれているかを見られるサイトです。アニメを見て原作が気になったときの作品選びや、推しの作品を応援する場所として使ってください。</p>
@@ -664,6 +709,7 @@ for (const s of seasons) buildSeason(s);
 for (const w of works) if (seasonsOf(w.id).length) buildWork(w);
 buildStatic();
 buildRecommend();
+buildCollection();
 
 for (const p of pages) {
   const dir = join(OUT, p.path);
