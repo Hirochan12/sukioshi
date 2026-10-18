@@ -34,6 +34,32 @@
   };
   const isVoted = (season, work) => Boolean(votedToday().works[`${season}:${work}`]);
 
+  // ---------- コレクション（「すき」を押した作品をこの端末にためる） ----------
+  const COLLECTION_KEY = 'sukioshi:collection';
+  const BADGES = [
+    [1, 'はじめてのすき'], [5, 'すき見習い'], [10, 'すきコレクター'],
+    [30, 'すきマスター'], [60, 'すき博士'], [100, 'すき伝説'],
+  ];
+  const badgeAt = (n) => BADGES.filter(([min]) => n >= min).pop() || null;
+  const getCollection = () => {
+    const c = store.get(COLLECTION_KEY, null);
+    return c && c.items ? c : { v: 1, items: {} };
+  };
+  // 作品をコレクションに入れる。すでにあれば何もしない
+  function collect(season, work) {
+    const c = getCollection();
+    const before = Object.keys(c.items).length;
+    if (!c.items[work]) {
+      c.items[work] = { s: season, t: Date.now() };
+      store.set(COLLECTION_KEY, c);
+    }
+    const count = Object.keys(c.items).length;
+    const unlocked = count > before ? BADGES.find(([min]) => min === count) || null : null;
+    return { added: count > before, count, unlocked };
+  }
+  // 今日すでに押した分もコレクションに入れておく（この機能の前に押した票の取りこぼしを防ぐ）
+  Object.keys(votedToday().works).forEach((k) => { const [season, work] = k.split(':'); if (season && work) collect(season, work); });
+
   // 検索用：全角半角・カタカナ/ひらがな・記号や空白の違いを吸収する
   const normKey = (t) => String(t || '')
     .normalize('NFKC').toLowerCase()
@@ -115,10 +141,13 @@
         }
       }, { rootMargin: '200px' })
     : null;
-  $$('img[data-cover]').forEach((img) => {
-    if (coverObserver) coverObserver.observe(img);
-    else loadBook(img.dataset.cover).then((d) => applyBook(img, d));
-  });
+  function observeCovers(root = document) {
+    $$('img[data-cover]', root).forEach((img) => {
+      if (coverObserver) coverObserver.observe(img);
+      else loadBook(img.dataset.cover).then((d) => applyBook(img, d));
+    });
+  }
+  observeCovers();
 
   // ---------- 広告 ----------
   function fillAd(slotEl) {
@@ -331,6 +360,7 @@
         return;
       }
       markVoted(season, work);
+      const col = collect(season, work);
       $$(`[data-vote][data-season="${season}"][data-work="${work}"]`).forEach(setVoted);
       if (data.status === 'already') {
         if (!isTagged(season, work)) openTagSheet(season, work, title);
@@ -338,7 +368,9 @@
         return;
       }
       flyHeart(btn);
-      toast(data.rank ? `『${title}』にすきを送りました。いま${data.rank}位です` : `『${title}』にすきを送りました`);
+      const base = data.rank ? `『${title}』にすきを送りました。いま${data.rank}位です` : `『${title}』にすきを送りました`;
+      toast(col.unlocked ? `称号「${col.unlocked[1]}」を手に入れました！（コレクション${col.count}作品）`
+        : col.added ? `${base}（コレクション${col.count}作品目）` : base);
       $$(`[data-ranking][data-season="${season}"]`).forEach((s) => s.dispatchEvent(new CustomEvent('sukioshi:voted')));
       $$(`[data-work-rank][data-season="${season}"]`).forEach((el) => loadWorkRank(el, data));
       setTimeout(() => openTagSheet(season, work, title, { rank: data.rank }), 700);
@@ -348,6 +380,76 @@
       btn.classList.remove('is-busy');
     }
   });
+
+  // ---------- コレクションのページ ----------
+  const colRoot = $('[data-collection]');
+  if (colRoot) {
+    const TYPE_LABEL = { manga: '漫画', novel: 'ラノベ' };
+    const state = { type: 'all' };
+    const listEl = $('[data-col-list]', colRoot);
+    const emptyEl = $('[data-col-empty]', colRoot);
+    const summaryEl = $('[data-col-summary]', colRoot);
+    const filtersEl = $('[data-col-filters]', colRoot);
+    const errEl = $('[data-col-error]', colRoot);
+    const c = getCollection();
+    const total = Object.keys(c.items).length;
+
+    function renderSummary() {
+      summaryEl.hidden = total === 0;
+      $('[data-col-count]', colRoot).textContent = fmt(total);
+      const cur = badgeAt(total);
+      const next = BADGES.find(([min]) => min > total);
+      $('[data-col-title]', colRoot).textContent = cur ? `称号：${cur[1]}` : '';
+      const pct = next ? Math.max(6, Math.round((total / next[0]) * 100)) : 100;
+      $('[data-col-bar]', colRoot).style.width = `${pct}%`;
+      $('[data-col-next]', colRoot).textContent = next
+        ? `あと${next[0] - total}作品で「${next[1]}」`
+        : 'すべての称号を手に入れました！';
+      $('[data-col-badges]', colRoot).innerHTML = BADGES
+        .map(([min, name]) => `<li class="col-badge${total >= min ? ' is-got' : ''}"><span class="col-badge-n">${min}</span>${name}</li>`)
+        .join('');
+    }
+
+    function renderList(index) {
+      const items = Object.entries(c.items)
+        .map(([id, v]) => ({ id, s: v.s, t: v.t || 0, w: index.works[id] }))
+        .filter((x) => x.w && (state.type === 'all' || x.w[1] === state.type));
+      const groups = new Map();
+      for (const x of items) { if (!groups.has(x.s)) groups.set(x.s, []); groups.get(x.s).push(x); }
+      const order = Object.keys(index.seasons);
+      const keys = [...groups.keys()].sort((a, b) => (order.indexOf(a) + 1 || 99) - (order.indexOf(b) + 1 || 99));
+      listEl.innerHTML = keys.map((sid) => {
+        const rows = groups.get(sid).sort((a, b) => b.t - a.t).map((x) => `<li class="col-item"><a href="/works/${x.id}/">
+<span class="col-cover"><img data-cover="${x.id}" alt="" width="96" height="134"></span>
+<span class="col-name">${x.w[0].replace(/[&<>"]/g, (ch) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[ch]))}</span>
+<span class="col-type col-type-${x.w[1]}">${TYPE_LABEL[x.w[1]] || ''}</span></a></li>`).join('');
+        return `<section class="col-group"><h2>${index.seasons[sid] || sid}<span class="col-group-n">${groups.get(sid).length}作品</span></h2><ul class="col-grid">${rows}</ul></section>`;
+      }).join('');
+      emptyEl.hidden = total > 0;
+      observeCovers(listEl);
+    }
+
+    renderSummary();
+    emptyEl.hidden = total > 0;
+    filtersEl.hidden = total === 0;
+    if (total > 0) {
+      getJson(colRoot.dataset.index).then((index) => {
+        renderList(index);
+        $$('[data-col-type]', filtersEl).forEach((b) => b.addEventListener('click', () => {
+          state.type = b.dataset.colType;
+          $$('[data-col-type]', filtersEl).forEach((x) => x.setAttribute('aria-pressed', String(x === b)));
+          renderList(index);
+        }));
+      }).catch(() => { errEl.hidden = false; });
+    }
+
+    $('[data-col-share]', colRoot)?.addEventListener('click', () => {
+      const cur = badgeAt(total);
+      const text = `すきおしで${total}作品を「すき」コレクションしました！${cur ? `\n称号：${cur[1]}` : ''}\n#すきおし`;
+      const u = `https://x.com/intent/post?text=${encodeURIComponent(text)}&url=${encodeURIComponent(config.siteUrl || location.origin)}`;
+      window.open(u, '_blank', 'noopener');
+    });
+  }
 
   // ---------- ページの一番上に戻る ----------
   const toTop = $('[data-to-top]');
