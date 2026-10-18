@@ -387,3 +387,14 @@ body.no-scroll { overflow: hidden; }
 @media (min-width: 560px) { .me-pick { grid-template-columns: repeat(5, minmax(0, 1fr)); } }
 @media (max-width: 420px) { .me-ctl-btn { min-width: 36px; } .me-row { flex-wrap: wrap; } .me-ctl { margin-left: 40px; } }
 .me-row .col-type { flex: 0 0 auto; white-space: nowrap; align-self: center; }
+
+/* みんなのすき */
+.minna-list { display: grid; gap: 14px; margin: 16px 0; }
+.minna-card { background: var(--bg-soft); border-radius: var(--radius); padding: 12px; }
+.minna-link { display: block; color: var(--text); text-decoration: none; }
+.minna-covers { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 6px; }
+.minna-titles { margin: 10px 0 0; padding-left: 22px; font-size: 13px; line-height: 1.6; }
+.minna-comment { margin: 8px 0 0; font-weight: 700; color: var(--pink-dark); overflow-wrap: anywhere; }
+.minna-report { margin-top: 8px; font: inherit; font-size: 12px; color: var(--text-faint); background: none; border: 0; padding: 4px 0; cursor: pointer; text-decoration: underline; }
+.minna-report:disabled { cursor: default; text-decoration: none; }
+@media (min-width: 640px) { .minna-list { grid-template-columns: 1fr 1fr; } }
