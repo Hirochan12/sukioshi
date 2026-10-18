@@ -66,6 +66,14 @@ const seasonsOf = (workId) => seasons.filter((s) => s.works.some((e) => e.workId
 const noteOf = (season, workId) => season.works.find((e) => e.workId === workId)?.note || '';
 const ordered = [...seasons].sort((a, b) => b.voteStart.localeCompare(a.voteStart) || b.id.localeCompare(a.id));
 const currentSeason = seasons.find((s) => s.id === CURRENT);
+
+// 作品ごとの主題歌（OP/ED）。シーズンのまとめ記事（article）にある一覧から取り出す。新しいシーズンの記載を優先
+const SONGS = new Map();
+for (const s of ordered) {
+  for (const [, id, html] of (s.article || '').matchAll(/<li><a href="\/works\/(w\d+)\/">[^<]*<\/a><br><small>(.*?)<\/small><\/li>/g).map((m) => m)) {
+    if (!SONGS.has(id)) SONGS.set(id, html.split(/　(?=(?:OP|ED)：)/).filter(Boolean));
+  }
+}
 const airText = (s) => (s.id === 'recommend' ? '過去の作品もふくむ' : `${s.months}放送`);
 const fmtPeriod = (s) => (s.id === 'recommend' ? '期限なし（いつでも投票できます）' : `${fmtDate(s.voteStart)}〜${fmtDate(s.voteEnd)}`);
 const fmtDate = (d) => {
@@ -414,7 +422,7 @@ function buildWork(w) {
 
   ${shareBar(`/works/${w.id}/`, share, { label: 'この作品をシェア' })}
 
-  ${w.intro ? `<section class="prose work-intro"><h2>どんな作品？</h2>${w.intro}</section>` : ''}
+  ${w.intro ? `<section class="prose work-intro"><h2>どんな作品？</h2>${w.intro}${SONGS.has(w.id) ? `<h3>主題歌</h3><ul class="work-songs">${SONGS.get(w.id).map((t) => `<li>${t}</li>`).join('')}</ul>` : ''}</section>` : ''}
 
   <section class="work-tags" data-work-tags data-season="${main.id}">
     <h2>みんなのおすすめポイント</h2>
