@@ -79,7 +79,7 @@ export async function onRequestGet({ request, env, waitUntil }) {
         seriesName: item.seriesName || '',
         // 200px の画像を少し大きめ（_ex=300x300）で取得
         imageUrl: item.largeImageUrl ? item.largeImageUrl.replace(/_ex=\d+x\d+/, '_ex=300x300') : '',
-        url: item.affiliateUrl || item.itemUrl,
+        url: work.noOrder ? '' : (item.affiliateUrl || item.itemUrl), // noOrder: 楽天で注文できない作品はリンクを出さない
       }
     : { ok: false, code: 'not_found', tried };
 
