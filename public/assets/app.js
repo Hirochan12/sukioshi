@@ -96,7 +96,7 @@
   function loadBook(id) {
     if (bookCache.has(id)) return bookCache.get(id);
     let saved = null;
-    try { saved = JSON.parse(sessionStorage.getItem('sukioshi:book5:' + id) || 'null'); } catch { /* 無視 */ }
+    try { saved = JSON.parse(sessionStorage.getItem('sukioshi:book6:' + id) || 'null'); } catch { /* 無視 */ }
     const p = saved ? Promise.resolve(saved) : new Promise((resolve) => { queue.push({ id, resolve, tries: 0 }); pump(); });
     bookCache.set(id, p);
     return p;
@@ -105,7 +105,7 @@
     while (running < MAX_PARALLEL && queue.length) {
       const job = queue.shift();
       running++;
-      getJson('/api/book?id=' + encodeURIComponent(job.id) + '&v=5')
+      getJson('/api/book?id=' + encodeURIComponent(job.id) + '&v=6')
         .catch(() => ({ ok: false, code: 'network' }))
         .then((data) => {
           if (!data.ok && (data.code === 'busy' || data.code === 'network') && job.tries < 3) {
@@ -113,7 +113,7 @@
             setTimeout(() => { queue.push(job); pump(); }, 1500 * job.tries);
             return;
           }
-          if (data.ok) { try { sessionStorage.setItem('sukioshi:book5:' + job.id, JSON.stringify(data)); } catch { /* 無視 */ } }
+          if (data.ok) { try { sessionStorage.setItem('sukioshi:book6:' + job.id, JSON.stringify(data)); } catch { /* 無視 */ } }
           job.resolve(data);
         })
         .finally(() => { running--; setTimeout(pump, 350); });
@@ -953,7 +953,12 @@
     links.forEach((a) => a.classList.add('is-disabled'));
     loadBook(id).then((d) => {
       if (!d || !d.ok) return;
-      links.forEach((a) => { a.href = d.url; a.classList.remove('is-disabled'); });
+      links.forEach((a) => {
+        if (d.url) { a.href = d.url; a.classList.remove('is-disabled'); return; }
+        // 楽天で注文できない作品：ボタンは隠し、表紙はリンクなしで表示
+        if (a.classList.contains('btn')) a.hidden = true;
+        else { a.removeAttribute('href'); a.removeAttribute('target'); a.classList.remove('is-disabled'); }
+      });
       const img = $('img[data-cover]', workPage);
       if (img && !img.src) img.src = d.imageUrl;
       const author = $('[data-book-author]', workPage);
