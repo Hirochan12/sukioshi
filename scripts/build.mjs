@@ -419,6 +419,10 @@ function buildWork(w) {
     .filter((e) => e.workId !== w.id && workById.get(e.workId).type === w.type)
     .slice(0, 6)
     .map((e) => workById.get(e.workId));
+  const makerKey = (x) => x.magazine || x.publisher || '';
+  const sameMaker = makerKey(w)
+    ? works.filter((x) => x.id !== w.id && x.type === w.type && makerKey(x) === makerKey(w)).slice(0, 5)
+    : [];
   const share = `『${w.title}』がすき！ #すきおし`;
   const body = `
 <nav class="crumbs" aria-label="パンくずリスト"><a href="/">トップ</a><span aria-hidden="true">›</span><a href="/season/${main.id}/">${esc(main.name)}</a><span aria-hidden="true">›</span><span>${esc(w.title)}</span></nav>
@@ -458,6 +462,15 @@ function buildWork(w) {
     <ul class="history-list">
 ${ss.map((s) => `      <li data-history data-season="${s.id}"><a href="/season/${s.id}/">${esc(s.label)}</a><span class="hl-note">${esc(noteOf(s, w.id))}</span><span class="hl-rank" data-hl-rank>–</span></li>`).join('\n')}
     </ul>
+  </section>
+
+  <section class="work-data">
+    <h2>『${esc(w.title)}』の作品データ</h2>
+    <dl class="data-list">
+      <dt>種類</dt><dd>${typeLong}原作</dd>
+${w.rakutenAuthor ? `      <dt>作者</dt><dd>${esc(w.rakutenAuthor)}</dd>\n` : ''}${w.magazine || w.publisher ? `      <dt>${w.magazine ? (w.type === 'manga' ? '掲載誌' : 'レーベル') : '出版社'}</dt><dd>${esc(w.magazine && w.publisher ? `${w.magazine}（${w.publisher}）` : w.magazine || w.publisher)}</dd>\n` : ''}      <dt>アニメの放送</dt><dd>${main.id === 'recommend' ? '過去の作品もふくむ' : esc(main.label)}</dd>
+      <dt>すきおしでの掲載</dt><dd>${ss.map((x) => `<a href="/season/${x.id}/">${esc(x.name)}</a>`).join('、')}</dd>
+${sameMaker.length ? `      <dt>同じ${w.magazine ? (w.type === 'manga' ? '掲載誌' : 'レーベル') : '出版社'}の作品</dt><dd>${sameMaker.map((r) => `<a href="/works/${r.id}/">${esc(r.title)}</a>`).join('、')}</dd>\n` : ''}${REC.has(w.id) ? `      <dt>運営者おすすめ</dt><dd>${[...new Map(REC.get(w.id).map((r) => [r.genreId, r.genreName])).entries()].map(([id, n]) => `<a href="/recommend/${id}/">${esc(n)}</a>`).join('、')}</dd>\n` : ''}    </dl>
   </section>
 
   ${adSlot('work-bottom')}
