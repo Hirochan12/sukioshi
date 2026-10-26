@@ -15,6 +15,10 @@ const { current: CURRENT, seasons } = readJson('data/seasons.json');
 const works = readJson('data/works.json');
 const tags = readJson('data/tags.json');
 const workById = new Map(works.map((w) => [w.id, w]));
+// 全作品のジャンル（data/genres.json）
+const GENRE_DATA = existsSync(join(ROOT, 'data/genres.json')) ? readJson('data/genres.json') : { genres: [], works: {} };
+const GENRE_BY_ID = new Map(GENRE_DATA.genres.map((g) => [g.id, g]));
+const genresOf = (id) => (GENRE_DATA.works[id] || []).map((gid) => GENRE_BY_ID.get(gid)).filter(Boolean);
 const SITE_URL = (process.env.SITE_URL || site.url).replace(/\/$/, '');
 const BUILD_DATE = new Date(Date.now() + 9 * 3600e3).toISOString().slice(0, 10);
 
@@ -390,7 +394,7 @@ function buildSearch() {
   const body = `
 <nav class="crumbs" aria-label="パンくずリスト"><a href="/">トップ</a><span aria-hidden="true">›</span><span>さがす</span></nav>
 <h1>アニメ・原作をさがす</h1>
-<p>すきおしにのっている、すべてのシーズンのアニメ原作（漫画・小説/ライトノベル）から作品名でさがせます。ひらがな・カタカナどちらでも大丈夫です。</p>
+<p>すきおしにのっている、すべてのシーズンのアニメ原作（漫画・小説/ライトノベル）から作品名でさがせます。ひらがな・カタカナどちらでも大丈夫です。ジャンルから探したいときは<a href="/genre/">ジャンル別一覧</a>へどうぞ。</p>
 <div class="site-search" data-site-search>
   <input type="search" class="search-input search-input-large" data-site-search-input placeholder="作品名を入力（例：スライム、薬屋）" aria-label="作品名でさがす" autocomplete="off" enterkeyhint="search">
   <div class="filters" role="group" aria-label="原作の種類">
@@ -470,7 +474,7 @@ ${ss.map((s) => `      <li data-history data-season="${s.id}"><a href="/season/$
       <dt>種類</dt><dd>${typeLong}原作</dd>
 ${w.rakutenAuthor ? `      <dt>作者</dt><dd>${esc(w.rakutenAuthor)}</dd>\n` : ''}${w.magazine || w.publisher ? `      <dt>${w.magazine ? (w.type === 'manga' ? '掲載誌' : 'レーベル') : '出版社'}</dt><dd>${esc(w.magazine && w.publisher ? `${w.magazine}（${w.publisher}）` : w.magazine || w.publisher)}</dd>\n` : ''}      <dt>アニメの放送</dt><dd>${main.id === 'recommend' ? '過去の作品もふくむ' : esc(main.label)}</dd>
       <dt>すきおしでの掲載</dt><dd>${ss.map((x) => `<a href="/season/${x.id}/">${esc(x.name)}</a>`).join('、')}</dd>
-${sameMaker.length ? `      <dt>同じ${w.magazine ? (w.type === 'manga' ? '掲載誌' : 'レーベル') : '出版社'}の作品</dt><dd>${sameMaker.map((r) => `<a href="/works/${r.id}/">${esc(r.title)}</a>`).join('、')}</dd>\n` : ''}${REC.has(w.id) ? `      <dt>運営者おすすめ</dt><dd>${[...new Map(REC.get(w.id).map((r) => [r.genreId, r.genreName])).entries()].map(([id, n]) => `<a href="/recommend/${id}/">${esc(n)}</a>`).join('、')}</dd>\n` : ''}    </dl>
+${genresOf(w.id).length ? `      <dt>ジャンル</dt><dd>${genresOf(w.id).map((g) => `<a href="/genre/${g.id}/">${esc(g.name)}</a>`).join('、')}</dd>\n` : ''}${sameMaker.length ? `      <dt>同じ${w.magazine ? (w.type === 'manga' ? '掲載誌' : 'レーベル') : '出版社'}の作品</dt><dd>${sameMaker.map((r) => `<a href="/works/${r.id}/">${esc(r.title)}</a>`).join('、')}</dd>\n` : ''}${REC.has(w.id) ? `      <dt>運営者おすすめ</dt><dd>${[...new Map(REC.get(w.id).map((r) => [r.genreId, r.genreName])).entries()].map(([id, n]) => `<a href="/recommend/${id}/">${esc(n)}</a>`).join('、')}</dd>\n` : ''}    </dl>
   </section>
 
   ${adSlot('work-bottom')}
@@ -537,6 +541,43 @@ function contactHtml() {
   return parts.join('\n');
 }
 
+// ---- ジャンル別の作品一覧（全作品） ----
+function buildGenres() {
+  if (!GENRE_DATA.genres.length) return;
+  const byGenre = new Map(GENRE_DATA.genres.map((g) => [g.id, works.filter((w) => (GENRE_DATA.works[w.id] || []).includes(g.id) && seasonsOf(w.id).length)]));
+  const grid = `<ul class="genre-grid">${GENRE_DATA.genres.map((g) => `<li><a class="btn" href="/genre/${g.id}/"><span>${esc(g.name)}</span><small>${byGenre.get(g.id).length}作品</small></a></li>`).join('')}</ul>`;
+  addPage('/genre/', layout({ path: '/genre/', title: 'ジャンル別にアニメ原作を探す', description: `すきおしにのっているアニメ原作の漫画・小説/ライトノベルを、${GENRE_DATA.genres.map((g) => g.name).join('・')}のジャンル別に探せます。`, body: `
+<nav class="crumbs" aria-label="パンくずリスト"><a href="/">トップ</a><span aria-hidden="true">›</span><span>ジャンル</span></nav>
+<article class="prose page">
+<h1>ジャンル別にアニメ原作を探す</h1>
+<p>すきおしにのっている、アニメ原作の漫画・小説/ライトノベルを、ジャンルごとにまとめました。1つの作品が、複数のジャンルに入っていることもあります。</p>
+${grid}
+<p class="fine">作品名で探したいときは<a href="/search/">さがす</a>、運営者が選んだ作品を見たいときは<a href="/recommend/">おすすめ</a>をどうぞ。</p>
+</article>` }), { priority: 0.7 });
+  for (const g of GENRE_DATA.genres) {
+    const list = byGenre.get(g.id);
+    const path = `/genre/${g.id}/`;
+    const items = list.map((w) => `  <li class="search-item">
+    <a href="/works/${w.id}/"><span class="si-title">${esc(w.title)}</span>
+    <span class="si-meta"><span class="tag tag-${w.type}">${TYPE_LABEL[w.type]}</span>${w.magazine || w.publisher ? `<span>${esc(w.magazine && w.publisher ? `${w.magazine}（${w.publisher}）` : w.magazine || w.publisher)}</span>` : ''}</span></a>
+  </li>`).join('\n');
+    const others = GENRE_DATA.genres.filter((x) => x.id !== g.id);
+    const body = `
+<nav class="crumbs" aria-label="パンくずリスト"><a href="/">トップ</a><span aria-hidden="true">›</span><a href="/genre/">ジャンル</a><span aria-hidden="true">›</span><span>${esc(g.name)}</span></nav>
+<article class="prose page">
+<h1>${esc(g.name)}のアニメ原作（${list.length}作品）</h1>
+<p>${esc(g.description)}</p>
+<p>漫画${list.filter((w) => w.type === 'manga').length}作品、小説/ライトノベル${list.filter((w) => w.type === 'novel').length}作品をのせています。気になった作品を開くと、あらすじや原作の情報を見て、「すき」を送れます。</p>
+<ul class="search-list">
+${items}
+</ul>
+<h2>ほかのジャンル</h2>
+<ul class="genre-others">${others.map((x) => `<li><a href="/genre/${x.id}/">${esc(x.name)}</a></li>`).join('')}</ul>
+</article>`;
+    addPage(path, layout({ path, title: `${g.name}のアニメ原作 ${list.length}作品`, description: `${g.description}${list.length}作品を集めています。`, body }), { priority: 0.7 });
+  }
+}
+
 // ---- 運営者おすすめ ----
 function buildRecommend() {
   if (!existsSync(join(ROOT, 'data/recommend.json'))) return;
@@ -550,6 +591,7 @@ ${crumbs('')}
 <p>${esc(r.intro)}</p>
 <h2>ジャンルから選ぶ</h2>
 ${genreGrid(r.genres)}
+<p class="fine">運営者が選んだ作品以外も含む、すべての作品は<a href="/genre/">ジャンル別一覧</a>から探せます。</p>
 </article>` }), { priority: 0.7 });
   for (const g of r.genres) {
     const path = `/recommend/${g.id}/`;
@@ -821,6 +863,7 @@ const ASSET_VERSION = hashFile(join(ROOT, 'public/assets/style.css')).slice(0, 4
 buildIndex();
 buildSeasonList();
 buildSearch();
+buildGenres();
 for (const s of seasons) buildSeason(s);
 for (const w of works) if (seasonsOf(w.id).length) buildWork(w);
 buildStatic();
