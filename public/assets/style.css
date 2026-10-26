@@ -411,3 +411,5 @@ body.no-scroll { overflow: hidden; }
 .data-list { display: grid; grid-template-columns: 8em 1fr; gap: 8px 12px; margin: 0 0 12px; font-size: 14px; }
 .data-list dt { color: var(--text-sub); }
 .data-list dd { margin: 0; }
+.genre-others { list-style: none; margin: 8px 0 20px; padding: 0; display: flex; flex-wrap: wrap; gap: 8px 14px; }
+.genre-others li { margin: 0; }
