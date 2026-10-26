@@ -1,0 +1,1286 @@
+{
+ "title": "ジャンル別に探す",
+ "genres": [
+  {
+   "id": "isekai",
+   "name": "異世界・ファンタジー",
+   "description": "異世界に転生・転移する物語や、剣と魔法の世界が舞台の作品です。冒険や成り上がり、のんびりした暮らし、貴族や聖女が活躍する物語まで、幅広い作品を集めました。"
+  },
+  {
+   "id": "battle",
+   "name": "バトル・アクション",
+   "description": "能力を使った戦いや、格闘、剣と魔法のバトルなど、迫力のある戦闘シーンが魅力の作品です。熱血もの、ダークなもの、笑えるバトルまで集めました。"
+  },
+  {
+   "id": "love",
+   "name": "恋愛・ラブコメ",
+   "description": "恋を描いた物語や、ドキドキのラブコメ作品です。幼なじみ、学園、大人の恋、ファンタジーの世界の恋愛まで、さまざまな恋のかたちを集めました。"
+  },
+  {
+   "id": "comedy",
+   "name": "コメディ・日常",
+   "description": "笑えるギャグ作品や、ゆるい毎日を描いた日常系の作品です。にぎやかな学園生活や、のんびりした暮らしを描いた作品を集めました。"
+  },
+  {
+   "id": "mystery",
+   "name": "ミステリー・サスペンス",
+   "description": "事件の謎を追う推理ものや、先の読めないサスペンスの作品です。頭脳戦、デスゲーム、ホラーミステリーまで、続きが気になる作品を集めました。"
+  },
+  {
+   "id": "horror",
+   "name": "ホラー",
+   "description": "幽霊や妖怪、怪異が登場するこわい物語の作品です。ぞくっとする怖さのものから、笑えるホラーコメディまで集めました。"
+  },
+  {
+   "id": "sports",
+   "name": "スポーツ",
+   "description": "野球、サッカー、バスケ、バレーなど、スポーツに打ち込む人たちを描いた作品です。試合の熱さと、仲間とのきずなが魅力の作品を集めました。"
+  },
+  {
+   "id": "youth",
+   "name": "青春・学園",
+   "description": "学校生活や、部活、友情、成長を描いた作品です。大学生活や、バンド、芸術に打ち込む物語まで、青春のさまざまな姿を集めました。"
+  },
+  {
+   "id": "sf",
+   "name": "SF",
+   "description": "未来の世界や、科学、宇宙、仮想世界などが登場する作品です。サイバーパンクから、終末もの、ゲームの世界まで集めました。"
+  },
+  {
+   "id": "tears",
+   "name": "泣ける・感動",
+   "description": "運営者が泣けると思った作品を、ジャンルとして集めました。友情や別れ、成長が描かれた作品です。"
+  }
+ ],
+ "works": {
+  "w001": [
+   "comedy"
+  ],
+  "w002": [
+   "love"
+  ],
+  "w003": [
+   "mystery",
+   "youth"
+  ],
+  "w004": [
+   "horror",
+   "comedy"
+  ],
+  "w005": [
+   "love",
+   "comedy"
+  ],
+  "w006": [
+   "love",
+   "youth"
+  ],
+  "w007": [
+   "battle",
+   "comedy"
+  ],
+  "w008": [
+   "mystery"
+  ],
+  "w009": [
+   "love",
+   "battle"
+  ],
+  "w010": [
+   "love",
+   "comedy"
+  ],
+  "w011": [
+   "isekai",
+   "love"
+  ],
+  "w012": [
+   "comedy",
+   "youth"
+  ],
+  "w013": [
+   "isekai",
+   "battle"
+  ],
+  "w014": [
+   "isekai",
+   "youth"
+  ],
+  "w015": [
+   "sf",
+   "battle"
+  ],
+  "w016": [
+   "youth"
+  ],
+  "w017": [
+   "sf",
+   "comedy"
+  ],
+  "w018": [
+   "love",
+   "comedy"
+  ],
+  "w019": [
+   "love",
+   "youth"
+  ],
+  "w020": [
+   "isekai",
+   "love"
+  ],
+  "w021": [
+   "comedy",
+   "youth"
+  ],
+  "w022": [
+   "battle",
+   "comedy"
+  ],
+  "w023": [
+   "battle"
+  ],
+  "w024": [
+   "battle",
+   "isekai"
+  ],
+  "w025": [
+   "battle"
+  ],
+  "w026": [
+   "love"
+  ],
+  "w027": [
+   "battle"
+  ],
+  "w028": [
+   "isekai",
+   "battle"
+  ],
+  "w029": [
+   "love",
+   "youth"
+  ],
+  "w030": [
+   "battle"
+  ],
+  "w031": [
+   "battle"
+  ],
+  "w032": [
+   "comedy"
+  ],
+  "w033": [
+   "comedy",
+   "battle"
+  ],
+  "w034": [
+   "battle"
+  ],
+  "w035": [
+   "sports",
+   "comedy"
+  ],
+  "w036": [
+   "isekai",
+   "comedy"
+  ],
+  "w037": [
+   "isekai",
+   "battle"
+  ],
+  "w038": [
+   "comedy"
+  ],
+  "w039": [
+   "battle",
+   "isekai"
+  ],
+  "w040": [
+   "mystery"
+  ],
+  "w041": [
+   "isekai",
+   "battle"
+  ],
+  "w042": [
+   "horror"
+  ],
+  "w043": [
+   "horror",
+   "comedy"
+  ],
+  "w044": [
+   "youth"
+  ],
+  "w045": [
+   "isekai",
+   "comedy"
+  ],
+  "w046": [
+   "love",
+   "isekai"
+  ],
+  "w047": [
+   "isekai"
+  ],
+  "w048": [
+   "isekai",
+   "battle"
+  ],
+  "w049": [
+   "isekai",
+   "comedy"
+  ],
+  "w050": [
+   "isekai",
+   "battle"
+  ],
+  "w051": [
+   "love",
+   "youth"
+  ],
+  "w052": [
+   "isekai"
+  ],
+  "w053": [
+   "isekai"
+  ],
+  "w054": [
+   "isekai"
+  ],
+  "w055": [
+   "isekai",
+   "battle"
+  ],
+  "w056": [
+   "love",
+   "youth"
+  ],
+  "w057": [
+   "isekai"
+  ],
+  "w058": [
+   "love",
+   "youth"
+  ],
+  "w059": [
+   "sf"
+  ],
+  "w060": [
+   "isekai"
+  ],
+  "w061": [
+   "isekai",
+   "comedy"
+  ],
+  "w062": [
+   "isekai",
+   "love"
+  ],
+  "w063": [
+   "isekai",
+   "love"
+  ],
+  "w064": [
+   "isekai"
+  ],
+  "w065": [
+   "isekai"
+  ],
+  "w066": [
+   "isekai",
+   "love"
+  ],
+  "w067": [
+   "isekai",
+   "love"
+  ],
+  "w068": [
+   "isekai"
+  ],
+  "w069": [
+   "isekai",
+   "battle"
+  ],
+  "w070": [
+   "isekai",
+   "battle"
+  ],
+  "w071": [
+   "isekai"
+  ],
+  "w072": [
+   "isekai"
+  ],
+  "w073": [
+   "isekai",
+   "battle"
+  ],
+  "w074": [
+   "comedy"
+  ],
+  "w075": [
+   "sports"
+  ],
+  "w076": [
+   "sports",
+   "love"
+  ],
+  "w077": [
+   "comedy"
+  ],
+  "w078": [
+   "comedy"
+  ],
+  "w079": [
+   "comedy"
+  ],
+  "w080": [
+   "isekai",
+   "love"
+  ],
+  "w081": [
+   "love"
+  ],
+  "w082": [
+   "isekai",
+   "battle"
+  ],
+  "w083": [
+   "isekai",
+   "love"
+  ],
+  "w084": [
+   "comedy",
+   "sf"
+  ],
+  "w085": [
+   "love",
+   "youth"
+  ],
+  "w086": [
+   "battle",
+   "sf"
+  ],
+  "w087": [
+   "isekai",
+   "battle"
+  ],
+  "w088": [
+   "sports",
+   "battle"
+  ],
+  "w089": [
+   "battle"
+  ],
+  "w090": [
+   "comedy",
+   "youth"
+  ],
+  "w091": [
+   "horror",
+   "sf"
+  ],
+  "w092": [
+   "isekai",
+   "love"
+  ],
+  "w093": [
+   "sports"
+  ],
+  "w094": [
+   "comedy"
+  ],
+  "w095": [
+   "battle"
+  ],
+  "w096": [
+   "isekai",
+   "comedy"
+  ],
+  "w097": [
+   "battle"
+  ],
+  "w098": [
+   "battle"
+  ],
+  "w099": [
+   "battle",
+   "sf"
+  ],
+  "w100": [
+   "horror",
+   "isekai"
+  ],
+  "w101": [
+   "battle"
+  ],
+  "w102": [
+   "sf"
+  ],
+  "w103": [
+   "isekai",
+   "battle"
+  ],
+  "w104": [
+   "love"
+  ],
+  "w105": [
+   "battle"
+  ],
+  "w106": [
+   "isekai",
+   "battle"
+  ],
+  "w107": [
+   "isekai",
+   "battle"
+  ],
+  "w108": [
+   "comedy"
+  ],
+  "w109": [
+   "battle",
+   "comedy"
+  ],
+  "w110": [
+   "comedy",
+   "battle"
+  ],
+  "w111": [
+   "isekai"
+  ],
+  "w112": [
+   "isekai",
+   "battle"
+  ],
+  "w113": [
+   "mystery",
+   "isekai"
+  ],
+  "w114": [
+   "isekai",
+   "comedy"
+  ],
+  "w115": [
+   "love",
+   "youth"
+  ],
+  "w116": [
+   "isekai",
+   "comedy"
+  ],
+  "w117": [
+   "isekai"
+  ],
+  "w118": [
+   "mystery",
+   "comedy"
+  ],
+  "w119": [
+   "youth",
+   "love"
+  ],
+  "w120": [
+   "isekai"
+  ],
+  "w121": [
+   "isekai",
+   "sf"
+  ],
+  "w122": [
+   "isekai"
+  ],
+  "w123": [
+   "isekai"
+  ],
+  "w124": [
+   "isekai"
+  ],
+  "w125": [
+   "battle",
+   "sf"
+  ],
+  "w126": [
+   "isekai",
+   "love"
+  ],
+  "w127": [
+   "isekai",
+   "battle"
+  ],
+  "w128": [
+   "isekai",
+   "battle"
+  ],
+  "w129": [
+   "sf",
+   "isekai"
+  ],
+  "w130": [
+   "isekai"
+  ],
+  "w131": [
+   "isekai",
+   "love"
+  ],
+  "w132": [
+   "isekai",
+   "battle"
+  ],
+  "w133": [
+   "mystery",
+   "youth"
+  ],
+  "w134": [
+   "battle"
+  ],
+  "w135": [
+   "battle",
+   "sf"
+  ],
+  "w136": [
+   "mystery"
+  ],
+  "w137": [
+   "battle",
+   "comedy"
+  ],
+  "w138": [
+   "battle"
+  ],
+  "w139": [
+   "battle"
+  ],
+  "w140": [
+   "isekai"
+  ],
+  "w141": [
+   "horror",
+   "comedy"
+  ],
+  "w142": [
+   "youth"
+  ],
+  "w143": [
+   "sf",
+   "mystery"
+  ],
+  "w144": [
+   "battle"
+  ],
+  "w145": [
+   "sports"
+  ],
+  "w146": [
+   "battle",
+   "isekai"
+  ],
+  "w147": [
+   "mystery",
+   "battle"
+  ],
+  "w148": [
+   "battle",
+   "sf"
+  ],
+  "w149": [
+   "youth"
+  ],
+  "w150": [
+   "love",
+   "comedy"
+  ],
+  "w151": [
+   "sf",
+   "battle"
+  ],
+  "w152": [
+   "battle"
+  ],
+  "w153": [
+   "isekai"
+  ],
+  "w154": [
+   "love",
+   "youth"
+  ],
+  "w155": [
+   "isekai"
+  ],
+  "w156": [
+   "isekai",
+   "comedy"
+  ],
+  "w157": [
+   "comedy"
+  ],
+  "w158": [
+   "isekai",
+   "battle"
+  ],
+  "w159": [
+   "love",
+   "comedy"
+  ],
+  "w160": [
+   "isekai"
+  ],
+  "w161": [
+   "isekai"
+  ],
+  "w162": [
+   "comedy"
+  ],
+  "w163": [
+   "love",
+   "youth"
+  ],
+  "w164": [
+   "youth"
+  ],
+  "w165": [
+   "isekai",
+   "love"
+  ],
+  "w166": [
+   "love",
+   "youth"
+  ],
+  "w167": [
+   "isekai",
+   "love"
+  ],
+  "w168": [
+   "isekai",
+   "comedy"
+  ],
+  "w169": [
+   "isekai",
+   "comedy"
+  ],
+  "w170": [
+   "isekai",
+   "comedy"
+  ],
+  "w171": [
+   "isekai"
+  ],
+  "w172": [
+   "isekai"
+  ],
+  "w173": [
+   "battle"
+  ],
+  "w174": [
+   "love"
+  ],
+  "w175": [
+   "mystery",
+   "isekai"
+  ],
+  "w176": [
+   "isekai"
+  ],
+  "w177": [
+   "love"
+  ],
+  "w178": [
+   "isekai"
+  ],
+  "w179": [
+   "comedy",
+   "youth"
+  ],
+  "w180": [
+   "love",
+   "comedy"
+  ],
+  "w181": [
+   "isekai"
+  ],
+  "w182": [
+   "comedy",
+   "youth"
+  ],
+  "w183": [
+   "isekai",
+   "comedy"
+  ],
+  "w184": [
+   "mystery"
+  ],
+  "w185": [
+   "isekai",
+   "comedy"
+  ],
+  "w186": [
+   "isekai",
+   "comedy"
+  ],
+  "w187": [
+   "love",
+   "youth"
+  ],
+  "w188": [
+   "horror"
+  ],
+  "w189": [
+   "isekai",
+   "love"
+  ],
+  "w190": [
+   "battle"
+  ],
+  "w191": [
+   "sports"
+  ],
+  "w192": [
+   "isekai"
+  ],
+  "w193": [
+   "sf",
+   "battle"
+  ],
+  "w194": [
+   "youth",
+   "mystery"
+  ],
+  "w195": [
+   "isekai"
+  ],
+  "w196": [
+   "isekai",
+   "comedy"
+  ],
+  "w197": [
+   "isekai"
+  ],
+  "w198": [
+   "isekai",
+   "love"
+  ],
+  "w199": [
+   "love",
+   "youth"
+  ],
+  "w200": [
+   "comedy",
+   "youth"
+  ],
+  "w201": [
+   "battle",
+   "isekai"
+  ],
+  "w202": [
+   "isekai",
+   "battle"
+  ],
+  "w203": [
+   "love",
+   "youth"
+  ],
+  "w204": [
+   "mystery"
+  ],
+  "w205": [
+   "sf"
+  ],
+  "w206": [
+   "love",
+   "comedy"
+  ],
+  "w207": [
+   "isekai",
+   "comedy"
+  ],
+  "w208": [
+   "comedy"
+  ],
+  "w209": [
+   "love",
+   "youth"
+  ],
+  "w210": [
+   "love",
+   "comedy"
+  ],
+  "w211": [
+   "isekai",
+   "love"
+  ],
+  "w212": [
+   "love",
+   "youth"
+  ],
+  "w213": [
+   "sf",
+   "battle"
+  ],
+  "w214": [
+   "horror"
+  ],
+  "w215": [
+   "isekai"
+  ],
+  "w216": [
+   "love",
+   "comedy"
+  ],
+  "w217": [
+   "love",
+   "youth"
+  ],
+  "w218": [
+   "love",
+   "sf"
+  ],
+  "w219": [
+   "youth"
+  ],
+  "w220": [
+   "comedy"
+  ],
+  "w221": [
+   "isekai",
+   "comedy"
+  ],
+  "w222": [
+   "love",
+   "youth"
+  ],
+  "w223": [
+   "isekai",
+   "love"
+  ],
+  "w224": [
+   "comedy"
+  ],
+  "w225": [
+   "youth"
+  ],
+  "w226": [
+   "comedy"
+  ],
+  "w227": [
+   "love",
+   "youth"
+  ],
+  "w228": [
+   "battle",
+   "comedy"
+  ],
+  "w229": [
+   "comedy"
+  ],
+  "w230": [
+   "comedy"
+  ],
+  "w231": [
+   "isekai",
+   "battle"
+  ],
+  "w232": [
+   "love",
+   "comedy"
+  ],
+  "w233": [
+   "battle"
+  ],
+  "w234": [
+   "isekai",
+   "comedy"
+  ],
+  "w235": [
+   "battle",
+   "comedy"
+  ],
+  "w236": [
+   "battle",
+   "isekai"
+  ],
+  "w237": [
+   "isekai"
+  ],
+  "w238": [
+   "battle",
+   "isekai"
+  ],
+  "w239": [
+   "battle"
+  ],
+  "w240": [
+   "comedy"
+  ],
+  "w241": [
+   "love",
+   "youth"
+  ],
+  "w242": [
+   "comedy"
+  ],
+  "w243": [
+   "battle"
+  ],
+  "w244": [
+   "isekai"
+  ],
+  "w245": [
+   "isekai",
+   "love"
+  ],
+  "w246": [
+   "mystery",
+   "battle"
+  ],
+  "w247": [
+   "isekai",
+   "battle"
+  ],
+  "w248": [
+   "love",
+   "youth"
+  ],
+  "w249": [
+   "love",
+   "youth"
+  ],
+  "w250": [
+   "isekai",
+   "battle"
+  ],
+  "w251": [
+   "isekai",
+   "comedy"
+  ],
+  "w252": [
+   "isekai"
+  ],
+  "w253": [
+   "isekai",
+   "comedy"
+  ],
+  "w254": [
+   "battle"
+  ],
+  "w255": [
+   "battle",
+   "isekai"
+  ],
+  "w256": [
+   "battle"
+  ],
+  "w257": [
+   "battle",
+   "isekai"
+  ],
+  "w258": [
+   "battle",
+   "comedy"
+  ],
+  "w259": [
+   "battle",
+   "sports"
+  ],
+  "w260": [
+   "love",
+   "youth"
+  ],
+  "w261": [
+   "love",
+   "youth",
+   "tears"
+  ],
+  "w262": [
+   "mystery",
+   "battle"
+  ],
+  "w263": [
+   "love",
+   "comedy"
+  ],
+  "w264": [
+   "love",
+   "comedy"
+  ],
+  "w265": [
+   "love",
+   "youth"
+  ],
+  "w266": [
+   "comedy",
+   "youth"
+  ],
+  "w267": [
+   "youth",
+   "tears"
+  ],
+  "w268": [
+   "comedy",
+   "battle"
+  ],
+  "w269": [
+   "comedy"
+  ],
+  "w270": [
+   "comedy",
+   "youth"
+  ],
+  "w271": [
+   "comedy"
+  ],
+  "w272": [
+   "horror",
+   "comedy"
+  ],
+  "w273": [
+   "comedy",
+   "isekai"
+  ],
+  "w274": [
+   "comedy",
+   "youth"
+  ],
+  "w275": [
+   "love",
+   "comedy"
+  ],
+  "w276": [
+   "comedy"
+  ],
+  "w277": [
+   "comedy"
+  ],
+  "w278": [
+   "battle",
+   "comedy"
+  ],
+  "w279": [
+   "comedy"
+  ],
+  "w280": [
+   "comedy",
+   "sf"
+  ],
+  "w281": [
+   "comedy"
+  ],
+  "w282": [
+   "comedy",
+   "horror"
+  ],
+  "w283": [
+   "comedy"
+  ],
+  "w284": [
+   "comedy",
+   "sf"
+  ],
+  "w285": [
+   "comedy",
+   "youth"
+  ],
+  "w286": [
+   "isekai"
+  ],
+  "w287": [
+   "isekai",
+   "battle"
+  ],
+  "w288": [
+   "horror",
+   "mystery"
+  ],
+  "w289": [
+   "horror",
+   "mystery"
+  ],
+  "w290": [
+   "mystery"
+  ],
+  "w291": [
+   "sf",
+   "mystery"
+  ],
+  "w292": [
+   "mystery"
+  ],
+  "w293": [
+   "horror",
+   "comedy"
+  ],
+  "w294": [
+   "isekai"
+  ],
+  "w295": [
+   "horror",
+   "youth"
+  ],
+  "w296": [
+   "mystery"
+  ],
+  "w297": [
+   "horror",
+   "mystery"
+  ],
+  "w298": [
+   "mystery",
+   "battle"
+  ],
+  "w299": [
+   "horror"
+  ],
+  "w300": [
+   "horror",
+   "battle"
+  ],
+  "w301": [
+   "horror"
+  ],
+  "w302": [
+   "battle"
+  ],
+  "w303": [
+   "battle",
+   "sf"
+  ],
+  "w304": [
+   "isekai",
+   "comedy"
+  ],
+  "w305": [
+   "battle"
+  ],
+  "w306": [
+   "battle"
+  ],
+  "w307": [
+   "battle",
+   "sf"
+  ],
+  "w308": [
+   "battle",
+   "sf"
+  ],
+  "w309": [
+   "battle",
+   "isekai"
+  ],
+  "w310": [
+   "battle",
+   "isekai"
+  ],
+  "w311": [
+   "battle",
+   "comedy"
+  ],
+  "w312": [
+   "battle"
+  ],
+  "w313": [
+   "comedy"
+  ],
+  "w314": [
+   "battle",
+   "horror"
+  ],
+  "w315": [
+   "battle"
+  ],
+  "w316": [
+   "youth",
+   "tears"
+  ],
+  "w317": [
+   "battle",
+   "sf"
+  ],
+  "w318": [
+   "battle",
+   "comedy"
+  ],
+  "w319": [
+   "battle"
+  ],
+  "w320": [
+   "battle",
+   "sf"
+  ],
+  "w321": [
+   "battle"
+  ],
+  "w322": [
+   "battle",
+   "youth"
+  ],
+  "w323": [
+   "sports"
+  ],
+  "w324": [
+   "sports"
+  ],
+  "w325": [
+   "sports"
+  ],
+  "w326": [
+   "sports"
+  ],
+  "w327": [
+   "sports"
+  ],
+  "w328": [
+   "sports"
+  ],
+  "w329": [
+   "sports"
+  ],
+  "w330": [
+   "sports"
+  ],
+  "w331": [
+   "sports"
+  ],
+  "w332": [
+   "youth"
+  ],
+  "w333": [
+   "youth"
+  ],
+  "w334": [
+   "youth",
+   "sf"
+  ],
+  "w335": [
+   "love",
+   "youth"
+  ],
+  "w336": [
+   "youth",
+   "tears"
+  ],
+  "w337": [
+   "love",
+   "youth"
+  ],
+  "w338": [
+   "love",
+   "youth"
+  ],
+  "w339": [
+   "youth"
+  ],
+  "w340": [
+   "love",
+   "youth"
+  ],
+  "w341": [
+   "youth",
+   "tears"
+  ],
+  "w342": [
+   "isekai",
+   "tears"
+  ]
+ }
+}
