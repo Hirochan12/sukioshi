@@ -433,3 +433,28 @@ body.no-scroll { overflow: hidden; }
 .db-table tbody th small { display: block; color: var(--text-sub); font-weight: 400; }
 .db-table td.dh { background: var(--c); color: #fff; font-weight: 700; }
 .db-table td.dn { color: var(--text-faint); }
+
+/* ---- トップの大きな検索（検索エンジン風） ---- */
+.top-search { text-align: center; padding: 28px 0 20px; }
+.ts-brand { margin: 0; font-size: 40px; font-weight: 800; color: var(--pink); letter-spacing: 0.06em; line-height: 1.2; }
+.ts-tagline { margin: 4px 0 18px; color: var(--text-sub); font-size: 14px; }
+.ts-form { position: relative; max-width: 640px; margin: 0 auto; display: flex; gap: 8px; text-align: left; }
+.ts-input {
+  flex: 1; min-width: 0; min-height: 56px; padding: 10px 22px; border: 2px solid var(--line); border-radius: 999px;
+  font-size: 18px; background: var(--bg); color: var(--text); box-shadow: 0 2px 10px rgba(0,0,0,0.06); -webkit-appearance: none; appearance: none;
+}
+.ts-input:focus { outline: none; border-color: var(--pink); box-shadow: 0 0 0 4px var(--pink-soft); }
+.ts-btn { min-height: 56px; padding: 0 22px; border: 0; border-radius: 999px; background: var(--pink); color: #fff; font-size: 16px; font-weight: 700; cursor: pointer; }
+.ts-suggest {
+  position: absolute; left: 0; right: 0; top: 62px; z-index: 20; margin: 0; padding: 6px 0; list-style: none;
+  background: var(--bg); border: 1px solid var(--line); border-radius: 18px; box-shadow: 0 8px 24px rgba(0,0,0,0.12); overflow: hidden;
+}
+.ts-suggest[hidden] { display: none; }
+.ts-suggest a { display: block; padding: 10px 20px; color: var(--text); text-decoration: none; }
+.ts-suggest a:hover, .ts-suggest a:focus { background: var(--bg-soft); outline: none; }
+.ts-suggest .si-title { font-size: 16px; }
+.ts-suggest .ts-more a { text-align: center; color: var(--pink); font-weight: 700; font-size: 14px; }
+.ts-links { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px 10px; margin: 16px 0 0; }
+.ts-links a { padding: 6px 14px; border: 1px solid var(--line); border-radius: 999px; font-size: 14px; color: var(--text); text-decoration: none; background: var(--bg); }
+.ts-links a:hover { background: var(--bg-soft); }
+@media (min-width: 760px) { .top-search { padding: 48px 0 28px; } .ts-brand { font-size: 52px; } }
