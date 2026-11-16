@@ -285,8 +285,17 @@ function buildIndex() {
 </a>`
     : '';
   const body = `
+<section class="top-search" data-top-search>
+  <p class="ts-brand">すきおし</p>
+  <p class="ts-tagline">${esc(site.tagline)}</p>
+  <form class="ts-form" action="/search/" method="get" role="search">
+    <input type="search" name="q" class="ts-input" data-ts-input placeholder="作品名でさがす" aria-label="アニメ原作を作品名でさがす" autocomplete="off" enterkeyhint="search">
+    <button type="submit" class="ts-btn" aria-label="さがす">さがす</button>
+    <ul class="ts-suggest" data-ts-suggest hidden></ul>
+  </form>
+  <p class="ts-links"><a href="/search/">すべての作品</a><a href="/recommend/">おすすめ</a><a href="/database/">作品データベース</a><a href="/genre/">ジャンル別</a><a href="/seasons/">シーズン</a></p>
+</section>
 <section class="hero">
-  <p class="hero-kicker">${esc(site.tagline)}</p>
   <h1>${esc(currentSeason.label)}の原作、どれがすき？</h1>
   <p class="hero-lead">気になる作品の <span class="inline-heart">♡すき</span> をタップするだけ。1作品につき1日1回、いくつでも投票できます。</p>
 </section>
