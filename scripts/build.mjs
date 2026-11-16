@@ -467,6 +467,66 @@ function attrHtml(w) {
   </section>`;
 }
 
+// ---- 似ている作品（運営者の評価の近さ） ----
+const ATTR_NAMES = ATTRS.items.map((it) => it.name);
+const strongOf = (a) => new Set(ATTR_NAMES.filter((k) => (a.v[k] || 0) >= 4));
+function attrScore(a, b) {
+  const sa = strongOf(a);
+  const sb = strongOf(b);
+  const shared = [...sa].filter((k) => sb.has(k));
+  const union = new Set([...sa, ...sb]).size;
+  const jac = union ? shared.length / union : 0;
+  if (a.c === 'n' && b.c === 'n') {
+    const l1 = ATTR_NAMES.reduce((t, k) => t + Math.abs((a.v[k] || 0) - (b.v[k] || 0)), 0);
+    return { score: 0.5 * jac + 0.5 * (1 - l1 / (ATTR_NAMES.length * 5)), shared };
+  }
+  if (!shared.length) return { score: 0, shared };
+  return { score: Math.min(jac, 0.95) * 0.9, shared };
+}
+const SIMILAR_MIN = 0.4;
+function similarWorks(w, limit = 3) {
+  const out = [];
+  const mine = ATTRS.works[w.id];
+  if (mine) {
+    const hits = [];
+    for (const x of works) {
+      const theirs = ATTRS.works[x.id];
+      if (x.id === w.id || !theirs || !seasonsOf(x.id).length) continue;
+      const { score, shared } = attrScore(mine, theirs);
+      if (score >= SIMILAR_MIN) hits.push({ w: x, pct: Math.min(99, Math.round(score * 100)), why: shared.length ? `${shared.slice(0, 3).join('・')}が近い` : '全体の傾向が近い' });
+    }
+    hits.sort((a, b) => b.pct - a.pct || a.w.id.localeCompare(b.w.id));
+    out.push(...hits.slice(0, limit));
+  }
+  if (out.length < limit) {
+    const mineG = GENRE_DATA.works[w.id] || [];
+    const used = new Set([w.id, ...out.map((o) => o.w.id)]);
+    const hits = [];
+    for (const x of works) {
+      if (used.has(x.id) || !seasonsOf(x.id).length) continue;
+      const common = (GENRE_DATA.works[x.id] || []).filter((g) => mineG.includes(g));
+      if (common.length) hits.push({ w: x, pct: null, why: `同じ「${GENRE_BY_ID.get(common[0]).name}」`, n: common.length });
+    }
+    hits.sort((a, b) => b.n - a.n || (a.w.type === w.type ? -1 : 0) - (b.w.type === w.type ? -1 : 0) || a.w.id.localeCompare(b.w.id));
+    out.push(...hits.slice(0, limit - out.length));
+  }
+  return out;
+}
+function similarSection(w) {
+  const list = similarWorks(w);
+  if (!list.length) return '';
+  const hasPct = list.some((o) => o.pct !== null);
+  return `<section class="similar">
+    <h2>『${esc(w.title)}』に似ている作品</h2>
+    <ul class="similar-list">
+${list.map((o) => `      <li><a href="/works/${o.w.id}/"><span class="sm-main"><span class="sm-title">${esc(o.w.title)}</span><span class="sm-why">${esc(o.why)}</span></span>${o.pct !== null ? `<span class="sm-pct"><b>${o.pct}%</b>似てる</span>` : ''}</a></li>`).join('\n')}
+    </ul>
+    <p class="fine">${hasPct ? '似ている度は、運営者が付けた12項目の評価（<a href="/criteria/">評価基準</a>）の近さから計算しています。評価がまだない作品は、同じジャンルの作品を表示しています。' : '評価がまだない作品のため、同じジャンルの作品を表示しています。'}</p>
+  </section>
+
+  `;
+}
+
 function buildWork(w) {
   const ss = seasonsOf(w.id).sort((a, b) => b.voteStart.localeCompare(a.voteStart));
   const main = ss[0];
@@ -537,7 +597,7 @@ ${genresOf(w.id).length ? `      <dt>ジャンル</dt><dd>${genresOf(w.id).map((
 
   ${adSlot('work-bottom')}
 
-  ${related.length ? `<section class="related">
+  ${similarSection(w)}${related.length ? `<section class="related">
     <h2>${esc(main.label)}のほかの${typeLong}原作</h2>
     <ul class="related-list">
 ${related.map((r) => `      <li><a href="/works/${r.id}/">${esc(r.title)}</a></li>`).join('\n')}
@@ -815,6 +875,8 @@ function buildCriteria() {
 <p>5は1作品につき2項目まで、4以上は4項目までを目安にしています。</p>
 <h2>12項目の定義</h2>
 <dl class="info-list">${ATTRS.items.map((it) => `<dt style="color:${it.color}">${it.name}</dt><dd>${it.def}</dd>`).join('')}</dl>
+<h2>似ている作品の「似てる度」</h2>
+<p>作品ページの「似ている作品」は、12項目の評価の近さから計算しています。12項目すべてを評価した作品どうしは、項目ごとの差の小ささと、強い項目（4以上）の重なりを半分ずつ合わせた値です。一部の項目だけ評価した作品は、強い項目の重なりだけで計算し、上限を90%未満にしています。数字は目安で、作品の優劣を表すものではありません。</p>
 <h2>情報が少ない作品について</h2>
 <p>調べても内容が十分に確認できない作品は、チャートを出さず、確認できた強い項目だけを載せています。確認できていない項目を0とはしません。</p>
 <p>評価は、新しい情報が分かった場合などに見直します。お気づきの点は<a href="/contact/">お問い合わせ</a>からお知らせください。</p>
