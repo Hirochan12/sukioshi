@@ -66,7 +66,7 @@ export async function onRequestPost({ request, env }) {
     await Promise.all(
       fresh.flatMap((t) =>
         ['today', 'week', 'season'].flatMap((p) =>
-          ['all', 'manga', 'novel'].map((ty) => cache.delete(new Request(`https://cache.sukioshi/ranking/${season.id}/${p}/${ty}/${t}`)))
+          ['all', 'manga', 'novel', 'game', 'original', 'other'].map((ty) => cache.delete(new Request(`https://cache.sukioshi/ranking/${season.id}/${p}/${ty}/${t}`)))
         )
       )
     );
