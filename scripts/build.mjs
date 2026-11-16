@@ -19,6 +19,7 @@ const workById = new Map(works.map((w) => [w.id, w]));
 const GENRE_DATA = existsSync(join(ROOT, 'data/genres.json')) ? readJson('data/genres.json') : { genres: [], works: {} };
 const GENRE_BY_ID = new Map(GENRE_DATA.genres.map((g) => [g.id, g]));
 const genresOf = (id) => (GENRE_DATA.works[id] || []).map((gid) => GENRE_BY_ID.get(gid)).filter(Boolean);
+const ATTRS = existsSync(join(ROOT, 'data/attrs.json')) ? readJson('data/attrs.json') : { items: [], levels: [], works: {} };
 const SITE_URL = (process.env.SITE_URL || site.url).replace(/\/$/, '');
 const BUILD_DATE = new Date(Date.now() + 9 * 3600e3).toISOString().slice(0, 10);
 
@@ -163,6 +164,8 @@ ${body}
     <nav class="footer-nav" aria-label="サイト情報">
       <a href="/about/">このサイトについて</a>
       <a href="/seasons/">シーズン一覧</a>
+      <a href="/database/">作品データベース</a>
+      <a href="/criteria/">評価基準</a>
       <a href="/minna/">みんなのすき</a>
       <a href="/privacy/">プライバシーポリシー</a>
       <a href="/terms/">利用規約</a>
@@ -414,6 +417,41 @@ ${list}
 }
 
 // ---- 作品ページ ----
+
+// ---- 作品の属性（運営者の評価） ----
+function radarSvg(v) {
+  const N = ATTRS.items.length, cx = 150, cy = 140, R = 85;
+  const pt = (i, r, k = R) => { const t = -Math.PI / 2 + (i * 2 * Math.PI) / N; return [(cx + Math.cos(t) * k * r / 5).toFixed(1), (cy + Math.sin(t) * k * r / 5).toFixed(1)]; };
+  let g = '';
+  for (let k = 1; k <= 5; k++) g += `<polygon points="${ATTRS.items.map((_, i) => pt(i, k).join(',')).join(' ')}" fill="none" stroke="#e7e5df" stroke-width="${k === 5 ? 1.4 : 1}"/>`;
+  ATTRS.items.forEach((it, i) => {
+    const [x, y] = pt(i, 5), [lx, ly] = pt(i, 5, R + 22);
+    const anchor = lx < cx - 8 ? 'end' : lx > cx + 8 ? 'start' : 'middle';
+    g += `<line x1="${cx}" y1="${cy}" x2="${x}" y2="${y}" stroke="#e7e5df"/><text x="${lx}" y="${(+ly + 4).toFixed(1)}" text-anchor="${anchor}" font-size="11" font-weight="700" fill="${it.color}">${it.name}</text>`;
+  });
+  const poly = ATTRS.items.map((it, i) => pt(i, v[it.name] || 0).join(',')).join(' ');
+  g += `<polygon points="${poly}" fill="#d4537e" fill-opacity=".22" stroke="#d4537e" stroke-width="2"/>`;
+  ATTRS.items.forEach((it, i) => { const [x, y] = pt(i, v[it.name] || 0); g += `<circle cx="${x}" cy="${y}" r="4" fill="${it.color}" stroke="#fff" stroke-width="1.5"/>`; });
+  return `<svg class="attr-radar" viewBox="-30 0 360 285" role="img" aria-label="12項目の属性チャート">${g}</svg>`;
+}
+function attrHtml(w) {
+  const a = ATTRS.works[w.id];
+  if (!a) return '';
+  const strong = ATTRS.items.filter((it) => (a.v[it.name] || 0) >= 4).sort((x, y) => a.v[y.name] - a.v[x.name]);
+  const chips = strong.map((it) => `<span class="attr-chip" style="--c:${it.color}">${it.name} ${a.v[it.name]}</span>`).join('');
+  const bars = ATTRS.items.filter((it) => a.c === 'n' || a.v[it.name] != null).map((it) => {
+    const x = a.v[it.name] || 0;
+    return `<li><span class="ab-l" style="color:${it.color}">${it.name}</span><span class="ab-t"><b style="width:${x * 20}%;background:${it.color}"></b></span><span class="ab-v">${x}</span></li>`;
+  }).join('');
+  return `<section class="work-attrs">
+    <h2>作品の属性（運営者の評価）</h2>
+    <p class="fine">各項目を0〜5で評価しています。基準は<a href="/criteria/">作品属性の評価基準</a>をご覧ください。${a.c === 's' ? '情報が十分に確認できた項目だけを載せています。' : ''}</p>
+    ${a.c === 'n' ? radarSvg(a.v) : ''}
+    ${chips ? `<p class="attr-chips">${chips}</p>` : ''}
+    <ul class="attr-bars">${bars}</ul>
+  </section>`;
+}
+
 function buildWork(w) {
   const ss = seasonsOf(w.id).sort((a, b) => b.voteStart.localeCompare(a.voteStart));
   const main = ss[0];
@@ -457,6 +495,8 @@ function buildWork(w) {
   ${shareBar(`/works/${w.id}/`, share, { label: 'この作品をシェア' })}
 
   ${w.intro ? `<section class="prose work-intro"><h2>どんな作品？</h2>${w.intro}${REC.has(w.id) ? recHtml(w.id) : ''}${SONGS.has(w.id) ? `<h3>主題歌</h3><ul class="work-songs">${SONGS.get(w.id).map((t) => `<li>${t}</li>`).join('')}</ul>` : ''}</section>` : ''}
+
+  ${attrHtml(w)}
 
   <section class="work-tags" data-work-tags data-season="${main.id}">
     <h2>みんなのおすすめポイント</h2>
@@ -738,6 +778,34 @@ function buildMinna() {
   }), { noindex: true });
 }
 
+
+function buildDatabase() {
+  const ids = Object.keys(ATTRS.works).filter((id) => workById.has(id));
+  const rows = ids.map((id) => {
+    const w = workById.get(id), a = ATTRS.works[id];
+    const cells = ATTRS.items.map((it) => { const x = a.v[it.name]; return x == null ? '<td class="dn">–</td>' : `<td${x >= 4 ? ` class="dh" style="--c:${it.color}"` : ''}>${x}</td>`; }).join('');
+    return `<tr><th scope="row"><a href="/works/${id}/">${esc(w.title)}</a><small>${TYPE_LONG[w.type]}原作${a.c === 's' ? '・一部のみ' : ''}</small></th>${cells}</tr>`;
+  }).join('');
+  const head = ATTRS.items.map((it) => `<th scope="col" style="color:${it.color}">${it.name}</th>`).join('');
+  simplePage('/database/', '作品データベース', '今期アニメの原作漫画・小説/ライトノベルを、友情・努力・恋愛・バトルなど12項目で評価した一覧表です。', `
+<p>作品を12の項目で0〜5に評価した一覧です。4以上の項目は色つきで示しています。評価は運営者によるもので、基準は<a href="/criteria/">作品属性の評価基準</a>にまとめています。「–」は、情報が十分に確認できず評価していない項目です。</p>
+<div class="db-wrap"><table class="db-table"><thead><tr><th scope="col">作品</th>${head}</tr></thead><tbody>${rows}</tbody></table></div>
+<p class="fine">現在は${ids.length}作品を掲載しています。順次追加します。</p>`, { priority: 0.6 });
+}
+function buildCriteria() {
+  simplePage('/criteria/', '作品属性の評価基準', '作品ページや作品データベースに載せている、12項目の属性の評価基準と付け方を説明します。', `
+<p>すきおしでは、作品を12の項目で0〜5に評価しています。これは運営者による主観的な評価で、作品の優劣を示すものではありません。公式サイト、出版社・書店の紹介ページ、公開されているあらすじを確認して付けています。</p>
+<h2>0〜5の意味</h2>
+<ul>${ATTRS.levels.map((t, i) => `<li><strong>${i}</strong>：${t}</li>`).join('')}</ul>
+<p>5は1作品につき2項目まで、4以上は4項目までを目安にしています。</p>
+<h2>12項目の定義</h2>
+<dl class="info-list">${ATTRS.items.map((it) => `<dt style="color:${it.color}">${it.name}</dt><dd>${it.def}</dd>`).join('')}</dl>
+<h2>情報が少ない作品について</h2>
+<p>調べても内容が十分に確認できない作品は、チャートを出さず、確認できた強い項目だけを載せています。確認できていない項目を0とはしません。</p>
+<p>評価は、新しい情報が分かった場合などに見直します。お気づきの点は<a href="/contact/">お問い合わせ</a>からお知らせください。</p>
+<p><a href="/database/">作品データベースを見る</a></p>`, { priority: 0.5 });
+}
+
 function buildStatic() {
   simplePage('/about/', 'このサイトについて', 'すきおしは、今期アニメの原作漫画・小説/ライトノベルにタップで「すき」を投票できるランキングサイトです。運営者情報と投票の数え方を説明します。', `
 <p>すきおしは、放送中のアニメの<strong>原作の漫画・小説/ライトノベル</strong>に「すき」を送って、いまどの作品が好かれているかを見られるサイトです。アニメを見て原作が気になったときの作品選びや、推しの作品を応援する場所として使ってください。</p>
@@ -870,6 +938,8 @@ buildGenres();
 for (const s of seasons) buildSeason(s);
 for (const w of works) if (seasonsOf(w.id).length) buildWork(w);
 buildStatic();
+buildDatabase();
+buildCriteria();
 buildRecommend();
 buildCollection();
 buildMe();
