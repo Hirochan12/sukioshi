@@ -748,6 +748,58 @@
     });
   }
 
+  // ---------- トップの大きな検索 ----------
+  const topSearch = $('[data-top-search]');
+  if (topSearch) {
+    const input = $('[data-ts-input]', topSearch);
+    const box = $('[data-ts-suggest]', topSearch);
+    let rows = null;
+    let loading = null;
+    const load = () => loading || (loading = fetch('/search/').then((r) => r.text()).then((html) => {
+      const doc = new DOMParser().parseFromString(html, 'text/html');
+      rows = [...doc.querySelectorAll('.search-item')].map((li) => ({
+        key: normKey(li.dataset.searchKeys),
+        href: li.querySelector('a').getAttribute('href'),
+        title: li.querySelector('.si-title').textContent,
+        meta: li.querySelector('.si-meta').innerHTML,
+      }));
+    }).catch(() => { rows = []; }));
+    const show = async () => {
+      const q = normKey(input.value);
+      if (!q) { box.hidden = true; box.textContent = ''; return; }
+      await load();
+      if (normKey(input.value) !== q) return;
+      const hit = rows.filter((r) => r.key.includes(q));
+      box.textContent = '';
+      for (const r of hit.slice(0, 8)) {
+        const li = document.createElement('li');
+        const a = document.createElement('a');
+        a.href = r.href;
+        const t = document.createElement('span');
+        t.className = 'si-title';
+        t.textContent = r.title;
+        const m = document.createElement('span');
+        m.className = 'si-meta';
+        m.innerHTML = r.meta;
+        a.append(t, m);
+        li.append(a);
+        box.append(li);
+      }
+      const more = document.createElement('li');
+      more.className = 'ts-more';
+      const ma = document.createElement('a');
+      ma.href = '/search/?q=' + encodeURIComponent(input.value);
+      ma.textContent = hit.length ? (hit.length > 8 ? `${hit.length}作品すべて見る →` : 'さがすページで見る →') : '見つかりませんでした。さがすページで探す →';
+      more.append(ma);
+      box.append(more);
+      box.hidden = false;
+    };
+    input.addEventListener('focus', load, { once: true });
+    input.addEventListener('input', show);
+    document.addEventListener('click', (e) => { if (!topSearch.contains(e.target)) box.hidden = true; });
+    input.addEventListener('keydown', (e) => { if (e.key === 'Escape') box.hidden = true; });
+  }
+
   // ---------- さがすページ ----------
   const siteSearch = $('[data-site-search]');
   if (siteSearch) {
