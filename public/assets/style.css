@@ -463,3 +463,16 @@ body.no-scroll { overflow: hidden; }
 .attr-filter .chip { color: var(--c); border-color: var(--c); }
 .attr-filter .chip[aria-pressed="true"] { background: var(--c); color: #fff; }
 .attr-filter .chip[data-attr-clear] { color: var(--text-sub); border-color: var(--line); }
+
+/* ---- 似ている作品 ---- */
+.similar { margin-top: 28px; }
+.similar h2 { font-size: 18px; margin: 0 0 10px; }
+.similar-list { list-style: none; padding: 0; margin: 0 0 8px; border-top: 1px solid var(--line); }
+.similar-list li { border-bottom: 1px solid var(--line); }
+.similar-list a { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 10px 0; text-decoration: none; color: var(--text); }
+.similar-list a:hover .sm-title { color: var(--pink-dark); }
+.sm-main { min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+.sm-title { font-size: 15px; font-weight: 700; overflow-wrap: anywhere; }
+.sm-why { font-size: 12px; color: var(--text-sub); }
+.sm-pct { flex: none; font-size: 12px; color: var(--pink-dark); background: var(--pink-soft); border-radius: 999px; padding: 4px 10px; white-space: nowrap; }
+.sm-pct b { font-size: 16px; margin-right: 1px; }
