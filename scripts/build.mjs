@@ -286,8 +286,8 @@ function buildIndex() {
     : '';
   const body = `
 <section class="top-search" data-top-search>
-  <p class="ts-brand">すきおし</p>
-  <p class="ts-tagline">${esc(site.tagline)}</p>
+  <p class="ts-brand" aria-label="${esc(site.tagline)}"><span aria-hidden="true"><em>すき</em>なもの</span> <span aria-hidden="true"><em>おし</em>えて</span></p>
+  <p class="ts-tagline">略して「すきおし」</p>
   <form class="ts-form" action="/search/" method="get" role="search">
     <input type="search" name="q" class="ts-input" data-ts-input placeholder="作品名でさがす" aria-label="アニメ原作を作品名でさがす" autocomplete="off" enterkeyhint="search">
     <button type="submit" class="ts-btn" aria-label="さがす">さがす</button>
