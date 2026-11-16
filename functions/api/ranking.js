@@ -1,4 +1,4 @@
-// GET /api/ranking?season=2026-autumn&period=today|week|season&type=all|manga|novel
+// GET /api/ranking?season=2026-autumn&period=today|week|season&type=all|manga|novel|game|original|other
 import { TAGS, getSeason, CURRENT_SEASON, periodRange, countVotes, isVotingOpen, json, errorJson } from '../_lib/common.js';
 
 export async function onRequestGet({ request, env, waitUntil }) {
@@ -8,7 +8,7 @@ export async function onRequestGet({ request, env, waitUntil }) {
   const period = ['today', 'week', 'season'].includes(url.searchParams.get('period'))
     ? url.searchParams.get('period')
     : 'season';
-  const type = ['manga', 'novel'].includes(url.searchParams.get('type')) ? url.searchParams.get('type') : 'all';
+  const type = ['manga', 'novel', 'game', 'original', 'other'].includes(url.searchParams.get('type')) ? url.searchParams.get('type') : 'all';
   const tag = TAGS.has(url.searchParams.get('tag')) ? url.searchParams.get('tag') : null;
 
   // 同じ集計を1分間は使い回す（データベースへの負担を減らす）
