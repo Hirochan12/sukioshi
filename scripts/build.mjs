@@ -29,7 +29,7 @@ const seenIds = new Set();
 for (const w of works) {
   if (seenIds.has(w.id)) problems.push(`作品IDが重複: ${w.id}`);
   seenIds.add(w.id);
-  if (!['manga', 'novel'].includes(w.type)) problems.push(`種類が不正: ${w.id} ${w.type}`);
+  if (!['manga', 'novel', 'game', 'original', 'other'].includes(w.type)) problems.push(`種類が不正: ${w.id} ${w.type}`);
 }
 for (const s of seasons) {
   if (s.id !== 'recommend' && !/^\d{4}-(winter|spring|summer|autumn)$/.test(s.id)) problems.push(`シーズンIDの形が不正: ${s.id}`);
@@ -49,11 +49,18 @@ const creditLine = (w) => {
   const m = w.magazine || '';
   const p = w.publisher || '';
   if (!m && !p) return '';
-  const label = m ? (w.type === 'manga' ? '掲載誌' : 'レーベル') : '出版社';
+  const label = m ? (w.type === 'manga' ? '掲載誌' : 'レーベル') : isBook(w) ? '出版社' : '制作';
   const text = m && p ? `${m}（${p}）` : m || p;
   return `\n      <p class="work-credit">${label}：${esc(text)}</p>`;
 };
-const TYPE_LABEL = { manga: '漫画', novel: '小説/ライトノベル' };
+const ALL_TYPES = ['manga', 'novel', 'game', 'original', 'other'];
+const TYPE_LABEL = { manga: '漫画', novel: '小説/ライトノベル', game: 'ゲーム', original: 'オリジナル', other: 'その他' };
+const isBook = (w) => w.type === 'manga' || w.type === 'novel';
+// 作品ページや見出しで使う言い方（漫画・小説は従来どおり）
+const TYPE_TAG = { manga: '漫画原作', novel: '小説/ライトノベル原作', game: 'ゲーム原作', original: 'オリジナルアニメ', other: 'その他の原作' };
+const ORIGIN_NAME = { manga: '原作漫画', novel: '原作小説/ライトノベル', game: '原作ゲーム', original: 'オリジナルアニメ', other: 'アニメ' };
+const typesIn = (list) => ALL_TYPES.filter((t) => list.some((w) => w.type === t));
+const typeChips = (attr, types) => types.map((t) => `    <button type="button" class="chip" ${attr}="${t}" aria-pressed="false">${TYPE_LABEL[t]}</button>`).join('\n');
 const MAX_TAGS = 3;
 const TAG_GROUPS = [['story', '作品の魅力'], ['anime', 'アニメの魅力']];
 function tagChipsHtml() {
@@ -63,8 +70,6 @@ ${tags.filter((t) => t.group === g).map((t) => `      <button type="button" clas
     </div>`).join('\n');
 }
 
-const TYPE_LONG = { manga: '漫画', novel: '小説/ライトノベル' };
-const TYPE_SHORT = { manga: '漫画', novel: '小説/ライトノベル' };
 const plain = (html) => String(html || '').replace(/<[^>]+>/g, '').replace(/\s+/g, ' ').trim();
 const clip = (t, n) => (t.length > n ? t.slice(0, n - 1) + '…' : t);
 const seasonsOf = (workId) => seasons.filter((s) => s.works.some((e) => e.workId === workId));
@@ -238,8 +243,7 @@ function rankingSection(season, { headingTag = 'h2', heading } = {}) {
   </div>
   <div class="filters" role="group" aria-label="原作の種類">
     <button type="button" class="chip" data-type-filter="all" aria-pressed="true">すべて</button>
-    <button type="button" class="chip" data-type-filter="manga" aria-pressed="false">漫画</button>
-    <button type="button" class="chip" data-type-filter="novel" aria-pressed="false">小説/ライトノベル</button>
+${typeChips('data-type-filter', typesIn(season.works.map((e) => workById.get(e.workId))))}
   </div>
 ${season.works.some((e) => ATTRS.works[e.workId]) ? `  <div class="tag-filter attr-filter" role="group" aria-label="属性で探す">
     <span class="tag-filter-label">属性で探す（運営者の評価が4以上）</span>
@@ -325,10 +329,11 @@ ${ordered.map((s) => `    <li><a href="/season/${s.id}/"><span class="sc-name">$
 
 // ---- シーズンページ ----
 function seasonIntro(s) {
-  const m = s.works.filter((e) => workById.get(e.workId).type === 'manga').length;
-  const n = s.works.length - m;
+  const cnt = (t) => s.works.filter((e) => workById.get(e.workId).type === t).length;
+  const parts = ALL_TYPES.filter((t) => cnt(t) > 0).map((t) => `${{ manga: '漫画が原作', novel: '小説/ライトノベルが原作', game: 'ゲームが原作', original: 'オリジナルアニメ', other: 'その他の原作' }[t]}の${cnt(t)}作品`);
+  const partsText = parts.length > 1 ? `${parts.slice(0, -1).join('、')}と、${parts[parts.length - 1]}` : parts[0];
   const sequels = s.works.filter((e) => /期|Season|season|クール|STAGE/.test(e.note)).length;
-  return `<p>${esc(s.label)}（${esc(airText(s))}）のうち、漫画が原作の${m}作品と、小説/ライトノベルが原作の${n}作品を集めました。${sequels ? `そのうち${sequels}作品は、続編や2クール目の放送です。` : ''}</p>
+  return `<p>${esc(s.label)}（${esc(airText(s))}）のうち、${partsText}を集めました。${sequels ? `そのうち${sequels}作品は、続編や2クール目の放送です。` : ''}</p>
 <p>アニメを見て原作が気になった作品や、原作から追いかけている作品に「すき」を送ってください。票は1作品につき1日1回まで入れられ、毎日の積み重ねで順位が決まります。</p>`;
 }
 
@@ -420,8 +425,7 @@ function buildSearch() {
   <input type="search" class="search-input search-input-large" data-site-search-input placeholder="作品名を入力（例：スライム、薬屋）" aria-label="作品名でさがす" autocomplete="off" enterkeyhint="search">
   <div class="filters" role="group" aria-label="原作の種類">
     <button type="button" class="chip" data-search-type="all" aria-pressed="true">すべて</button>
-    <button type="button" class="chip" data-search-type="manga" aria-pressed="false">漫画</button>
-    <button type="button" class="chip" data-search-type="novel" aria-pressed="false">小説/ライトノベル</button>
+${typeChips('data-search-type', typesIn(works.filter((w) => seasonsOf(w.id).length)))}
   </div>
   <p class="rank-status" data-site-search-status aria-live="polite"></p>
   <ul class="search-list">
@@ -531,10 +535,10 @@ function buildWork(w) {
   const ss = seasonsOf(w.id).sort((a, b) => b.voteStart.localeCompare(a.voteStart));
   const main = ss[0];
   const note = noteOf(main, w.id);
-  const typeLong = TYPE_LONG[w.type];
+  const typeLong = TYPE_TAG[w.type];
   const desc = w.intro
-    ? clip(`『${w.title}』の原作${TYPE_SHORT[w.type]}はどんな話？ ${plain(w.intro)}`, 118)
-    : `『${w.title}』は${main.label}にアニメが放送された${typeLong}原作の作品です。すきおしで今の順位を確認して、「すき」を投票できます。`;
+    ? clip(`『${w.title}』の${ORIGIN_NAME[w.type]}はどんな話？ ${plain(w.intro)}`, 118)
+    : `『${w.title}』は${main.label}にアニメが放送された${typeLong}の作品です。すきおしで今の順位を確認して、「すき」を投票できます。`;
   const related = main.works
     .filter((e) => e.workId !== w.id && workById.get(e.workId).type === w.type)
     .slice(0, 6)
@@ -548,10 +552,10 @@ function buildWork(w) {
 <nav class="crumbs" aria-label="パンくずリスト"><a href="/">トップ</a><span aria-hidden="true">›</span><a href="/season/${main.id}/">${esc(main.name)}</a><span aria-hidden="true">›</span><span>${esc(w.title)}</span></nav>
 <article class="work" data-work-page="${w.id}">
   <div class="work-head">
-    <a class="work-cover" data-book-link href="#" rel="sponsored noopener" target="_blank" aria-label="楽天ブックスで見る"><img data-cover="${w.id}" data-cover-size="large" alt="${esc(w.title)}の表紙" width="150" height="210"></a>
+    ${isBook(w) ? `<a class="work-cover" data-book-link href="#" rel="sponsored noopener" target="_blank" aria-label="楽天ブックスで見る"><img data-cover="${w.id}" data-cover-size="large" alt="${esc(w.title)}の表紙" width="150" height="210"></a>` : `<div class="work-cover no-image" aria-hidden="true"></div>`}
     <div class="work-info">
       <h1>${esc(w.title)}</h1>
-      <p class="work-tags"><span class="tag tag-${w.type}">${typeLong}原作</span><span>${esc(main.label)}${note ? '・' + esc(note) : ''}</span></p>
+      <p class="work-tags"><span class="tag tag-${w.type}">${typeLong}</span><span>${esc(main.label)}${note ? '・' + esc(note) : ''}</span></p>
       <p class="work-author" data-book-author hidden></p>${creditLine(w)}
       <div class="work-rank" data-work-rank data-season="${main.id}" data-vote-start="${main.voteStart}" data-vote-end="${main.voteEnd}">
         <span class="wr-label">${esc(main.name)}の順位</span>
@@ -564,7 +568,7 @@ function buildWork(w) {
   </div>
 
   <div class="work-actions">
-    <a class="btn btn-rakuten" data-book-link href="#" rel="sponsored noopener" target="_blank">楽天ブックスで原作を見る</a>
+${isBook(w) ? `    <a class="btn btn-rakuten" data-book-link href="#" rel="sponsored noopener" target="_blank">楽天ブックスで原作を見る</a>` : ''}
   </div>
 
   ${shareBar(`/works/${w.id}/`, share, { label: 'この作品をシェア' })}
@@ -590,7 +594,7 @@ ${ss.map((s) => `      <li data-history data-season="${s.id}"><a href="/season/$
     <h2>『${esc(w.title)}』の作品データ</h2>
     <dl class="data-list">
       <dt>種類</dt><dd>${typeLong}原作</dd>
-${w.rakutenAuthor ? `      <dt>作者</dt><dd>${esc(w.rakutenAuthor)}</dd>\n` : ''}${w.magazine || w.publisher ? `      <dt>${w.magazine ? (w.type === 'manga' ? '掲載誌' : 'レーベル') : '出版社'}</dt><dd>${esc(w.magazine && w.publisher ? `${w.magazine}（${w.publisher}）` : w.magazine || w.publisher)}</dd>\n` : ''}      <dt>アニメの放送</dt><dd>${main.id === 'recommend' ? '過去の作品もふくむ' : esc(main.label)}</dd>
+${w.rakutenAuthor ? `      <dt>作者</dt><dd>${esc(w.rakutenAuthor)}</dd>\n` : ''}${w.magazine || w.publisher ? `      <dt>${w.magazine ? (w.type === 'manga' ? '掲載誌' : 'レーベル') : isBook(w) ? '出版社' : '制作'}</dt><dd>${esc(w.magazine && w.publisher ? `${w.magazine}（${w.publisher}）` : w.magazine || w.publisher)}</dd>\n` : ''}      <dt>アニメの放送</dt><dd>${main.id === 'recommend' ? '過去の作品もふくむ' : esc(main.label)}</dd>
       <dt>すきおしでの掲載</dt><dd>${ss.map((x) => `<a href="/season/${x.id}/">${esc(x.name)}</a>`).join('、')}</dd>
 ${genresOf(w.id).length ? `      <dt>ジャンル</dt><dd>${genresOf(w.id).map((g) => `<a href="/genre/${g.id}/">${esc(g.name)}</a>`).join('、')}</dd>\n` : ''}${sameMaker.length ? `      <dt>同じ${w.magazine ? (w.type === 'manga' ? '掲載誌' : 'レーベル') : '出版社'}の作品</dt><dd>${sameMaker.map((r) => `<a href="/works/${r.id}/">${esc(r.title)}</a>`).join('、')}</dd>\n` : ''}${REC.has(w.id) ? `      <dt>運営者おすすめ</dt><dd>${[...new Map(REC.get(w.id).map((r) => [r.genreId, r.genreName])).entries()].map(([id, n]) => `<a href="/recommend/${id}/">${esc(n)}</a>`).join('、')}</dd>\n` : ''}    </dl>
   </section>
@@ -607,7 +611,7 @@ ${related.map((r) => `      <li><a href="/works/${r.id}/">${esc(r.title)}</a></l
 </article>`;
   addPage(`/works/${w.id}/`, layout({
     path: `/works/${w.id}/`,
-    title: `${w.title}の原作${TYPE_SHORT[w.type]}｜${w.intro ? 'あらすじ・' : ''}人気順位`,
+    title: `${w.title}の${ORIGIN_NAME[w.type]}｜${w.intro ? 'あらすじ・' : ''}人気順位`,
     description: desc,
     body,
     ogType: 'article',
@@ -685,7 +689,7 @@ ${grid}
 <article class="prose page">
 <h1>${esc(g.name)}のアニメ原作（${list.length}作品）</h1>
 <p>${esc(g.description)}</p>
-<p>漫画${list.filter((w) => w.type === 'manga').length}作品、小説/ライトノベル${list.filter((w) => w.type === 'novel').length}作品をのせています。気になった作品を開くと、あらすじや原作の情報を見て、「すき」を送れます。</p>
+<p>${typesIn(list).map((t) => `${TYPE_LABEL[t]}${list.filter((w) => w.type === t).length}作品`).join('、')}をのせています。気になった作品を開くと、あらすじや原作の情報を見て、「すき」を送れます。</p>
 <ul class="search-list">
 ${items}
 </ul>
@@ -766,8 +770,7 @@ function buildCollection() {
 </div>
 <div class="tag-filter-row" data-col-filters hidden>
 <button type="button" class="chip" data-col-type="all" aria-pressed="true">すべて</button>
-<button type="button" class="chip" data-col-type="manga" aria-pressed="false">漫画</button>
-<button type="button" class="chip" data-col-type="novel" aria-pressed="false">小説/ライトノベル</button>
+${typeChips('data-col-type', typesIn(works.filter((w) => seasonsOf(w.id).length)))}
 </div>
 <div data-col-list></div>
 <div class="col-empty" data-col-empty hidden>
@@ -859,7 +862,7 @@ function buildDatabase() {
   const rows = ids.map((id) => {
     const w = workById.get(id), a = ATTRS.works[id];
     const cells = ATTRS.items.map((it) => { const x = a.v[it.name]; return x == null ? '<td class="dn">–</td>' : `<td${x >= 4 ? ` class="dh" style="--c:${it.color}"` : ''}>${x}</td>`; }).join('');
-    return `<tr><th scope="row"><a href="/works/${id}/">${esc(w.title)}</a><small>${TYPE_LONG[w.type]}原作${a.c === 's' ? '・一部のみ' : ''}</small></th>${cells}</tr>`;
+    return `<tr><th scope="row"><a href="/works/${id}/">${esc(w.title)}</a><small>${TYPE_TAG[w.type]}${a.c === 's' ? '・一部のみ' : ''}</small></th>${cells}</tr>`;
   }).join('');
   const head = ATTRS.items.map((it) => `<th scope="col" style="color:${it.color}">${it.name}</th>`).join('');
   simplePage('/database/', '作品データベース', '今期アニメの原作漫画・小説/ライトノベルを、友情・努力・恋愛・バトルなど12項目で評価した一覧表です。', `
