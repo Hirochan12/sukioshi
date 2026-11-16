@@ -436,7 +436,9 @@ body.no-scroll { overflow: hidden; }
 
 /* ---- トップの大きな検索（検索エンジン風） ---- */
 .top-search { text-align: center; padding: 28px 0 20px; }
-.ts-brand { margin: 0; font-size: 40px; font-weight: 800; color: var(--pink); letter-spacing: 0.06em; line-height: 1.2; }
+.ts-brand { margin: 0; display: flex; flex-wrap: wrap; justify-content: center; align-items: baseline; gap: 0 0.4em; font-size: 22px; font-weight: 800; color: var(--text); letter-spacing: 0.04em; line-height: 1.2; }
+.ts-brand span { display: inline-block; }
+.ts-brand em { font-style: normal; color: var(--pink); font-size: 2.3em; letter-spacing: 0.02em; }
 .ts-tagline { margin: 4px 0 18px; color: var(--text-sub); font-size: 14px; }
 .ts-form { position: relative; max-width: 640px; margin: 0 auto; display: flex; gap: 8px; text-align: left; }
 .ts-input {
@@ -457,4 +459,4 @@ body.no-scroll { overflow: hidden; }
 .ts-links { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px 10px; margin: 16px 0 0; }
 .ts-links a { padding: 6px 14px; border: 1px solid var(--line); border-radius: 999px; font-size: 14px; color: var(--text); text-decoration: none; background: var(--bg); }
 .ts-links a:hover { background: var(--bg-soft); }
-@media (min-width: 760px) { .top-search { padding: 48px 0 28px; } .ts-brand { font-size: 52px; } }
+@media (min-width: 760px) { .top-search { padding: 48px 0 28px; } .ts-brand { font-size: 30px; } }
