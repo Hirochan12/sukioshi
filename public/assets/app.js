@@ -172,7 +172,7 @@
   // ---------- ランキング ----------
   function setupRanking(section) {
     const season = section.dataset.season;
-    const state = { period: 'season', type: 'all', tag: '', expanded: false, phase: phase(section.dataset.voteStart, section.dataset.voteEnd) };
+    const state = { period: 'season', type: 'all', tag: '', attrs: new Set(), expanded: false, phase: phase(section.dataset.voteStart, section.dataset.voteEnd) };
     const list = $('[data-rank-list]', section);
     const status = $('[data-rank-status]', section);
     const items = new Map($$('.rank-item', list).map((li) => [li.dataset.work, li]));
@@ -212,6 +212,23 @@
       })
     );
 
+    const attrClear = $('[data-attr-clear]', section);
+    $$('[data-attr-filter]', section).forEach((btn) =>
+      btn.addEventListener('click', () => {
+        const k = btn.dataset.attrFilter;
+        if (state.attrs.has(k)) state.attrs.delete(k); else state.attrs.add(k);
+        btn.setAttribute('aria-pressed', String(state.attrs.has(k)));
+        if (attrClear) attrClear.hidden = state.attrs.size === 0;
+        applySearch();
+      })
+    );
+    attrClear?.addEventListener('click', () => {
+      state.attrs.clear();
+      $$('[data-attr-filter]', section).forEach((b) => b.setAttribute('aria-pressed', 'false'));
+      attrClear.hidden = true;
+      applySearch();
+    });
+
     let reqNo = 0;
     async function load() {
       const my = ++reqNo;
@@ -247,13 +264,14 @@
     const q = normKey(searchBox?.value);
     let total = 0;
     for (const li of $$('.rank-item', list)) {
-      const match = li.dataset.off !== '1' && (!q || li.dataset.key.includes(q));
+      const have = (li.dataset.attrs || '').split(' ');
+      const match = li.dataset.off !== '1' && (!q || li.dataset.key.includes(q)) && [...state.attrs].every((k) => have.includes(k));
       if (match) total++;
-      li.hidden = !match || (!q && !state.expanded && total > TOP);
+      li.hidden = !match || (!q && !state.attrs.size && !state.expanded && total > TOP);
     }
-    $$('.ad-slot', list).forEach((a) => { a.style.display = q || !state.expanded ? 'none' : ''; });
-    if (searchEmpty) searchEmpty.hidden = !q || total > 0;
-    moreBtn.hidden = Boolean(q) || total <= TOP;
+    $$('.ad-slot', list).forEach((a) => { a.style.display = q || state.attrs.size || !state.expanded ? 'none' : ''; });
+    if (searchEmpty) searchEmpty.hidden = (!q && !state.attrs.size) || total > 0;
+    moreBtn.hidden = Boolean(q) || state.attrs.size > 0 || total <= TOP;
     moreBtn.textContent = state.expanded ? '上位10作品だけにする' : `11位以降もひらく（あと${total - TOP}作品）`;
   }
     searchBox?.addEventListener('input', applySearch);
