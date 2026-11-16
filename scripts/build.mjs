@@ -102,7 +102,8 @@ const recHtml = (id) => {
 };
 const SONGS = new Map(works.filter((w) => Array.isArray(w.songs) && w.songs.length).map((w) => [w.id, w.songs]));
 const airText = (s) => (s.id === 'recommend' ? '過去の作品もふくむ' : `${s.months}放送`);
-const fmtPeriod = (s) => (s.id === 'recommend' ? '期限なし（いつでも投票できます）' : `${fmtDate(s.voteStart)}〜${fmtDate(s.voteEnd)}`);
+const openEnded = (s) => s.id === 'recommend' || s.voteEnd >= '2099-01-01';
+const fmtPeriod = (s) => (openEnded(s) ? '期限なし（いつでも投票できます）' : `${fmtDate(s.voteStart)}〜${fmtDate(s.voteEnd)}`);
 const fmtDate = (d) => {
   const [y, m, day] = d.split('-').map(Number);
   return `${y}年${m}月${day}日`;
@@ -278,7 +279,7 @@ function buildIndex() {
   const event = seasons.find((s) => s.eventName && s.id !== CURRENT);
   const banner = event
     ? `<a class="event-banner" href="/season/${event.id}/" data-show-until="${event.voteEnd}">
-  <span class="event-kicker">${fmtDate(event.voteEnd)}まで</span>
+  <span class="event-kicker">${openEnded(event) ? 'いつでも投票OK' : fmtDate(event.voteEnd) + 'まで'}</span>
   <span class="event-title">${esc(event.eventName)}</span>
   <span class="event-cta">投票する →</span>
 </a>`
@@ -324,7 +325,7 @@ function buildSeason(s) {
   const isEvent = Boolean(s.eventName);
   const h1 = isEvent ? s.eventName : `${s.label}の原作 人気ランキング`;
   const desc = isEvent
-    ? `${s.label}（${airText(s)}）の原作漫画・小説/ライトノベル${s.works.length}作品から、いちばん「すき」な作品を選ぶ振り返り投票。${s.id === 'recommend' ? 'いつでも' : fmtDate(s.voteEnd) + 'まで'}投票できます。`
+    ? `${s.label}（${airText(s)}）の原作漫画・小説/ライトノベル${s.works.length}作品から、いちばん「すき」な作品を選ぶ振り返り投票。${openEnded(s) ? 'いつでも' : fmtDate(s.voteEnd) + 'まで'}投票できます。`
     : `${s.label}（${airText(s)}）の原作漫画・小説/ライトノベル${s.works.length}作品の人気ランキング。タップ1回で「すき」を投票でき、今日・今週・シーズン全体の順位が見られます。`;
   const body = `
 <nav class="crumbs" aria-label="パンくずリスト"><a href="/">トップ</a><span aria-hidden="true">›</span><a href="/seasons/">シーズン</a><span aria-hidden="true">›</span><span>${esc(s.name)}</span></nav>
