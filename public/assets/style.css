@@ -413,3 +413,23 @@ body.no-scroll { overflow: hidden; }
 .data-list dd { margin: 0; }
 .genre-others { list-style: none; margin: 8px 0 20px; padding: 0; display: flex; flex-wrap: wrap; gap: 8px 14px; }
 .genre-others li { margin: 0; }
+
+/* 作品の属性 */
+.work-attrs { margin: 24px 0; }
+.attr-radar { width: 100%; max-width: 380px; height: auto; margin: 0 auto; display: block; }
+.attr-chips { margin: 8px 0; }
+.attr-chip { display: inline-block; background: var(--c); color: #fff; border-radius: 999px; padding: 0 12px; margin: 2px 4px 2px 0; font-size: 14px; font-weight: 700; }
+.attr-bars { list-style: none; padding: 0; margin: 8px 0 0; display: grid; gap: 6px; }
+.attr-bars li { display: grid; grid-template-columns: 5.5em 1fr 1.5em; gap: 8px; align-items: center; font-size: 14px; }
+.ab-l { font-weight: 700; }
+.ab-t { height: 14px; background: var(--line); border-radius: 4px; overflow: hidden; }
+.ab-t b { display: block; height: 100%; }
+.ab-v { text-align: right; font-weight: 700; }
+.db-wrap { overflow-x: auto; border: 1px solid var(--line); border-radius: 10px; }
+.db-table { border-collapse: collapse; min-width: 820px; width: 100%; font-size: 13px; }
+.db-table th, .db-table td { padding: 6px 8px; border-bottom: 1px solid var(--line); text-align: center; }
+.db-table thead th { position: sticky; top: 0; background: var(--bg-soft); font-size: 12px; }
+.db-table tbody th { text-align: left; font-weight: 600; min-width: 14em; }
+.db-table tbody th small { display: block; color: var(--text-sub); font-weight: 400; }
+.db-table td.dh { background: var(--c); color: #fff; font-weight: 700; }
+.db-table td.dn { color: var(--text-faint); }
