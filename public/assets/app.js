@@ -402,7 +402,7 @@
   // ---------- コレクションのページ ----------
   const colRoot = $('[data-collection]');
   if (colRoot) {
-    const TYPE_LABEL = { manga: '漫画', novel: '小説/ライトノベル' };
+    const TYPE_LABEL = { manga: '漫画', novel: '小説/ライトノベル', game: 'ゲーム', original: 'オリジナル', other: 'その他' };
     const state = { type: 'all' };
     const listEl = $('[data-col-list]', colRoot);
     const emptyEl = $('[data-col-empty]', colRoot);
@@ -474,7 +474,7 @@
   if (meRoot) {
     const ME_KEY = 'sukioshi:me';
     const ME_MAX = 5;
-    const ME_TYPE = { manga: '漫画', novel: '小説/ライトノベル' };
+    const ME_TYPE = { manga: '漫画', novel: '小説/ライトノベル', game: 'ゲーム', original: 'オリジナル', other: 'その他' };
     const q = (s) => $(s, meRoot);
     const mk = (tag, cls, text) => {
       const e = document.createElement(tag);
