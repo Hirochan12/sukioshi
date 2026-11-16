@@ -460,3 +460,6 @@ body.no-scroll { overflow: hidden; }
 .ts-links a { padding: 6px 14px; border: 1px solid var(--line); border-radius: 999px; font-size: 14px; color: var(--text); text-decoration: none; background: var(--bg); }
 .ts-links a:hover { background: var(--bg-soft); }
 @media (min-width: 760px) { .top-search { padding: 48px 0 28px; } .ts-brand { font-size: 30px; } }
+.attr-filter .chip { color: var(--c); border-color: var(--c); }
+.attr-filter .chip[aria-pressed="true"] { background: var(--c); color: #fff; }
+.attr-filter .chip[data-attr-clear] { color: var(--text-sub); border-color: var(--line); }
