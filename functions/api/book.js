@@ -12,6 +12,8 @@ export async function onRequestGet({ request, env, waitUntil }) {
   const id = new URL(request.url).searchParams.get('id') || '';
   const work = WORKS.get(id);
   if (!work) return errorJson(404, 'unknown_work', '作品が見つかりません。');
+  // 漫画・小説以外（ゲーム・オリジナルなど）には表紙も楽天の商品もない
+  if (!GENRE[work.type]) return json({ ok: false, code: 'no_book' }, { headers: { 'cache-control': 'public, max-age=86400' } });
 
   const cacheKey = new Request(`https://cache.sukioshi/book/v3/${id}${work.coverRev ? '-r' + work.coverRev : ''}`);
   const cache = caches.default;
