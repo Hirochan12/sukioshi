@@ -16,6 +16,8 @@
   --manga-soft: #e6f1fb;
   --novel: #0f6e56;
   --novel-soft: #e1f5ee;
+  --other: #7a5a14;
+  --other-soft: #faeeda;
   --radius: 12px;
   --tap: 44px;
   --font: "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Noto Sans JP", "Yu Gothic UI", Meiryo, system-ui, sans-serif;
@@ -110,6 +112,7 @@ img[data-cover]:not([src]) { visibility: hidden; }
 .tag { display: inline-block; font-size: 11px; font-weight: 700; padding: 0 8px; border-radius: 999px; line-height: 20px; }
 .tag-manga { background: var(--manga-soft); color: var(--manga); }
 .tag-novel { background: var(--novel-soft); color: var(--novel); }
+.tag-game, .tag-original, .tag-other { background: var(--other-soft); color: var(--other); }
 
 /* すきボタン（ピンクのハート） */
 .vote {
@@ -364,6 +367,7 @@ body.no-scroll { overflow: hidden; }
 .col-type { align-self: flex-start; font-size: 11px; padding: 1px 8px; border-radius: 999px; }
 .col-type-manga { background: var(--manga-soft); color: var(--manga); }
 .col-type-novel { background: var(--novel-soft); color: var(--novel); }
+.col-type-game, .col-type-original, .col-type-other { background: var(--other-soft); color: var(--other); }
 .col-empty { background: var(--bg-soft); border-radius: var(--radius); padding: 20px 16px; margin: 16px 0; text-align: center; }
 @media (min-width: 560px) { .col-grid { grid-template-columns: repeat(5, minmax(0, 1fr)); } }
 
