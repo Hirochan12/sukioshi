@@ -208,11 +208,15 @@ function adSlot(name) {
 }
 
 // ---- ランキング部分 ----
+const strongAttrs = (id) => {
+  const a = ATTRS.works[id];
+  return a ? ATTRS.items.filter((it) => (a.v[it.name] || 0) >= 4).map((it) => it.name).join(' ') : '';
+};
 function rankingSection(season, { headingTag = 'h2', heading } = {}) {
   const items = season.works
     .map(({ workId, note }) => {
       const w = workById.get(workId);
-      return `<li class="rank-item" data-work="${w.id}" data-type="${w.type}" data-search-keys="${esc([w.title, w.searchKana || ''].join(' '))}">
+      return `<li class="rank-item" data-work="${w.id}" data-type="${w.type}" data-search-keys="${esc([w.title, w.searchKana || ''].join(' '))}"${strongAttrs(w.id) ? ` data-attrs="${esc(strongAttrs(w.id))}"` : ''}>
   <span class="rank-no" aria-label="順位">–</span>
   <a class="cover" data-cover-link href="/works/${w.id}/" tabindex="-1" aria-hidden="true"><img data-cover="${w.id}" alt="" width="60" height="84" decoding="async"></a>
   <div class="rank-body">
@@ -237,14 +241,15 @@ function rankingSection(season, { headingTag = 'h2', heading } = {}) {
     <button type="button" class="chip" data-type-filter="manga" aria-pressed="false">漫画</button>
     <button type="button" class="chip" data-type-filter="novel" aria-pressed="false">小説/ライトノベル</button>
   </div>
-  <div class="tag-filter" role="group" aria-label="おすすめポイントで探す">
-    <span class="tag-filter-label">おすすめポイントで探す</span>
+${season.works.some((e) => ATTRS.works[e.workId]) ? `  <div class="tag-filter attr-filter" role="group" aria-label="属性で探す">
+    <span class="tag-filter-label">属性で探す（運営者の評価が4以上）</span>
     <div class="tag-filter-row">
-      <button type="button" class="chip" data-tag-filter="" aria-pressed="true">指定なし</button>
-${tags.map((t) => `      <button type="button" class="chip" data-tag-filter="${t.id}" aria-pressed="false">${esc(t.label)}</button>`).join('\n')}
+${ATTRS.items.map((it) => `      <button type="button" class="chip" style="--c:${it.color}" data-attr-filter="${it.name}" aria-pressed="false">${it.name}</button>`).join('\n')}
+      <button type="button" class="chip" data-attr-clear hidden>選択を解除</button>
     </div>
+    <p class="fine">評価済みの作品が対象です（${season.works.filter((e) => ATTRS.works[e.workId]).length}／${season.works.length}作品）。<a href="/criteria/">評価基準</a>・<a href="/database/">作品データベース</a></p>
   </div>
-  <div class="rank-search">
+` : ''}  <div class="rank-search">
     <input type="search" class="search-input" data-rank-search placeholder="作品名でさがす（例：薬屋）" aria-label="このランキングの作品名でさがす" autocomplete="off" enterkeyhint="search">
   </div>
   <p class="rank-search-empty" data-rank-search-empty hidden>見つかりませんでした。<a href="/search/">すべてのシーズンからさがす</a></p>
