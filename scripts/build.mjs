@@ -85,7 +85,10 @@ if (existsSync(join(ROOT, 'data/recommend.json'))) {
     }
   }
 }
+// 運営者の感想文の表示スイッチ（false の間は作品ページとおすすめページに感想を出さない。データは recommend.json に残す）
+const SHOW_REC_COMMENTS = false;
 const recHtml = (id) => {
+  if (!SHOW_REC_COMMENTS) return '';
   const seen = new Set();
   const parts = [];
   for (const r of REC.get(id)) {
@@ -602,7 +605,7 @@ ${w ? `<a class="work-cover" data-cover-link href="/works/${w.id}/" aria-label="
 <div class="rec-body">
 <h2 id="${it.workId || ''}">${w ? `<a href="/works/${w.id}/">${esc(it.title)}</a>` : esc(it.title)}</h2>
 ${it.meta ? `<p class="fine">${esc(it.meta)}</p>` : ''}
-${it.paras.map((t) => `<p>${esc(t)}</p>`).join('\n')}
+${SHOW_REC_COMMENTS ? it.paras.map((t) => `<p>${esc(t)}</p>`).join('\n') : ''}
 ${w ? `<p><a class="btn" href="/works/${w.id}/">『${esc(it.title)}』に「すき」を送る</a></p>` : ''}
 </div>
 </div>`;
