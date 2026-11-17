@@ -320,7 +320,7 @@ function buildIndex() {
     <button type="submit" class="ts-btn" aria-label="さがす">さがす</button>
     <ul class="ts-suggest" data-ts-suggest hidden></ul>
   </form>
-  <p class="ts-links"><a href="/search/">すべての作品</a><a href="/songs/">主題歌から探す</a><a href="/recommend/">おすすめ</a><a href="/database/">作品データベース</a><a href="/genre/">ジャンル別</a><a href="/seasons/">シーズンを選ぶ</a></p>
+  <p class="ts-links"><a href="/search/">すべての作品</a><a href="/songs/">主題歌から探す</a><a href="/quiz/">好みから診断</a><a href="/recommend/">おすすめ</a><a href="/database/">作品データベース</a><a href="/genre/">ジャンル別</a><a href="/seasons/">シーズンを選ぶ</a></p>
 </section>
 <section class="hero">
   <h1>${esc(currentSeason.label)}の原作、どれがすき？</h1>
@@ -495,6 +495,74 @@ ${list}
 </div>
 <p class="fine">主題歌の情報は、各作品ページの紹介文にのせているものです。作品名でさがしたいときは<a href="/search/">作品名検索</a>へどうぞ。</p>`;
   addPage('/songs/', layout({ path: '/songs/', title: '主題歌からアニメ・原作をさがす', description: `アニメのオープニング・エンディングの曲名やアーティスト名から、原作の漫画・小説/ライトノベルがあるアニメ${rows.length}作品をさがせます。`, body }), { priority: 0.5 });
+}
+
+// ---- 好みから探す診断（属性の評価から、気分に合う作品をえらぶ） ----
+function buildQuiz() {
+  if (!ATTRS.items.length) return;
+  const LABEL = { 友情: '仲間との友情', 努力: '努力・修行', 勝利: '勝負・目標達成', 恋愛: 'ドキドキの恋愛', 青春: '学園・青春', 感動: '泣ける・感動', ギャグ: '笑えるギャグ', ミステリー: '謎解き・ミステリー', 日常系: 'のんびり日常', ファミリー: '家族・ほのぼの', バトル: '手に汗にぎるバトル', シリアス: '重めのシリアス' };
+  const rows = works
+    .filter((w) => seasonsOf(w.id).length && ATTRS.works[w.id])
+    .map((w) => [w.id, w.title, w.type, ATTRS.items.map((it) => ATTRS.works[w.id].v[it.name] || 0)]);
+  const data = JSON.stringify({ items: ATTRS.items.map((it) => it.name), types: TYPE_LABEL, works: rows }).replace(/</g, String.fromCharCode(92) + 'u003c');
+  const chips = ATTRS.items.map((it) => `      <button type="button" class="chip" style="--c:${it.color}" data-q-attr="${esc(it.name)}" aria-pressed="false">${esc(LABEL[it.name] || it.name)}</button>`).join('\n');
+  const body = `
+<nav class="crumbs" aria-label="パンくずリスト"><a href="/">トップ</a><span aria-hidden="true">›</span><span>好みから探す診断</span></nav>
+<h1>好みから探す診断</h1>
+<p>いま見たい（読みたい）気分を、3つまで選んでください。運営者がつけた${rows.length}作品の属性評価（<a href="/criteria/">評価基準</a>）から、合う作品を5つ選びます。</p>
+<div class="quiz" data-quiz>
+  <h2>1. どんな作品がいいですか？（3つまで）</h2>
+  <div class="filters" role="group" aria-label="気分を選ぶ">
+${chips}
+  </div>
+  <h2>2. 原作の種類</h2>
+  <div class="filters" role="group" aria-label="原作の種類">
+    <button type="button" class="chip" data-q-type="all" aria-pressed="true">どれでも</button>
+${typeChips('data-q-type', typesIn(works.filter((w) => seasonsOf(w.id).length)))}
+  </div>
+  <p><button type="button" class="btn" data-q-go>診断する</button></p>
+  <p class="rank-status" data-q-status aria-live="polite"></p>
+  <ol class="quiz-result" data-q-result></ol>
+</div>
+<script type="application/json" id="quiz-data">${data}</script>
+<script>
+(function(){
+  var root=document.querySelector('[data-quiz]');if(!root)return;
+  var D=JSON.parse(document.getElementById('quiz-data').textContent);
+  var attrs=[],type='all';
+  var chips=root.querySelectorAll('[data-q-attr]');
+  chips.forEach(function(b){b.addEventListener('click',function(){
+    var n=b.getAttribute('data-q-attr'),i=attrs.indexOf(n);
+    if(i>=0){attrs.splice(i,1)}else{if(attrs.length>=3)return;attrs.push(n)}
+    chips.forEach(function(x){x.setAttribute('aria-pressed',String(attrs.indexOf(x.getAttribute('data-q-attr'))>=0))});
+  })});
+  var tchips=root.querySelectorAll('[data-q-type]');
+  tchips.forEach(function(b){b.addEventListener('click',function(){
+    type=b.getAttribute('data-q-type');
+    tchips.forEach(function(x){x.setAttribute('aria-pressed',String(x===b))});
+  })});
+  root.querySelector('[data-q-go]').addEventListener('click',function(){
+    var st=root.querySelector('[data-q-status]'),ol=root.querySelector('[data-q-result]');
+    ol.textContent='';
+    if(!attrs.length){st.textContent='気分を1つ以上えらんでください。';return}
+    var idx=attrs.map(function(n){return D.items.indexOf(n)});
+    var list=D.works.filter(function(w){return type==='all'||w[2]===type}).map(function(w){
+      var s=0,hit=0;idx.forEach(function(i){s+=w[3][i];if(w[3][i]>=4)hit++});
+      return {w:w,s:s,hit:hit};
+    }).filter(function(r){return r.hit>0}).sort(function(a,b){return b.hit-a.hit||b.s-a.s||(a.w[0]<b.w[0]?-1:1)});
+    var top=list.slice(0,5);
+    if(!top.length){st.textContent='ぴったりの作品がみつかりませんでした。条件をへらしてためしてください。';return}
+    st.textContent=list.length+'作品から、とくに合う'+top.length+'作品です。';
+    top.forEach(function(r){
+      var li=document.createElement('li'),a=document.createElement('a');
+      a.href='/works/'+r.w[0]+'/';a.textContent=r.w[1];
+      var sm=document.createElement('small');sm.textContent=' （'+D.types[r.w[2]]+'）';
+      li.appendChild(a);li.appendChild(sm);ol.appendChild(li);
+    });
+  });
+})();
+</script>`;
+  addPage('/quiz/', layout({ path: '/quiz/', title: '好みから探す診断｜気分に合うアニメ原作', description: `いま見たい気分を選ぶだけで、${rows.length}作品の属性評価から、合うアニメ原作の漫画・小説/ライトノベルを5つえらびます。`, body }), { priority: 0.5 });
 }
 
 // ---- 作品ページ ----
@@ -1077,6 +1145,7 @@ buildIndex();
 buildSeasonList();
 buildSearch();
 buildSongs();
+buildQuiz();
 buildGenres();
 for (const s of seasons) buildSeason(s);
 for (const w of works) if (seasonsOf(w.id).length) buildWork(w);
