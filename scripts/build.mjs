@@ -320,7 +320,7 @@ function buildIndex() {
     <button type="submit" class="ts-btn" aria-label="さがす">さがす</button>
     <ul class="ts-suggest" data-ts-suggest hidden></ul>
   </form>
-  <p class="ts-links"><a href="/search/">すべての作品</a><a href="/recommend/">おすすめ</a><a href="/database/">作品データベース</a><a href="/genre/">ジャンル別</a><a href="/seasons/">アーカイブ</a></p>
+  <p class="ts-links"><a href="/search/">すべての作品</a><a href="/recommend/">おすすめ</a><a href="/database/">作品データベース</a><a href="/genre/">ジャンル別</a><a href="/seasons/">シーズンを選ぶ</a></p>
 </section>
 <section class="hero">
   <h1>${esc(currentSeason.label)}の原作、どれがすき？</h1>
