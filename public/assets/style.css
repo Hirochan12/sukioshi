@@ -498,3 +498,13 @@ body.no-scroll { overflow: hidden; }
 .quiz-result{padding-left:1.4rem;line-height:1.9}
 .quiz-result a{font-weight:700}
 .guide-top{padding-left:1.4rem;line-height:1.9}
+.mood-block{margin:18px 0;padding:14px;border:1px solid var(--line);border-radius:var(--radius);background:var(--bg)}
+.mood-block h3{margin:0 0 10px;font-size:17px;display:flex;align-items:baseline;gap:8px}
+.mood-count{font-weight:400;font-size:13px;color:var(--text-faint)}
+.mood-top{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.mood-card{display:flex;flex-direction:column;gap:6px;text-decoration:none;color:var(--text)}
+.mood-card .col-cover{width:100%}
+.mood-title{font-size:14px;font-weight:700;line-height:1.4}
+.mood-more{margin-top:10px}
+.mood-more>summary{cursor:pointer;color:var(--pink);font-size:14px;min-height:var(--tap);display:flex;align-items:center}
+.mood-list{margin:0;padding:0 0 4px 1.4rem;line-height:1.9}
