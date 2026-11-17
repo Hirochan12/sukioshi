@@ -378,6 +378,7 @@ ${seasonIntro(s)}
 </article>
 ${s.id === 'recommend' && REC_GENRES.length ? `<section class="genre-pick"><h2>ジャンルから選ぶ</h2>${genreGrid(REC_GENRES)}</section>` : ''}
 ${rankingSection(s, { heading: isEvent ? '投票・ランキング' : `${s.label}原作ランキング` })}
+${isEvent ? '' : seasonSongsHtml(s)}
 ${shareBar(`/season/${s.id}/`, `${isEvent ? s.eventName : `${s.label}の原作 人気ランキング`} 推しに「すき」を送ろう♡ #すきおし`, { label: 'このランキングをシェア' })}
 ${s.article ? `<details class="season-more"><summary>${esc(s.label)}の原作まとめを読む</summary><div class="prose">${s.article}</div></details>` : ''}
 ${adSlot('season-bottom')}
@@ -458,17 +459,31 @@ ${list}
 }
 
 // ---- 主題歌からさがすページ（紹介文のオープニング・エンディングの記載から作る） ----
+function songsOf(w) {
+  if (!w.intro) return [];
+  const paras = String(w.intro).split('</p>').map((x) => x.replace(/<[^>]+>/g, '').trim()).filter(Boolean);
+  const songs = [];
+  for (const para of paras) {
+    for (const sent of para.split('。')) {
+      if (/(オープニング|エンディング|主題歌|挿入歌)(は|を|も)/.test(sent) && /「/.test(sent)) songs.push(sent.trim() + '。');
+    }
+  }
+  return songs;
+}
+
+function seasonSongsHtml(s) {
+  const rows = s.works.map((e) => workById.get(e.workId)).filter(Boolean).map((w) => ({ w, songs: songsOf(w) })).filter((r) => r.songs.length);
+  if (!rows.length) return '';
+  return `<section class="season-songs"><h2>${esc(s.label)}のアニメ主題歌一覧</h2>
+<p>${esc(s.label)}の${rows.length}作品の、オープニング・エンディングなどの主題歌です。曲名から作品をさがすときは<a href="/songs/">主題歌から探す</a>も使えます。</p>
+<ul class="guide-top">${rows.map(({ w, songs }) => `<li><a href="/works/${w.id}/">${esc(w.title)}</a>：${songs.map((x) => esc(x)).join('')}</li>`).join('')}</ul></section>`;
+}
+
 function buildSongs() {
   const rows = [];
   for (const w of works) {
-    if (!seasonsOf(w.id).length || !w.intro) continue;
-    const paras = String(w.intro).split('</p>').map((x) => x.replace(/<[^>]+>/g, '').trim()).filter(Boolean);
-    const songs = [];
-    for (const para of paras) {
-      for (const sent of para.split('。')) {
-        if (/(オープニング|エンディング|主題歌|挿入歌)(は|を|も)/.test(sent) && /「/.test(sent)) songs.push(sent.trim() + '。');
-      }
-    }
+    if (!seasonsOf(w.id).length) continue;
+    const songs = songsOf(w);
     if (songs.length) rows.push({ w, songs });
   }
   const list = rows
