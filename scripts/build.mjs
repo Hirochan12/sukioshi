@@ -320,7 +320,7 @@ function buildIndex() {
     <button type="submit" class="ts-btn" aria-label="さがす">さがす</button>
     <ul class="ts-suggest" data-ts-suggest hidden></ul>
   </form>
-  <p class="ts-links"><a href="/search/">すべての作品</a><a href="/recommend/">おすすめ</a><a href="/database/">作品データベース</a><a href="/genre/">ジャンル別</a><a href="/seasons/">シーズンを選ぶ</a></p>
+  <p class="ts-links"><a href="/search/">すべての作品</a><a href="/songs/">主題歌から探す</a><a href="/recommend/">おすすめ</a><a href="/database/">作品データベース</a><a href="/genre/">ジャンル別</a><a href="/seasons/">シーズンを選ぶ</a></p>
 </section>
 <section class="hero">
   <h1>${esc(currentSeason.label)}の原作、どれがすき？</h1>
@@ -455,6 +455,46 @@ ${list}
   </ul>
 </div>`;
   addPage('/search/', layout({ path: '/search/', title: 'アニメ・原作をさがす', description: 'すきおしにのっているアニメ原作の漫画・小説/ライトノベルを作品名でさがせます。今のシーズンも過去のシーズンも検索できます。', body }), { priority: 0.5 });
+}
+
+// ---- 主題歌からさがすページ（紹介文のオープニング・エンディングの記載から作る） ----
+function buildSongs() {
+  const rows = [];
+  for (const w of works) {
+    if (!seasonsOf(w.id).length || !w.intro) continue;
+    const paras = String(w.intro).split('</p>').map((x) => x.replace(/<[^>]+>/g, '').trim()).filter(Boolean);
+    const songs = [];
+    for (const para of paras) {
+      for (const sent of para.split('。')) {
+        if (/(オープニング|エンディング|主題歌|挿入歌)(は|を|も)/.test(sent) && /「/.test(sent)) songs.push(sent.trim() + '。');
+      }
+    }
+    if (songs.length) rows.push({ w, songs });
+  }
+  const list = rows
+    .map(({ w, songs }) => {
+      const ss = seasonsOf(w.id).sort((a, b) => b.voteStart.localeCompare(a.voteStart));
+      const keys = [w.title, w.searchKana || '', ...songs].join(' ');
+      return `  <li class="search-item" data-search-keys="${esc(keys)}" data-type="${w.type}">
+    <a href="/works/${w.id}/"><span class="si-title">${esc(w.title)}</span>
+    <span class="si-meta"><span class="tag tag-${w.type}">${TYPE_LABEL[w.type]}</span>${ss.slice(0, 1).map((s) => `<span>${esc(s.label)}</span>`).join('')}</span>
+    <span class="si-songs">${songs.map((x) => esc(x)).join('')}</span></a>
+  </li>`;
+    })
+    .join('\n');
+  const body = `
+<nav class="crumbs" aria-label="パンくずリスト"><a href="/">トップ</a><span aria-hidden="true">›</span><span>主題歌からさがす</span></nav>
+<h1>主題歌からアニメ・原作をさがす</h1>
+<p>すきおしにのっている${rows.length}作品の、オープニング・エンディングなどの主題歌を一覧にしました。曲名やアーティスト名を入力すると、その曲が使われている作品がみつかります（例：LiSA、unravel）。</p>
+<div class="site-search" data-site-search>
+  <input type="search" class="search-input search-input-large" data-site-search-input placeholder="曲名・アーティスト名を入力（例：LiSA、unravel）" aria-label="主題歌でさがす" autocomplete="off" enterkeyhint="search">
+  <p class="rank-status" data-site-search-status aria-live="polite"></p>
+  <ul class="search-list">
+${list}
+  </ul>
+</div>
+<p class="fine">主題歌の情報は、各作品ページの紹介文にのせているものです。作品名でさがしたいときは<a href="/search/">作品名検索</a>へどうぞ。</p>`;
+  addPage('/songs/', layout({ path: '/songs/', title: '主題歌からアニメ・原作をさがす', description: `アニメのオープニング・エンディングの曲名やアーティスト名から、原作の漫画・小説/ライトノベルがあるアニメ${rows.length}作品をさがせます。`, body }), { priority: 0.5 });
 }
 
 // ---- 作品ページ ----
@@ -1036,6 +1076,7 @@ const ASSET_VERSION = hashFile(join(ROOT, 'public/assets/style.css')).slice(0, 4
 buildIndex();
 buildSeasonList();
 buildSearch();
+buildSongs();
 buildGenres();
 for (const s of seasons) buildSeason(s);
 for (const w of works) if (seasonsOf(w.id).length) buildWork(w);
