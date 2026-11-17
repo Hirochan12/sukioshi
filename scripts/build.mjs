@@ -331,11 +331,13 @@ ${rankingSection(currentSeason, { heading: `${currentSeason.label}原作 人気�
 ${shareBar('/', `${currentSeason.label}の原作、どれがすき？ 推しに「すき」を送ろう♡ #すきおし`, { label: 'このランキングをシェア' })}
 ${adSlot('top-bottom')}
 <section class="section-links">
-  <h2>アーカイブ</h2>
-${archiveGroups().map((g) => `  <h3 class="archive-year">${esc(g.title)}</h3>
-  <ul class="season-cards">
-${g.items.map((s) => `    <li><a href="/season/${s.id}/"><span class="sc-name">${esc(s.label)}</span><span class="sc-meta">${esc(s.id === 'recommend' ? 'いつでも' : s.months)}・${s.works.length}作品</span></a></li>`).join('\n')}
-  </ul>`).join('\n')}
+  <h2>シーズンを選ぶ</h2>
+${archiveGroups().map((g) => `  <details class="archive-group"${g.items.some((s) => s.id === currentSeason.id) ? ' open' : ''}>
+    <summary>${esc(g.title)}</summary>
+    <ul class="archive-chips">
+${g.items.map((s) => `      <li><a href="/season/${s.id}/"><span class="ac-name">${esc(s.id === 'recommend' ? '運営者おすすめ' : { winter: '冬', spring: '春', summer: '夏', autumn: '秋' }[s.id.split('-')[1]])}</span><span class="ac-meta">${s.works.length}作品</span></a></li>`).join('\n')}
+    </ul>
+  </details>`).join('\n')}
 </section>`;
   addPage('/', layout({
     path: '/',
