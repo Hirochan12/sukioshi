@@ -478,12 +478,36 @@ function songsOf(w) {
   return songs;
 }
 
+function topAttrs(id) {
+  const a = ATTRS.works[id];
+  if (!a) return [];
+  const names = ATTRS.items.map((x) => x.name);
+  const max = Math.max(...names.map((n) => a.v[n] || 0));
+  if (max < 3) return [];
+  return names.filter((n) => (a.v[n] || 0) === max).slice(0, 2);
+}
+
+const ATTR_FRIENDLY = { 友情: '友情があつい', 努力: '努力・修行', 勝利: '勝負・勝利', 恋愛: '恋愛', 青春: '青春・学園', 感動: '泣ける・感動', ギャグ: '笑える', ミステリー: '謎解き・ミステリー', 日常系: 'のんびり日常', ファミリー: '家族', バトル: 'バトル', シリアス: '重め・シリアス' };
+
 function seasonSongsHtml(s) {
-  const rows = s.works.map((e) => workById.get(e.workId)).filter(Boolean).map((w) => ({ w, songs: songsOf(w) })).filter((r) => r.songs.length);
-  if (!rows.length) return '';
-  return `<section class="season-songs"><h2>${esc(s.label)}のアニメ主題歌一覧</h2>
-<p>${esc(s.label)}の${rows.length}作品の、オープニング・エンディングなどの主題歌です。曲名から作品をさがすときは<a href="/songs/">主題歌から探す</a>も使えます。</p>
-<ul class="guide-top">${rows.map(({ w, songs }) => `<li><a href="/works/${w.id}/">${esc(w.title)}</a>：${songs.map((x) => esc(x)).join('')}</li>`).join('')}</ul></section>`;
+  const all = s.works.map((e) => workById.get(e.workId)).filter(Boolean);
+  const groups = new Map();
+  for (const w of all) for (const n of topAttrs(w.id)) { if (!groups.has(n)) groups.set(n, []); groups.get(n).push(w); }
+  if (!groups.size) return '';
+  const score = (w, n) => { const a = ATTRS.works[w.id]; return [a.v[n] || 0, a.c === 's' ? 1 : 0, Object.values(a.v).reduce((x, y) => x + y, 0)]; };
+  const cmp = (n) => (a, b) => { const x = score(a, n), y = score(b, n); return y[0] - x[0] || y[1] - x[1] || y[2] - x[2] || (a.id < b.id ? -1 : 1); };
+  const list = [...groups.entries()].sort((a, b) => b[1].length - a[1].length);
+  return `<section class="season-mood"><h2>${esc(s.label)}は、どんな作品が多い？</h2>
+<p>${esc(s.label)}の作品を、運営者がつけた評価（<a href="/criteria/">評価基準</a>）をもとに、雰囲気ごとにまとめました。それぞれ、その雰囲気がとくに強い2作品を表紙つきで紹介します。</p>
+${list.map(([n, l]) => {
+    const sorted = l.slice().sort(cmp(n));
+    const top = sorted.slice(0, 2);
+    const rest = sorted.slice(2);
+    return `<div class="mood-block"><h3>${esc(ATTR_FRIENDLY[n] || n)}<span class="mood-count">${l.length}作品</span></h3>
+<div class="mood-top">${top.map((w) => `<a class="mood-card" href="/works/${w.id}/"><span class="col-cover"><img data-cover="${w.id}" alt="${esc(w.title)}の表紙" width="96" height="134"></span><span class="mood-title">${esc(w.title)}</span></a>`).join('')}</div>
+${rest.length ? `<details class="mood-more"><summary>ほかの${rest.length}作品を見る</summary><ul class="mood-list">${rest.map((w) => `<li><a href="/works/${w.id}/">${esc(w.title)}</a></li>`).join('')}</ul></details>` : ''}</div>`;
+  }).join('\n')}
+</section>`;
 }
 
 function buildSongs() {
