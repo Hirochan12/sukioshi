@@ -75,6 +75,24 @@ const clip = (t, n) => (t.length > n ? t.slice(0, n - 1) + '…' : t);
 const seasonsOf = (workId) => seasons.filter((s) => s.works.some((e) => e.workId === workId));
 const noteOf = (season, workId) => season.works.find((e) => e.workId === workId)?.note || '';
 const ordered = [...seasons].sort((a, b) => b.voteStart.localeCompare(a.voteStart) || b.id.localeCompare(a.id));
+// アーカイブ: 年ごと(新しい年が先)→その年の中は冬・春・夏・秋の順。おすすめなど年のないものは最後にまとめる
+const SEASON_ORDER = { winter: 0, spring: 1, summer: 2, autumn: 3 };
+function archiveGroups() {
+  const byYear = new Map();
+  const rest = [];
+  for (const s of seasons) {
+    const m = /^(\d{4})-(winter|spring|summer|autumn)$/.exec(s.id);
+    if (!m) { rest.push(s); continue; }
+    if (!byYear.has(m[1])) byYear.set(m[1], []);
+    byYear.get(m[1]).push(s);
+  }
+  const groups = [...byYear.keys()].sort((a, b) => b.localeCompare(a)).map((y) => ({
+    title: `${y}年`,
+    items: byYear.get(y).sort((a, b) => SEASON_ORDER[a.id.split('-')[1]] - SEASON_ORDER[b.id.split('-')[1]]),
+  }));
+  if (rest.length) groups.push({ title: 'そのほか', items: rest });
+  return groups;
+}
 const currentSeason = seasons.find((s) => s.id === CURRENT);
 
 // 作品ごとの主題歌（OP/ED）。works.json の songs（1行ずつのHTML）を使う
@@ -157,7 +175,7 @@ ${adsense}
       <a href="/search/">さがす</a>
       <a href="/recommend/">おすすめ</a>
       <a href="/collection/">コレクション</a>
-      <a href="/seasons/">シーズン</a>
+      <a href="/seasons/">アーカイブ</a>
       <a href="/about/">このサイトについて</a>
     </nav>
   </div>
@@ -169,7 +187,7 @@ ${body}
   <div class="wrap">
     <nav class="footer-nav" aria-label="サイト情報">
       <a href="/about/">このサイトについて</a>
-      <a href="/seasons/">シーズン一覧</a>
+      <a href="/seasons/">アーカイブ</a>
       <a href="/database/">作品データベース</a>
       <a href="/criteria/">評価基準</a>
       <a href="/minna/">みんなのすき</a>
@@ -302,7 +320,7 @@ function buildIndex() {
     <button type="submit" class="ts-btn" aria-label="さがす">さがす</button>
     <ul class="ts-suggest" data-ts-suggest hidden></ul>
   </form>
-  <p class="ts-links"><a href="/search/">すべての作品</a><a href="/recommend/">おすすめ</a><a href="/database/">作品データベース</a><a href="/genre/">ジャンル別</a><a href="/seasons/">シーズン</a></p>
+  <p class="ts-links"><a href="/search/">すべての作品</a><a href="/recommend/">おすすめ</a><a href="/database/">作品データベース</a><a href="/genre/">ジャンル別</a><a href="/seasons/">アーカイブ</a></p>
 </section>
 <section class="hero">
   <h1>${esc(currentSeason.label)}の原作、どれがすき？</h1>
@@ -313,10 +331,11 @@ ${rankingSection(currentSeason, { heading: `${currentSeason.label}原作 人気�
 ${shareBar('/', `${currentSeason.label}の原作、どれがすき？ 推しに「すき」を送ろう♡ #すきおし`, { label: 'このランキングをシェア' })}
 ${adSlot('top-bottom')}
 <section class="section-links">
-  <h2>シーズンを選ぶ</h2>
+  <h2>アーカイブ</h2>
+${archiveGroups().map((g) => `  <h3 class="archive-year">${esc(g.title)}</h3>
   <ul class="season-cards">
-${ordered.map((s) => `    <li><a href="/season/${s.id}/"><span class="sc-name">${esc(s.label)}</span><span class="sc-meta">${esc(s.id === 'recommend' ? 'いつでも' : s.months)}・${s.works.length}作品</span></a></li>`).join('\n')}
-  </ul>
+${g.items.map((s) => `    <li><a href="/season/${s.id}/"><span class="sc-name">${esc(s.label)}</span><span class="sc-meta">${esc(s.id === 'recommend' ? 'いつでも' : s.months)}・${s.works.length}作品</span></a></li>`).join('\n')}
+  </ul>`).join('\n')}
 </section>`;
   addPage('/', layout({
     path: '/',
@@ -347,7 +366,7 @@ function buildSeason(s) {
     ? `${s.label}（${airText(s)}）の原作漫画・小説/ライトノベル${s.works.length}作品から、いちばん「すき」な作品を選ぶ振り返り投票。${openEnded(s) ? 'いつでも' : fmtDate(s.voteEnd) + 'まで'}投票できます。`
     : `${s.label}（${airText(s)}）の原作漫画・小説/ライトノベル${s.works.length}作品の人気ランキング。タップ1回で「すき」を投票でき、今日・今週・シーズン全体の順位が見られます。`;
   const body = `
-<nav class="crumbs" aria-label="パンくずリスト"><a href="/">トップ</a><span aria-hidden="true">›</span><a href="/seasons/">シーズン</a><span aria-hidden="true">›</span><span>${esc(s.name)}</span></nav>
+<nav class="crumbs" aria-label="パンくずリスト"><a href="/">トップ</a><span aria-hidden="true">›</span><a href="/seasons/">アーカイブ</a><span aria-hidden="true">›</span><span>${esc(s.name)}</span></nav>
 <article class="season-article">
   <h1>${esc(h1)}</h1>
   <div class="prose">
@@ -360,7 +379,7 @@ ${rankingSection(s, { heading: isEvent ? '投票・ランキング' : `${s.label
 ${shareBar(`/season/${s.id}/`, `${isEvent ? s.eventName : `${s.label}の原作 人気ランキング`} 推しに「すき」を送ろう♡ #すきおし`, { label: 'このランキングをシェア' })}
 ${s.article ? `<details class="season-more"><summary>${esc(s.label)}の原作まとめを読む</summary><div class="prose">${s.article}</div></details>` : ''}
 ${adSlot('season-bottom')}
-<p class="back-link"><a href="/seasons/">ほかのシーズンを見る</a></p>`;
+<p class="back-link"><a href="/seasons/">アーカイブでほかのシーズンを見る</a></p>`;
   const pageTitle = isEvent ? h1 : `${s.label}の原作 人気ランキング｜漫画・小説/ライトノベル${s.works.length}作品一覧`;
   const jsonLd = {
     '@context': 'https://schema.org',
@@ -375,7 +394,7 @@ ${adSlot('season-bottom')}
         '@type': 'BreadcrumbList',
         itemListElement: [
           { '@type': 'ListItem', position: 1, name: 'トップ', item: SITE_URL + '/' },
-          { '@type': 'ListItem', position: 2, name: 'シーズン', item: `${SITE_URL}/seasons/` },
+          { '@type': 'ListItem', position: 2, name: 'アーカイブ', item: `${SITE_URL}/seasons/` },
           { '@type': 'ListItem', position: 3, name: s.name, item: `${SITE_URL}/season/${s.id}/` },
         ],
       },
@@ -386,11 +405,12 @@ ${adSlot('season-bottom')}
 
 function buildSeasonList() {
   const body = `
-<nav class="crumbs" aria-label="パンくずリスト"><a href="/">トップ</a><span aria-hidden="true">›</span><span>シーズン</span></nav>
-<h1>シーズン一覧</h1>
+<nav class="crumbs" aria-label="パンくずリスト"><a href="/">トップ</a><span aria-hidden="true">›</span><span>アーカイブ</span></nav>
+<h1>アーカイブ</h1>
 <p>アニメの放送シーズンごとに、原作の人気ランキングを残しています。投票期間が終わったシーズンも、最終順位をいつでも見られます。</p>
+${archiveGroups().map((g) => `<h2 class="archive-year">${esc(g.title)}</h2>
 <ul class="season-table">
-${ordered
+${g.items
   .map(
     (s) => `  <li data-season-row data-vote-start="${s.voteStart}" data-vote-end="${s.voteEnd}">
     <a href="/season/${s.id}/"><span class="st-name">${esc(s.eventName || s.label + '原作ランキング')}</span>
@@ -399,8 +419,8 @@ ${ordered
   </li>`
   )
   .join('\n')}
-</ul>`;
-  addPage('/seasons/', layout({ path: '/seasons/', title: 'シーズン一覧', description: 'すきおしのアニメ放送シーズン一覧。各シーズンの原作漫画・小説/ライトノベルの人気ランキングと最終順位を見られます。', body }), { priority: 0.6 });
+</ul>`).join('\n')}`;
+  addPage('/seasons/', layout({ path: '/seasons/', title: 'アーカイブ', description: 'すきおしのアニメ放送シーズンのアーカイブ。各シーズンの原作漫画・小説/ライトノベルの人気ランキングと最終順位を見られます。', body }), { priority: 0.6 });
 }
 
 
