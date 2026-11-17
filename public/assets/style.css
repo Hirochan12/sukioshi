@@ -493,3 +493,6 @@ body.no-scroll { overflow: hidden; }
 .ac-meta { font-size: 12px; color: var(--text-sub); }
 
 .si-songs{display:block;margin-top:.35rem;font-size:.82rem;line-height:1.6;color:var(--text-faint);font-weight:400}
+.quiz h2{font-size:1.05rem;margin:1.2rem 0 .5rem}
+.quiz-result{padding-left:1.4rem;line-height:1.9}
+.quiz-result a{font-weight:700}
