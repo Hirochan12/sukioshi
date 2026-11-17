@@ -320,7 +320,7 @@ function buildIndex() {
     <button type="submit" class="ts-btn" aria-label="さがす">さがす</button>
     <ul class="ts-suggest" data-ts-suggest hidden></ul>
   </form>
-  <p class="ts-links"><a href="/search/">すべての作品</a><a href="/songs/">主題歌から探す</a><a href="/quiz/">好みから診断</a><a href="/recommend/">おすすめ</a><a href="/database/">作品データベース</a><a href="/genre/">ジャンル別</a><a href="/seasons/">シーズンを選ぶ</a></p>
+  <p class="ts-links"><a href="/search/">すべての作品</a><a href="/songs/">主題歌から探す</a><a href="/quiz/">好みから診断</a><a href="/recommend/">おすすめ</a><a href="/database/">作品データベース</a><a href="/genre/">ジャンル別</a><a href="/publishers/">出版社・作者</a><a href="/seasons/">シーズンを選ぶ</a></p>
 </section>
 <section class="hero">
   <h1>${esc(currentSeason.label)}の原作、どれがすき？</h1>
@@ -1045,6 +1045,67 @@ ${items}
   }
 }
 
+// ---- 出版社・掲載誌・作者 ----
+const PUB_SLUG = { 'KADOKAWA': 'kadokawa', '集英社': 'shueisha', '講談社': 'kodansha', '小学館': 'shogakukan', 'スクウェア・エニックス': 'square-enix', '白泉社': 'hakusensha', '秋田書店': 'akita-shoten', '一迅社': 'ichijinsha', 'マイクロマガジン社': 'micro-magazine', 'TOブックス': 'to-books', '双葉社': 'futabasha', 'SBクリエイティブ': 'sb-creative', '芳文社': 'houbunsha', 'アルファポリス': 'alphapolis', 'ブシロード': 'bushiroad', '新潮社': 'shinchosha', 'ホビージャパン': 'hobby-japan' };
+function buildPublishers() {
+  const live = works.filter((w) => seasonsOf(w.id).length);
+  const byPub = new Map();
+  for (const w of live) {
+    const p = (w.publisher || '').trim();
+    if (!p) continue;
+    if (!byPub.has(p)) byPub.set(p, []);
+    byPub.get(p).push(w);
+  }
+  const pubs = [...byPub.entries()].filter(([, l]) => l.length >= 3).sort((a, b) => b[1].length - a[1].length || (a[0] < b[0] ? -1 : 1));
+  const slugOf = (name, i) => PUB_SLUG[name] || `p${String(i + 1).padStart(2, '0')}`;
+  const crumb = (last) => `<nav class="crumbs" aria-label="パンくずリスト"><a href="/">トップ</a><span aria-hidden="true">›</span>${last ? `<a href="/publishers/">出版社・作者</a><span aria-hidden="true">›</span><span>${esc(last)}</span>` : '<span>出版社・作者</span>'}</nav>`;
+  const item = (w) => `  <li class="search-item"><a href="/works/${w.id}/"><span class="si-title">${esc(w.title)}</span><span class="si-meta"><span class="tag tag-${w.type}">${TYPE_LABEL[w.type]}</span>${w.magazine ? `<span>${esc(w.magazine)}</span>` : ''}</span></a></li>`;
+  // 作者（紹介文の「原作は○○による」から）
+  const byAuthor = new Map();
+  for (const w of live) {
+    const txt = String(w.intro || '').replace(/<[^>]+>/g, '');
+    const m = txt.match(/原作は([^。、（）「」]{2,14}?)(?:による|の(?:小説|漫画|ライトノベル|同名)|で、|です)/);
+    if (!m || m[1].includes('と')) continue;
+    if (!byAuthor.has(m[1])) byAuthor.set(m[1], []);
+    byAuthor.get(m[1]).push(w);
+  }
+  const authors = [...byAuthor.entries()].filter(([, l]) => l.length >= 2).sort((a, b) => b[1].length - a[1].length || (a[0] < b[0] ? -1 : 1));
+  const body = `
+${crumb('')}
+<article class="prose page">
+<h1>出版社・作者から探すアニメ原作</h1>
+<p>すきおしにのっているアニメ原作を、出版社と原作者から探せます。同じ出版社や同じ作者の作品をまとめて見ると、好みに合う作品が見つかりやすくなります。</p>
+<h2>出版社から探す</h2>
+<ul class="genre-others">${pubs.map(([n, l], i) => `<li><a href="/publisher/${slugOf(n, i)}/">${esc(n)}</a>（${l.length}作品）</li>`).join('')}</ul>
+<h2>同じ作者の作品が複数ある原作者</h2>
+<p>アニメ化された作品が2つ以上ある原作者を、作品数の多い順にのせています。</p>
+<ul class="guide-top">${authors.map(([n, l]) => `<li>${esc(n)}：${l.map((w) => `<a href="/works/${w.id}/">${esc(w.title)}</a>`).join('、')}</li>`).join('')}</ul>
+<p class="fine">ジャンルから探したいときは<a href="/genre/">ジャンル別</a>へどうぞ。</p>
+</article>`;
+  addPage('/publishers/', layout({ path: '/publishers/', title: '出版社・作者から探すアニメ原作', description: `アニメ原作の漫画・小説/ライトノベルを、出版社${pubs.length}社と原作者${authors.length}人のまとまりから探せます。`, body }), { priority: 0.6 });
+  pubs.forEach(([name, list], i) => {
+    const path = `/publisher/${slugOf(name, i)}/`;
+    const mags = new Map();
+    for (const w of list) if (w.magazine) mags.set(w.magazine, (mags.get(w.magazine) || 0) + 1);
+    const magTxt = [...mags.entries()].sort((a, b) => b[1] - a[1]).slice(0, 5).map(([m, c]) => `「${m}」${c}作品`).join('、');
+    const types = typesIn(list).map((x) => `${TYPE_LABEL[x]}${list.filter((w) => w.type === x).length}作品`).join('、');
+    const others = pubs.filter(([n]) => n !== name).slice(0, 8);
+    const b = `
+${crumb(name)}
+<article class="prose page">
+<h1>${esc(name)}の原作アニメ（${list.length}作品）</h1>
+<p>${esc(name)}から刊行されている原作をもとにしたアニメを、すきおしにのっているなかから${list.length}作品あつめました。内訳は、${types}です。${magTxt ? `掲載誌・レーベルでは、${esc(magTxt)}などがあります。` : ''}</p>
+<ul class="search-list">
+${list.map(item).join('\n')}
+</ul>
+<h2>ほかの出版社</h2>
+<ul class="genre-others">${others.map(([n, l]) => `<li><a href="/publisher/${slugOf(n, pubs.findIndex((x) => x[0] === n))}/">${esc(n)}</a></li>`).join('')}</ul>
+<p class="fine"><a href="/publishers/">出版社・作者の一覧へ戻る</a></p>
+</article>`;
+    addPage(path, layout({ path, title: `${name}の原作アニメ ${list.length}作品`, description: `${name}から刊行されている原作のアニメ${list.length}作品の一覧です。${types}。`, body: b }), { priority: 0.6 });
+  });
+}
+
 // ---- 運営者おすすめ ----
 function buildRecommend() {
   if (!existsSync(join(ROOT, 'data/recommend.json'))) return;
@@ -1362,6 +1423,7 @@ buildSearch();
 buildSongs();
 buildQuiz();
 buildGenres();
+buildPublishers();
 for (const s of seasons) buildSeason(s);
 for (const w of works) if (seasonsOf(w.id).length) buildWork(w);
 buildStatic();
