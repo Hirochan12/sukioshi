@@ -19,6 +19,12 @@ const workById = new Map(works.map((w) => [w.id, w]));
 const GENRE_DATA = existsSync(join(ROOT, 'data/genres.json')) ? readJson('data/genres.json') : { genres: [], works: {} };
 const GENRE_BY_ID = new Map(GENRE_DATA.genres.map((g) => [g.id, g]));
 const genresOf = (id) => (GENRE_DATA.works[id] || []).map((gid) => GENRE_BY_ID.get(gid)).filter(Boolean);
+const MEDIA = existsSync(join(ROOT, 'data/media.json')) ? readJson('data/media.json') : {};
+const MEDIA_LABEL = { A: '劇場アニメ・OVA', G: 'ゲーム', S: '舞台・ミュージカル', L: '実写映画・ドラマ' };
+const mediaText = (id) => {
+  const c = MEDIA[id];
+  return c ? ['A', 'G', 'S', 'L'].filter((k) => c.includes(k)).map((k) => MEDIA_LABEL[k]).join('、') : '';
+};
 const ATTRS = existsSync(join(ROOT, 'data/attrs.json')) ? readJson('data/attrs.json') : { items: [], levels: [], works: {} };
 const SITE_URL = (process.env.SITE_URL || site.url).replace(/\/$/, '');
 const BUILD_DATE = new Date(Date.now() + 9 * 3600e3).toISOString().slice(0, 10);
@@ -939,6 +945,7 @@ ${ss.map((s) => `      <li data-history data-season="${s.id}"><a href="/season/$
     <dl class="data-list">
       <dt>種類</dt><dd>${typeLong}原作</dd>
 ${w.rakutenAuthor ? `      <dt>作者</dt><dd>${esc(w.rakutenAuthor)}</dd>\n` : ''}${w.magazine || w.publisher ? `      <dt>${w.magazine ? (w.type === 'manga' ? '掲載誌' : 'レーベル') : isBook(w) ? '出版社' : '制作'}</dt><dd>${esc(w.magazine && w.publisher ? `${w.magazine}（${w.publisher}）` : w.magazine || w.publisher)}</dd>\n` : ''}      <dt>アニメの放送</dt><dd>${main.id === 'recommend' ? '過去の作品もふくむ' : esc(main.label)}</dd>
+      ${mediaText(w.id) ? `<dt>メディア展開</dt><dd>${esc(mediaText(w.id))}（原作やアニメをもとにした展開）</dd>` : ''}
       <dt>すきおしでの掲載</dt><dd>${ss.map((x) => `<a href="/season/${x.id}/">${esc(x.name)}</a>`).join('、')}</dd>
 ${genresOf(w.id).length ? `      <dt>ジャンル</dt><dd>${genresOf(w.id).map((g) => `<a href="/genre/${g.id}/">${esc(g.name)}</a>`).join('、')}</dd>\n` : ''}${sameMaker.length ? `      <dt>同じ${w.magazine ? (w.type === 'manga' ? '掲載誌' : 'レーベル') : '出版社'}の作品</dt><dd>${sameMaker.map((r) => `<a href="/works/${r.id}/">${esc(r.title)}</a>`).join('、')}</dd>\n` : ''}${REC.has(w.id) ? `      <dt>運営者おすすめ</dt><dd>${[...new Map(REC.get(w.id).map((r) => [r.genreId, r.genreName])).entries()].map(([id, n]) => `<a href="/recommend/${id}/">${esc(n)}</a>`).join('、')}</dd>\n` : ''}    </dl>
   </section>
