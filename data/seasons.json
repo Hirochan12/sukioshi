@@ -2912,6 +2912,722 @@
           "note": ""
         }
       ]
+    },
+    {
+      "id": "2024-winter",
+      "name": "2024冬",
+      "label": "2024冬アニメ",
+      "months": "2024年1〜3月",
+      "eventName": "",
+      "voteStart": "2026-10-17",
+      "voteEnd": "2099-12-31",
+      "article": "<h2>2024冬アニメの作品まとめ</h2>\n<p>2024年冬アニメを一覧にしました。原作が漫画の作品19、小説/ライトノベルの作品18、ゲームが原作の作品0、オリジナルアニメ2、その他（カードゲーム・シリーズ作品など）2の、計41作品です。気になる作品名を押すと、作品ページで「すき」の投票と作品の情報を見られます。</p>\n<h2>冬アニメの傾向</h2>\n<p>漫画が原作の作品が19作品、小説/ライトノベルが18作品で、原作がある作品が全体の大半です。続編や続きのシーズン（2期・3期、第2クールなど）は17作品あり、前のシーズンから見ていた人は、続きの作品を探す楽しみがあります。</p>\n<h2>原作が漫画のアニメ</h2>\n<ul><li><a href=\"/works/w642/\">BASTARD!! -暗黒の破壊神-</a></li><li><a href=\"/works/w643/\">ダンジョン飯</a></li><li><a href=\"/works/w646/\">貼りまわれ!こいぬ</a></li><li><a href=\"/works/w647/\">百千さん家のあやかし王子</a></li><li><a href=\"/works/w648/\">ゆびさきと恋々</a></li><li><a href=\"/works/w652/\">僕の心のヤバイやつ</a></li><li><a href=\"/works/w654/\">休日のわるものさん</a></li><li><a href=\"/works/w659/\">道産子ギャルはなまらめんこい</a></li><li><a href=\"/works/w661/\">SHAMAN KING FLOWERS</a></li><li><a href=\"/works/w662/\">戦国妖狐</a></li><li><a href=\"/works/w664/\">うる星やつら</a></li><li><a href=\"/works/w666/\">魔女と野獣</a></li><li><a href=\"/works/w668/\">スナックバス江</a></li><li><a href=\"/works/w173/\">魔都精兵のスレイブ</a></li><li><a href=\"/works/w602/\">結婚指輪物語</a></li><li><a href=\"/works/w238/\">マッシュル-MASHLE-</a></li><li><a href=\"/works/w343/\">青の祓魔師 終夜篇</a></li><li><a href=\"/works/w234/\">姫様\"拷問\"の時間です</a></li><li><a href=\"/works/w601/\">キングダム</a></li></ul>\n<h2>原作が小説/ライトノベルのアニメ</h2>\n<ul><li><a href=\"/works/w641/\">弱キャラ友崎くん</a></li><li><a href=\"/works/w644/\">即死チートが最強すぎて、異世界のやつらがまるで相手にならないんですが。</a></li><li><a href=\"/works/w645/\">治癒魔法の間違った使い方</a></li><li><a href=\"/works/w649/\">異世界でもふもふなでなでするためにがんばってます。</a></li><li><a href=\"/works/w650/\">最強タンクの迷宮攻略〜体力9999のレアスキル持ちタンク、勇者パーティーを追放される〜</a></li><li><a href=\"/works/w651/\">真の仲間じゃないと勇者のパーティーを追い出されたので、辺境でスローライフすることにしました</a></li><li><a href=\"/works/w653/\">ループ7回目の悪役令嬢は、元敵国で自由気ままな花嫁生活を満喫する</a></li><li><a href=\"/works/w655/\">月が導く異世界道中</a></li><li><a href=\"/works/w656/\">望まぬ不死の冒険者</a></li><li><a href=\"/works/w658/\">悪役令嬢レベル99 〜私は裏ボスですが魔王ではありません〜</a></li><li><a href=\"/works/w660/\">外科医エリーゼ</a></li><li><a href=\"/works/w665/\">最弱テイマーはゴミ拾いの旅を始めました。</a></li><li><a href=\"/works/w667/\">名湯『異世界の湯』開拓記 〜アラフォー温泉マニアの転生先は、のんびり温泉天国でした〜</a></li><li><a href=\"/works/w669/\">火狩りの王</a></li><li><a href=\"/works/w365/\">異修羅</a></li><li><a href=\"/works/w194/\">ようこそ実力至上主義の教室へ</a></li><li><a href=\"/works/w114/\">佐々木とピーちゃん</a></li><li><a href=\"/works/w359/\">俺だけレベルアップな件</a></li></ul>\n<h2>オリジナルアニメ</h2>\n<ul><li><a href=\"/works/w657/\">HIGH CARD</a></li><li><a href=\"/works/w663/\">勇気爆発バーンブレイバーン</a></li></ul>\n<h2>その他（カードゲーム・シリーズ作品など）</h2>\n<ul><li><a href=\"/works/w670/\">わんだふるぷりきゅあ!</a></li><li><a href=\"/works/w382/\">カードファイト!! ヴァンガード Divinez デラックス編</a></li></ul>",
+      "works": [
+        {
+          "workId": "w642",
+          "note": "地獄の鎮魂歌編"
+        },
+        {
+          "workId": "w643",
+          "note": ""
+        },
+        {
+          "workId": "w646",
+          "note": ""
+        },
+        {
+          "workId": "w647",
+          "note": ""
+        },
+        {
+          "workId": "w648",
+          "note": ""
+        },
+        {
+          "workId": "w652",
+          "note": "第2期"
+        },
+        {
+          "workId": "w654",
+          "note": ""
+        },
+        {
+          "workId": "w659",
+          "note": ""
+        },
+        {
+          "workId": "w661",
+          "note": ""
+        },
+        {
+          "workId": "w662",
+          "note": "世直し姉弟編"
+        },
+        {
+          "workId": "w664",
+          "note": "第2期"
+        },
+        {
+          "workId": "w666",
+          "note": ""
+        },
+        {
+          "workId": "w668",
+          "note": ""
+        },
+        {
+          "workId": "w173",
+          "note": ""
+        },
+        {
+          "workId": "w602",
+          "note": "第1期"
+        },
+        {
+          "workId": "w238",
+          "note": "神覚者候補選抜試験編"
+        },
+        {
+          "workId": "w343",
+          "note": "島根啓明結社篇"
+        },
+        {
+          "workId": "w234",
+          "note": "第1期"
+        },
+        {
+          "workId": "w601",
+          "note": "第5シリーズ"
+        },
+        {
+          "workId": "w641",
+          "note": "2nd STAGE"
+        },
+        {
+          "workId": "w644",
+          "note": ""
+        },
+        {
+          "workId": "w645",
+          "note": ""
+        },
+        {
+          "workId": "w649",
+          "note": ""
+        },
+        {
+          "workId": "w650",
+          "note": ""
+        },
+        {
+          "workId": "w651",
+          "note": "2期"
+        },
+        {
+          "workId": "w653",
+          "note": ""
+        },
+        {
+          "workId": "w655",
+          "note": "第二幕"
+        },
+        {
+          "workId": "w656",
+          "note": ""
+        },
+        {
+          "workId": "w658",
+          "note": ""
+        },
+        {
+          "workId": "w660",
+          "note": ""
+        },
+        {
+          "workId": "w665",
+          "note": ""
+        },
+        {
+          "workId": "w667",
+          "note": ""
+        },
+        {
+          "workId": "w669",
+          "note": "第2期"
+        },
+        {
+          "workId": "w365",
+          "note": "第1期"
+        },
+        {
+          "workId": "w194",
+          "note": "3rd Season"
+        },
+        {
+          "workId": "w114",
+          "note": "Season1"
+        },
+        {
+          "workId": "w359",
+          "note": ""
+        },
+        {
+          "workId": "w657",
+          "note": "season2"
+        },
+        {
+          "workId": "w663",
+          "note": ""
+        },
+        {
+          "workId": "w670",
+          "note": ""
+        },
+        {
+          "workId": "w382",
+          "note": ""
+        }
+      ]
+    },
+    {
+      "id": "2024-spring",
+      "name": "2024春",
+      "label": "2024春アニメ",
+      "months": "2024年4〜6月",
+      "eventName": "",
+      "voteStart": "2026-10-17",
+      "voteEnd": "2099-12-31",
+      "article": "<h2>2024春アニメの作品まとめ</h2>\n<p>2024年春アニメを一覧にしました。原作が漫画の作品21、小説/ライトノベルの作品18、ゲームが原作の作品2、オリジナルアニメ6、その他（カードゲーム・シリーズ作品など）1の、計48作品です。気になる作品名を押すと、作品ページで「すき」の投票と作品の情報を見られます。</p>\n<h2>春アニメの傾向</h2>\n<p>漫画が原作の作品が21作品、小説/ライトノベルが18作品で、原作がある作品が全体の大半です。続編や続きのシーズン（2期・3期、第2クールなど）は21作品あり、前のシーズンから見ていた人は、続きの作品を探す楽しみがあります。</p>\n<h2>原作が漫画のアニメ</h2>\n<ul><li><a href=\"/works/w675/\">バーテンダー 神のグラス</a></li><li><a href=\"/works/w676/\">花野井くんと恋の病</a></li><li><a href=\"/works/w677/\">ゆるキャン△</a></li><li><a href=\"/works/w683/\">オーイ! とんぼ</a></li><li><a href=\"/works/w686/\">ワンルーム、日当たり普通、天使つき。</a></li><li><a href=\"/works/w687/\">ヴァンパイア男子寮</a></li><li><a href=\"/works/w688/\">じいさんばあさん若返る</a></li><li><a href=\"/works/w689/\">死神坊ちゃんと黒メイド</a></li><li><a href=\"/works/w690/\">となりの妖怪さん</a></li><li><a href=\"/works/w696/\">怪異と乙女と神隠し</a></li><li><a href=\"/works/w698/\">忘却バッテリー</a></li><li><a href=\"/works/w699/\">喧嘩独学</a></li><li><a href=\"/works/w701/\">黒執事 -寄宿学校編-</a></li><li><a href=\"/works/w702/\">ささやくように恋を唄う</a></li><li><a href=\"/works/w704/\">鬼滅の刃 柱稽古編</a></li><li><a href=\"/works/w489/\">WIND BREAKER</a></li><li><a href=\"/works/w443/\">ザ・ファブル</a></li><li><a href=\"/works/w505/\">戦隊大失格</a></li><li><a href=\"/works/w109/\">夜桜さんちの大作戦</a></li><li><a href=\"/works/w560/\">怪獣8号</a></li><li><a href=\"/works/w254/\">僕のヒーローアカデミア</a></li></ul>\n<h2>原作が小説/ライトノベルのアニメ</h2>\n<ul><li><a href=\"/works/w671/\">神は遊戯に飢えている。</a></li><li><a href=\"/works/w673/\">狼と香辛料 MERCHANT MEETS THE WISE WOLF</a></li><li><a href=\"/works/w674/\">出来損ないと呼ばれた元英雄は、実家から追放されたので好き勝手に生きることにした</a></li><li><a href=\"/works/w679/\">変人のサラダボウル</a></li><li><a href=\"/works/w680/\">魔法科高校の劣等生</a></li><li><a href=\"/works/w681/\">Re:Monster</a></li><li><a href=\"/works/w685/\">烏は主を選ばない</a></li><li><a href=\"/works/w691/\">響け!ユーフォニアム3</a></li><li><a href=\"/works/w694/\">Lv2からチートだった元勇者候補のまったり異世界ライフ</a></li><li><a href=\"/works/w697/\">声優ラジオのウラオモテ</a></li><li><a href=\"/works/w700/\">魔王学院の不適合者</a></li><li><a href=\"/works/w703/\">THE NEW GATE</a></li><li><a href=\"/works/w581/\">転生したら第七王子だったので、気ままに魔術を極めます</a></li><li><a href=\"/works/w057/\">転生したらスライムだった件</a></li><li><a href=\"/works/w122/\">転生貴族、鑑定スキルで成り上がる</a></li><li><a href=\"/works/w068/\">無職転生 ～異世界行ったら本気だす～</a></li><li><a href=\"/works/w364/\">Unnamed Memory</a></li><li><a href=\"/works/w251/\">この素晴らしい世界に祝福を！</a></li></ul>\n<h2>ゲームが原作のアニメ</h2>\n<ul><li><a href=\"/works/w682/\">アイドルマスター シャイニーカラーズ</a></li><li><a href=\"/works/w692/\">ブルーアーカイブ The Animation</a></li></ul>\n<h2>オリジナルアニメ</h2>\n<ul><li><a href=\"/works/w672/\">終末トレインどこへいく?</a></li><li><a href=\"/works/w678/\">アストロノオト</a></li><li><a href=\"/works/w684/\">ガールズバンドクライ</a></li><li><a href=\"/works/w693/\">夜のクラゲは泳げない</a></li><li><a href=\"/works/w695/\">リンカイ!</a></li><li><a href=\"/works/w527/\">SHIBUYA♡HACHI</a></li></ul>\n<h2>その他（カードゲーム・シリーズ作品など）</h2>\n<ul><li><a href=\"/works/w438/\">おしりたんてい</a></li></ul>",
+      "works": [
+        {
+          "workId": "w675",
+          "note": ""
+        },
+        {
+          "workId": "w676",
+          "note": ""
+        },
+        {
+          "workId": "w677",
+          "note": "SEASON3"
+        },
+        {
+          "workId": "w683",
+          "note": "第1期"
+        },
+        {
+          "workId": "w686",
+          "note": ""
+        },
+        {
+          "workId": "w687",
+          "note": ""
+        },
+        {
+          "workId": "w688",
+          "note": ""
+        },
+        {
+          "workId": "w689",
+          "note": "第3期"
+        },
+        {
+          "workId": "w690",
+          "note": ""
+        },
+        {
+          "workId": "w696",
+          "note": ""
+        },
+        {
+          "workId": "w698",
+          "note": ""
+        },
+        {
+          "workId": "w699",
+          "note": ""
+        },
+        {
+          "workId": "w701",
+          "note": "寄宿学校編"
+        },
+        {
+          "workId": "w702",
+          "note": ""
+        },
+        {
+          "workId": "w704",
+          "note": ""
+        },
+        {
+          "workId": "w489",
+          "note": "Season 1"
+        },
+        {
+          "workId": "w443",
+          "note": ""
+        },
+        {
+          "workId": "w505",
+          "note": "1st season"
+        },
+        {
+          "workId": "w109",
+          "note": "第1期"
+        },
+        {
+          "workId": "w560",
+          "note": "第1期"
+        },
+        {
+          "workId": "w254",
+          "note": "第7期"
+        },
+        {
+          "workId": "w671",
+          "note": ""
+        },
+        {
+          "workId": "w673",
+          "note": ""
+        },
+        {
+          "workId": "w674",
+          "note": ""
+        },
+        {
+          "workId": "w679",
+          "note": ""
+        },
+        {
+          "workId": "w680",
+          "note": "第3期"
+        },
+        {
+          "workId": "w681",
+          "note": ""
+        },
+        {
+          "workId": "w685",
+          "note": ""
+        },
+        {
+          "workId": "w691",
+          "note": "3"
+        },
+        {
+          "workId": "w694",
+          "note": ""
+        },
+        {
+          "workId": "w697",
+          "note": ""
+        },
+        {
+          "workId": "w700",
+          "note": "II 第2クール"
+        },
+        {
+          "workId": "w703",
+          "note": ""
+        },
+        {
+          "workId": "w581",
+          "note": "第1期"
+        },
+        {
+          "workId": "w057",
+          "note": "第3期"
+        },
+        {
+          "workId": "w122",
+          "note": "第1期"
+        },
+        {
+          "workId": "w068",
+          "note": "第2クール"
+        },
+        {
+          "workId": "w364",
+          "note": "第1期"
+        },
+        {
+          "workId": "w251",
+          "note": "3"
+        },
+        {
+          "workId": "w682",
+          "note": "1st season"
+        },
+        {
+          "workId": "w692",
+          "note": ""
+        },
+        {
+          "workId": "w672",
+          "note": ""
+        },
+        {
+          "workId": "w678",
+          "note": ""
+        },
+        {
+          "workId": "w684",
+          "note": ""
+        },
+        {
+          "workId": "w693",
+          "note": ""
+        },
+        {
+          "workId": "w695",
+          "note": ""
+        },
+        {
+          "workId": "w527",
+          "note": "第1クール"
+        },
+        {
+          "workId": "w438",
+          "note": "第8期"
+        }
+      ]
+    },
+    {
+      "id": "2024-summer",
+      "name": "2024夏",
+      "label": "2024夏アニメ",
+      "months": "2024年7〜9月",
+      "eventName": "",
+      "voteStart": "2026-10-17",
+      "voteEnd": "2099-12-31",
+      "article": "<h2>2024夏アニメの作品まとめ</h2>\n<p>2024年夏アニメを一覧にしました。原作が漫画の作品18、小説/ライトノベルの作品14、ゲームが原作の作品2、オリジナルアニメ0、その他（カードゲーム・シリーズ作品など）0の、計34作品です。気になる作品名を押すと、作品ページで「すき」の投票と作品の情報を見られます。</p>\n<h2>夏アニメの傾向</h2>\n<p>漫画が原作の作品が18作品、小説/ライトノベルが14作品で、原作がある作品が全体の大半です。続編や続きのシーズン（2期・3期、第2クールなど）は14作品あり、前のシーズンから見ていた人は、続きの作品を探す楽しみがあります。</p>\n<h2>原作が漫画のアニメ</h2>\n<ul><li><a href=\"/works/w706/\">SHY</a></li><li><a href=\"/works/w707/\">僕の妻は感情がない</a></li><li><a href=\"/works/w711/\">2.5次元の誘惑</a></li><li><a href=\"/works/w712/\">女神のカフェテラス</a></li><li><a href=\"/works/w713/\">グレンダイザーU</a></li><li><a href=\"/works/w714/\">ダンジョンの中のひと</a></li><li><a href=\"/works/w718/\">神之塔 -Tower of God- 王子の帰還</a></li><li><a href=\"/works/w721/\">真夜中ぱんチ</a></li><li><a href=\"/works/w722/\">かつて魔法少女と悪は敵対していた。</a></li><li><a href=\"/works/w723/\">恋は双子で割り切れない</a></li><li><a href=\"/works/w725/\">デリコズ・ナーサリー</a></li><li><a href=\"/works/w136/\">【推しの子】</a></li><li><a href=\"/works/w242/\">ラーメン赤猫</a></li><li><a href=\"/works/w025/\">逃げ上手の若君</a></li><li><a href=\"/works/w347/\">キン肉マン 完璧超人始祖編</a></li><li><a href=\"/works/w231/\">杖と剣のウィストリア</a></li><li><a href=\"/works/w310/\">FAIRY TAIL</a></li><li><a href=\"/works/w662/\">戦国妖狐</a></li></ul>\n<h2>原作が小説/ライトノベルのアニメ</h2>\n<ul><li><a href=\"/works/w705/\">新米オッサン冒険者、最強パーティに死ぬほど鍛えられて無敵になる。</a></li><li><a href=\"/works/w708/\">魔王軍最強の魔術師は人間だった</a></li><li><a href=\"/works/w709/\">義妹生活</a></li><li><a href=\"/works/w710/\">俺は全てを【パリイ】する 〜逆勘違いの世界最強は冒険者になりたい〜</a></li><li><a href=\"/works/w716/\">魔導具師ダリヤはうつむかない</a></li><li><a href=\"/works/w717/\">モブから始まる探索英雄譚</a></li><li><a href=\"/works/w719/\">VTuberなんだが配信切り忘れたら伝説になってた</a></li><li><a href=\"/works/w720/\">異世界ゆるり紀行 〜子育てしながら冒険者します〜</a></li><li><a href=\"/works/w264/\">時々ボソッとロシア語でデレる隣のアーリャさん</a></li><li><a href=\"/works/w373/\">0歳児スタートダッシュ物語</a></li><li><a href=\"/works/w522/\">キミと僕の最後の戦場、あるいは世界が始まる聖戦</a></li><li><a href=\"/works/w512/\">ばいばい、アース</a></li><li><a href=\"/works/w335/\">負けヒロインが多すぎる!</a></li><li><a href=\"/works/w517/\">小市民シリーズ</a></li></ul>\n<h2>ゲームが原作のアニメ</h2>\n<ul><li><a href=\"/works/w715/\">天穂のサクナヒメ</a></li><li><a href=\"/works/w724/\">ATRI -My Dear Moments-</a></li></ul>",
+      "works": [
+        {
+          "workId": "w706",
+          "note": "第2期"
+        },
+        {
+          "workId": "w707",
+          "note": ""
+        },
+        {
+          "workId": "w711",
+          "note": "第1期"
+        },
+        {
+          "workId": "w712",
+          "note": "第2期"
+        },
+        {
+          "workId": "w713",
+          "note": ""
+        },
+        {
+          "workId": "w714",
+          "note": ""
+        },
+        {
+          "workId": "w718",
+          "note": "王子の帰還"
+        },
+        {
+          "workId": "w721",
+          "note": ""
+        },
+        {
+          "workId": "w722",
+          "note": ""
+        },
+        {
+          "workId": "w723",
+          "note": ""
+        },
+        {
+          "workId": "w725",
+          "note": ""
+        },
+        {
+          "workId": "w136",
+          "note": "第2期"
+        },
+        {
+          "workId": "w242",
+          "note": ""
+        },
+        {
+          "workId": "w025",
+          "note": "第一期"
+        },
+        {
+          "workId": "w347",
+          "note": "Season 1"
+        },
+        {
+          "workId": "w231",
+          "note": "第1期"
+        },
+        {
+          "workId": "w310",
+          "note": ""
+        },
+        {
+          "workId": "w662",
+          "note": "千魔混沌編"
+        },
+        {
+          "workId": "w705",
+          "note": ""
+        },
+        {
+          "workId": "w708",
+          "note": ""
+        },
+        {
+          "workId": "w709",
+          "note": ""
+        },
+        {
+          "workId": "w710",
+          "note": ""
+        },
+        {
+          "workId": "w716",
+          "note": ""
+        },
+        {
+          "workId": "w717",
+          "note": ""
+        },
+        {
+          "workId": "w719",
+          "note": ""
+        },
+        {
+          "workId": "w720",
+          "note": ""
+        },
+        {
+          "workId": "w264",
+          "note": "Season1"
+        },
+        {
+          "workId": "w373",
+          "note": "第1期"
+        },
+        {
+          "workId": "w522",
+          "note": "Season2"
+        },
+        {
+          "workId": "w512",
+          "note": "第1シーズン"
+        },
+        {
+          "workId": "w335",
+          "note": ""
+        },
+        {
+          "workId": "w517",
+          "note": "第1期"
+        },
+        {
+          "workId": "w715",
+          "note": ""
+        },
+        {
+          "workId": "w724",
+          "note": ""
+        }
+      ]
+    },
+    {
+      "id": "2024-autumn",
+      "name": "2024秋",
+      "label": "2024秋アニメ",
+      "months": "2024年10〜12月",
+      "eventName": "",
+      "voteStart": "2026-10-17",
+      "voteEnd": "2099-12-31",
+      "article": "<h2>2024秋アニメの作品まとめ</h2>\n<p>2024年秋アニメを一覧にしました。原作が漫画の作品27、小説/ライトノベルの作品13、ゲームが原作の作品1、オリジナルアニメ2、その他（カードゲーム・シリーズ作品など）1の、計44作品です。気になる作品名を押すと、作品ページで「すき」の投票と作品の情報を見られます。</p>\n<h2>秋アニメの傾向</h2>\n<p>漫画が原作の作品が27作品、小説/ライトノベルが13作品で、原作がある作品が全体の大半です。続編や続きのシーズン（2期・3期、第2クールなど）は30作品あり、前のシーズンから見ていた人は、続きの作品を探す楽しみがあります。</p>\n<h2>原作が漫画のアニメ</h2>\n<ul><li><a href=\"/works/w726/\">甘神さんちの縁結び</a></li><li><a href=\"/works/w728/\">トリリオンゲーム</a></li><li><a href=\"/works/w729/\">るろうに剣心 -明治剣客浪漫譚-</a></li><li><a href=\"/works/w731/\">チ。-地球の運動について-</a></li><li><a href=\"/works/w733/\">妻、小学生になる。</a></li><li><a href=\"/works/w734/\">七つの大罪 黙示録の四騎士</a></li><li><a href=\"/works/w737/\">鴨乃橋ロンの禁断推理</a></li><li><a href=\"/works/w739/\">ねこに転生したおじさん</a></li><li><a href=\"/works/w741/\">妖怪学校の先生はじめました!</a></li><li><a href=\"/works/w744/\">ドラゴンボールDAIMA</a></li><li><a href=\"/works/w747/\">五等分の花嫁</a></li><li><a href=\"/works/w076/\">アオのハコ</a></li><li><a href=\"/works/w088/\">新テニスの王子様 U-17 WORLD CUP</a></li><li><a href=\"/works/w007/\">株式会社マジルミエ</a></li><li><a href=\"/works/w554/\">ダンダダン</a></li><li><a href=\"/works/w616/\">百姓貴族</a></li><li><a href=\"/works/w237/\">シャングリラ・フロンティア</a></li><li><a href=\"/works/w326/\">ブルーロック</a></li><li><a href=\"/works/w134/\">青のミブロ</a></li><li><a href=\"/works/w145/\">MFゴースト</a></li><li><a href=\"/works/w110/\">らんま1/2</a></li><li><a href=\"/works/w563/\">ぷにるはかわいいスライム</a></li><li><a href=\"/works/w557/\">ハイガクラ</a></li><li><a href=\"/works/w294/\">夏目友人帳</a></li><li><a href=\"/works/w343/\">青の祓魔師 終夜篇</a></li><li><a href=\"/works/w031/\">BLEACH 千年血戦篇 -禍進譚-</a></li><li><a href=\"/works/w683/\">オーイ! とんぼ</a></li></ul>\n<h2>原作が小説/ライトノベルのアニメ</h2>\n<ul><li><a href=\"/works/w727/\">歴史に残る悪女になるぞ</a></li><li><a href=\"/works/w730/\">ダンジョンに出会いを求めるのは間違っているだろうか</a></li><li><a href=\"/works/w732/\">魔王様、リトライ!</a></li><li><a href=\"/works/w735/\">パーティーから追放されたその治癒師、実は最強につき</a></li><li><a href=\"/works/w738/\">最凶の支援職【話術士】である俺は世界最強クランを従える</a></li><li><a href=\"/works/w740/\">精霊幻想記</a></li><li><a href=\"/works/w742/\">やり直し令嬢は竜帝陛下を攻略中</a></li><li><a href=\"/works/w743/\">さようなら竜生、こんにちは人生</a></li><li><a href=\"/works/w745/\">魔王2099</a></li><li><a href=\"/works/w746/\">ありふれた職業で世界最強</a></li><li><a href=\"/works/w632/\">嘆きの亡霊は引退したい</a></li><li><a href=\"/works/w071/\">Re:ゼロから始める異世界生活</a></li><li><a href=\"/works/w303/\">ソードアート・オンライン</a></li></ul>\n<h2>ゲームが原作のアニメ</h2>\n<ul><li><a href=\"/works/w682/\">アイドルマスター シャイニーカラーズ</a></li></ul>\n<h2>オリジナルアニメ</h2>\n<ul><li><a href=\"/works/w736/\">ラブライブ!スーパースター!!</a></li><li><a href=\"/works/w527/\">SHIBUYA♡HACHI</a></li></ul>\n<h2>その他（カードゲーム・シリーズ作品など）</h2>\n<ul><li><a href=\"/works/w418/\">ぷにるんず</a></li></ul>",
+      "works": [
+        {
+          "workId": "w726",
+          "note": ""
+        },
+        {
+          "workId": "w728",
+          "note": ""
+        },
+        {
+          "workId": "w729",
+          "note": "京都動乱"
+        },
+        {
+          "workId": "w731",
+          "note": ""
+        },
+        {
+          "workId": "w733",
+          "note": ""
+        },
+        {
+          "workId": "w734",
+          "note": "第2期"
+        },
+        {
+          "workId": "w737",
+          "note": "2nd Season"
+        },
+        {
+          "workId": "w739",
+          "note": ""
+        },
+        {
+          "workId": "w741",
+          "note": ""
+        },
+        {
+          "workId": "w744",
+          "note": ""
+        },
+        {
+          "workId": "w747",
+          "note": "＊"
+        },
+        {
+          "workId": "w076",
+          "note": "Season1"
+        },
+        {
+          "workId": "w088",
+          "note": "U-17 WORLD CUP SEMIFINAL"
+        },
+        {
+          "workId": "w007",
+          "note": "第1期"
+        },
+        {
+          "workId": "w554",
+          "note": "第1期"
+        },
+        {
+          "workId": "w616",
+          "note": "2nd Season"
+        },
+        {
+          "workId": "w237",
+          "note": "2nd season"
+        },
+        {
+          "workId": "w326",
+          "note": "VS. U-20 JAPAN"
+        },
+        {
+          "workId": "w134",
+          "note": "第一期"
+        },
+        {
+          "workId": "w145",
+          "note": "2nd Season"
+        },
+        {
+          "workId": "w110",
+          "note": "第2作 第1期"
+        },
+        {
+          "workId": "w563",
+          "note": "第1期"
+        },
+        {
+          "workId": "w557",
+          "note": ""
+        },
+        {
+          "workId": "w294",
+          "note": "漆"
+        },
+        {
+          "workId": "w343",
+          "note": "雪ノ果篇"
+        },
+        {
+          "workId": "w031",
+          "note": "相剋譚"
+        },
+        {
+          "workId": "w683",
+          "note": "第2期"
+        },
+        {
+          "workId": "w727",
+          "note": ""
+        },
+        {
+          "workId": "w730",
+          "note": "V 豊穣の女神篇"
+        },
+        {
+          "workId": "w732",
+          "note": "R"
+        },
+        {
+          "workId": "w735",
+          "note": ""
+        },
+        {
+          "workId": "w738",
+          "note": ""
+        },
+        {
+          "workId": "w740",
+          "note": "2"
+        },
+        {
+          "workId": "w742",
+          "note": ""
+        },
+        {
+          "workId": "w743",
+          "note": ""
+        },
+        {
+          "workId": "w745",
+          "note": ""
+        },
+        {
+          "workId": "w746",
+          "note": "season 3"
+        },
+        {
+          "workId": "w632",
+          "note": "第1クール"
+        },
+        {
+          "workId": "w071",
+          "note": "第3期襲撃編"
+        },
+        {
+          "workId": "w303",
+          "note": "Ⅱ"
+        },
+        {
+          "workId": "w682",
+          "note": "2nd season"
+        },
+        {
+          "workId": "w736",
+          "note": "第3期"
+        },
+        {
+          "workId": "w527",
+          "note": "第2クール"
+        },
+        {
+          "workId": "w418",
+          "note": "ぷに2"
+        }
+      ]
     }
   ]
 }
