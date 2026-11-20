@@ -19,6 +19,7 @@ const workById = new Map(works.map((w) => [w.id, w]));
 const GENRE_DATA = existsSync(join(ROOT, 'data/genres.json')) ? readJson('data/genres.json') : { genres: [], works: {} };
 const GENRE_BY_ID = new Map(GENRE_DATA.genres.map((g) => [g.id, g]));
 const genresOf = (id) => (GENRE_DATA.works[id] || []).map((gid) => GENRE_BY_ID.get(gid)).filter(Boolean);
+const EXTRAS = existsSync(join(ROOT, 'data/extras.json')) ? readJson('data/extras.json') : {};
 const VOLUMES = existsSync(join(ROOT, 'data/volumes.json')) ? readJson('data/volumes.json') : {};
 const MEDIA = existsSync(join(ROOT, 'data/media.json')) ? readJson('data/media.json') : {};
 const MEDIA_LABEL = { A: '劇場アニメ・OVA', G: 'ゲーム', S: '舞台・ミュージカル', L: '実写映画・ドラマ' };
@@ -933,6 +934,7 @@ function workDigest(w, ss) {
   if (VOLUMES[w.id]) o += `原作の巻数は、${esc(VOLUMES[w.id])}です。`;
   if (mediaText(w.id)) o += `アニメ以外にも、${esc(mediaText(w.id))}の展開があります。`;
   parts.push(o);
+  if (EXTRAS[w.id]) parts.push(esc(EXTRAS[w.id]));
   // 属性
   const a = ATTRS.works[w.id];
   if (a) {
