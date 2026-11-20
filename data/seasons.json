@@ -4984,6 +4984,338 @@
           "note": "第5期"
         }
       ]
+    },
+    {
+      "id": "2021-spring",
+      "name": "2021春",
+      "label": "2021春アニメ",
+      "months": "2021年4〜6月",
+      "eventName": "",
+      "voteStart": "2026-11-20",
+      "voteEnd": "2099-12-31",
+      "article": "<h2>2021春アニメの作品まとめ</h2>\n<p>2021年春アニメを一覧にしました。原作が漫画の作品12、小説/ライトノベルの作品8、ゲームが原作の作品0、オリジナルアニメ3、その他（カードゲーム・シリーズ作品など）1の、計24作品です。気になる作品名を押すと、作品ページで「すき」の投票と作品の情報を見られます。</p>\n<h2>春アニメの傾向</h2>\n<p>漫画が原作の作品が12作品、小説/ライトノベルが8作品で、原作がある作品が全体の大半です。続編や続きのシーズン（2期・3期、第2クールなど）は6作品あり、前のシーズンから見ていた人は、続きの作品を探す楽しみがあります。</p>\n<h2>原作が漫画のアニメ</h2>\n<ul><li><a href=\"/works/w950/\">SHAMAN KING</a></li><li><a href=\"/works/w952/\">ましろのおと</a></li><li><a href=\"/works/w953/\">さよなら私のクラマー</a></li><li><a href=\"/works/w955/\">ドラゴン、家を買う。</a></li><li><a href=\"/works/w956/\">憂国のモリアーティ</a></li><li><a href=\"/works/w957/\">恋と呼ぶには気持ち悪い</a></li><li><a href=\"/works/w097/\">東京卍リベンジャーズ</a></li><li><a href=\"/works/w330/\">灼熱カバディ</a></li><li><a href=\"/works/w764/\">イジらないで、長瀞さん</a></li><li><a href=\"/works/w788/\">EDENS ZERO</a></li><li><a href=\"/works/w342/\">不滅のあなたへ</a></li><li><a href=\"/works/w036/\">魔入りました！入間くん</a></li></ul>\n<h2>原作が小説/ライトノベルのアニメ</h2>\n<ul><li><a href=\"/works/w954/\">戦闘員、派遣します！</a></li><li><a href=\"/works/w958/\">究極進化したフルダイブRPGが現実よりもクソゲーだったら</a></li><li><a href=\"/works/w959/\">スーパーカブ</a></li><li><a href=\"/works/w963/\">86-エイティシックス-</a></li><li><a href=\"/works/w964/\">幼なじみが絶対に負けないラブコメ</a></li><li><a href=\"/works/w296/\">オッドタクシー</a></li><li><a href=\"/works/w850/\">聖女の魔力は万能です</a></li><li><a href=\"/works/w515/\">スライム倒して300年、知らないうちにレベルMAXになってました</a></li></ul>\n<h2>オリジナルアニメ</h2>\n<ul><li><a href=\"/works/w951/\">Vivy -Fluorite Eye's Song-</a></li><li><a href=\"/works/w960/\">ゾンビランドサガ リベンジ</a></li><li><a href=\"/works/w961/\">バクテン!!</a></li></ul>\n<h2>その他（カードゲーム・シリーズ作品など）</h2>\n<ul><li><a href=\"/works/w962/\">SSSS.DYNAZENON</a></li></ul>",
+      "works": [
+        {
+          "workId": "w950",
+          "note": ""
+        },
+        {
+          "workId": "w951",
+          "note": ""
+        },
+        {
+          "workId": "w952",
+          "note": ""
+        },
+        {
+          "workId": "w953",
+          "note": ""
+        },
+        {
+          "workId": "w954",
+          "note": ""
+        },
+        {
+          "workId": "w955",
+          "note": ""
+        },
+        {
+          "workId": "w956",
+          "note": "第2クール"
+        },
+        {
+          "workId": "w957",
+          "note": ""
+        },
+        {
+          "workId": "w958",
+          "note": ""
+        },
+        {
+          "workId": "w959",
+          "note": ""
+        },
+        {
+          "workId": "w960",
+          "note": ""
+        },
+        {
+          "workId": "w961",
+          "note": ""
+        },
+        {
+          "workId": "w962",
+          "note": ""
+        },
+        {
+          "workId": "w963",
+          "note": "第1クール"
+        },
+        {
+          "workId": "w964",
+          "note": ""
+        },
+        {
+          "workId": "w097",
+          "note": "第1期"
+        },
+        {
+          "workId": "w330",
+          "note": ""
+        },
+        {
+          "workId": "w296",
+          "note": ""
+        },
+        {
+          "workId": "w850",
+          "note": ""
+        },
+        {
+          "workId": "w764",
+          "note": ""
+        },
+        {
+          "workId": "w788",
+          "note": "第1期"
+        },
+        {
+          "workId": "w342",
+          "note": "第1期"
+        },
+        {
+          "workId": "w036",
+          "note": "第2期"
+        },
+        {
+          "workId": "w515",
+          "note": ""
+        }
+      ]
+    },
+    {
+      "id": "2021-summer",
+      "name": "2021夏",
+      "label": "2021夏アニメ",
+      "months": "2021年7〜9月",
+      "eventName": "",
+      "voteStart": "2026-11-20",
+      "voteEnd": "2099-12-31",
+      "article": "<h2>2021夏アニメの作品まとめ</h2>\n<p>2021年夏アニメを一覧にしました。原作が漫画の作品14、小説/ライトノベルの作品8、ゲームが原作の作品1、オリジナルアニメ3、その他（カードゲーム・シリーズ作品など）1の、計27作品です。気になる作品名を押すと、作品ページで「すき」の投票と作品の情報を見られます。</p>\n<h2>夏アニメの傾向</h2>\n<p>漫画が原作の作品が14作品、小説/ライトノベルが8作品で、原作がある作品が全体の大半です。続編や続きのシーズン（2期・3期、第2クールなど）は10作品あり、前のシーズンから見ていた人は、続きの作品を探す楽しみがあります。</p>\n<h2>原作が漫画のアニメ</h2>\n<ul><li><a href=\"/works/w966/\">ピーチボーイリバーサイド</a></li><li><a href=\"/works/w968/\">俺、つしま</a></li><li><a href=\"/works/w969/\">100万の命の上に俺は立っている</a></li><li><a href=\"/works/w971/\">かげきしょうじょ!!</a></li><li><a href=\"/works/w972/\">小林さんちのメイドラゴン</a></li><li><a href=\"/works/w974/\">迷宮ブラックカンパニー</a></li><li><a href=\"/works/w975/\">女神寮の寮母くん。</a></li><li><a href=\"/works/w976/\">平穏世代の韋駄天達</a></li><li><a href=\"/works/w978/\">うらみちお兄さん</a></li><li><a href=\"/works/w980/\">出会って5秒でバトル</a></li><li><a href=\"/works/w981/\">ジャヒー様はくじけない！</a></li><li><a href=\"/works/w889/\">ヴァニタスの手記</a></li><li><a href=\"/works/w861/\">カノジョも彼女</a></li><li><a href=\"/works/w689/\">死神坊ちゃんと黒メイド</a></li></ul>\n<h2>原作が小説/ライトノベルのアニメ</h2>\n<ul><li><a href=\"/works/w967/\">乙女ゲームの破滅フラグしかない悪役令嬢に転生してしまった…</a></li><li><a href=\"/works/w970/\">ぼくたちのリメイク</a></li><li><a href=\"/works/w979/\">チート薬師のスローライフ〜異世界に作ろうドラッグストア〜</a></li><li><a href=\"/works/w883/\">現実主義勇者の王国再建記</a></li><li><a href=\"/works/w118/\">探偵はもう、死んでいる。</a></li><li><a href=\"/works/w740/\">精霊幻想記</a></li><li><a href=\"/works/w655/\">月が導く異世界道中</a></li><li><a href=\"/works/w057/\">転生したらスライムだった件</a></li></ul>\n<h2>原作がゲームのアニメ</h2>\n<ul><li><a href=\"/works/w965/\">SCARLET NEXUS</a></li></ul>\n<h2>オリジナルアニメ</h2>\n<ul><li><a href=\"/works/w973/\">白い砂のアクアトープ</a></li><li><a href=\"/works/w977/\">Sonny Boy</a></li><li><a href=\"/works/w736/\">ラブライブ!スーパースター!!</a></li></ul>\n<h2>その他（カードゲーム・シリーズ作品など）</h2>\n<ul><li><a href=\"/works/w982/\">マギアレコード 魔法少女まどか☆マギカ外伝</a></li></ul>",
+      "works": [
+        {
+          "workId": "w965",
+          "note": ""
+        },
+        {
+          "workId": "w966",
+          "note": ""
+        },
+        {
+          "workId": "w967",
+          "note": "第2期"
+        },
+        {
+          "workId": "w968",
+          "note": ""
+        },
+        {
+          "workId": "w969",
+          "note": "第2期"
+        },
+        {
+          "workId": "w970",
+          "note": ""
+        },
+        {
+          "workId": "w971",
+          "note": ""
+        },
+        {
+          "workId": "w972",
+          "note": "S"
+        },
+        {
+          "workId": "w973",
+          "note": ""
+        },
+        {
+          "workId": "w974",
+          "note": ""
+        },
+        {
+          "workId": "w975",
+          "note": ""
+        },
+        {
+          "workId": "w976",
+          "note": ""
+        },
+        {
+          "workId": "w977",
+          "note": ""
+        },
+        {
+          "workId": "w978",
+          "note": ""
+        },
+        {
+          "workId": "w979",
+          "note": ""
+        },
+        {
+          "workId": "w980",
+          "note": ""
+        },
+        {
+          "workId": "w981",
+          "note": ""
+        },
+        {
+          "workId": "w982",
+          "note": "2nd SEASON"
+        },
+        {
+          "workId": "w889",
+          "note": "第1クール"
+        },
+        {
+          "workId": "w861",
+          "note": ""
+        },
+        {
+          "workId": "w883",
+          "note": "第一部"
+        },
+        {
+          "workId": "w689",
+          "note": "第1期"
+        },
+        {
+          "workId": "w118",
+          "note": ""
+        },
+        {
+          "workId": "w740",
+          "note": ""
+        },
+        {
+          "workId": "w655",
+          "note": "第一幕"
+        },
+        {
+          "workId": "w057",
+          "note": "第2期第2部"
+        },
+        {
+          "workId": "w736",
+          "note": "第1期"
+        }
+      ]
+    },
+    {
+      "id": "2021-autumn",
+      "name": "2021秋",
+      "label": "2021秋アニメ",
+      "months": "2021年10〜12月",
+      "eventName": "",
+      "voteStart": "2026-11-20",
+      "voteEnd": "2099-12-31",
+      "article": "<h2>2021秋アニメの作品まとめ</h2>\n<p>2021年秋アニメを一覧にしました。原作が漫画の作品12、小説/ライトノベルの作品8、ゲームが原作の作品1、オリジナルアニメ2、その他（カードゲーム・シリーズ作品など）0の、計23作品です。気になる作品名を押すと、作品ページで「すき」の投票と作品の情報を見られます。</p>\n<h2>秋アニメの傾向</h2>\n<p>漫画が原作の作品が12作品、小説/ライトノベルが8作品で、原作がある作品が全体の大半です。続編や続きのシーズン（2期・3期、第2クールなど）は6作品あり、前のシーズンから見ていた人は、続きの作品を探す楽しみがあります。</p>\n<h2>原作が漫画のアニメ</h2>\n<ul><li><a href=\"/works/w984/\">ブルーピリオド</a></li><li><a href=\"/works/w985/\">舞妓さんちのまかないさん</a></li><li><a href=\"/works/w986/\">さんかく窓の外側は夜</a></li><li><a href=\"/works/w990/\">プラチナエンド</a></li><li><a href=\"/works/w991/\">先輩がうざい後輩の話</a></li><li><a href=\"/works/w992/\">鬼滅の刃 遊郭編</a></li><li><a href=\"/works/w286/\">王様ランキング</a></li><li><a href=\"/works/w152/\">終末のワルキューレ</a></li><li><a href=\"/works/w272/\">見える子ちゃん</a></li><li><a href=\"/works/w771/\">吸血鬼すぐ死ぬ</a></li><li><a href=\"/works/w898/\">古見さんは、コミュ症です。</a></li><li><a href=\"/works/w944/\">ワールドトリガー</a></li></ul>\n<h2>原作が小説/ライトノベルのアニメ</h2>\n<ul><li><a href=\"/works/w983/\">異世界食堂</a></li><li><a href=\"/works/w988/\">月とライカと吸血姫</a></li><li><a href=\"/works/w963/\">86-エイティシックス-</a></li><li><a href=\"/works/w862/\">最果てのパラディン</a></li><li><a href=\"/works/w068/\">無職転生 ～異世界行ったら本気だす～</a></li><li><a href=\"/works/w651/\">真の仲間じゃないと勇者のパーティーを追い出されたので、辺境でスローライフすることにしました</a></li><li><a href=\"/works/w247/\">世界最高の暗殺者、異世界貴族に転生する</a></li><li><a href=\"/works/w680/\">魔法科高校の劣等生</a></li></ul>\n<h2>原作がゲームのアニメ</h2>\n<ul><li><a href=\"/works/w987/\">メガトン級ムサシ</a></li></ul>\n<h2>オリジナルアニメ</h2>\n<ul><li><a href=\"/works/w989/\">サクガン</a></li><li><a href=\"/works/w993/\">逆転世界ノ電池少女</a></li></ul>",
+      "works": [
+        {
+          "workId": "w983",
+          "note": "第2期"
+        },
+        {
+          "workId": "w984",
+          "note": ""
+        },
+        {
+          "workId": "w985",
+          "note": ""
+        },
+        {
+          "workId": "w986",
+          "note": ""
+        },
+        {
+          "workId": "w987",
+          "note": ""
+        },
+        {
+          "workId": "w988",
+          "note": ""
+        },
+        {
+          "workId": "w989",
+          "note": ""
+        },
+        {
+          "workId": "w990",
+          "note": ""
+        },
+        {
+          "workId": "w991",
+          "note": ""
+        },
+        {
+          "workId": "w992",
+          "note": ""
+        },
+        {
+          "workId": "w993",
+          "note": ""
+        },
+        {
+          "workId": "w963",
+          "note": "第2クール"
+        },
+        {
+          "workId": "w286",
+          "note": ""
+        },
+        {
+          "workId": "w152",
+          "note": ""
+        },
+        {
+          "workId": "w272",
+          "note": ""
+        },
+        {
+          "workId": "w771",
+          "note": ""
+        },
+        {
+          "workId": "w898",
+          "note": "第1期"
+        },
+        {
+          "workId": "w862",
+          "note": ""
+        },
+        {
+          "workId": "w068",
+          "note": "第2クール"
+        },
+        {
+          "workId": "w944",
+          "note": "3rdシーズン"
+        },
+        {
+          "workId": "w651",
+          "note": ""
+        },
+        {
+          "workId": "w247",
+          "note": ""
+        },
+        {
+          "workId": "w680",
+          "note": "追憶編"
+        }
+      ]
     }
   ]
 }
