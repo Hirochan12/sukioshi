@@ -6,7 +6,7 @@
   { "id": "kawaii", "label": "キャラがかわいい", "group": "story" },
   { "id": "kakkoii", "label": "キャラがかっこいい", "group": "story" },
   { "id": "naku", "label": "泣ける", "group": "story" },
-  { "id": "warau", "label": "ギャグ", "group": "story" },
+  { "id": "warau", "label": "コメディ", "group": "story" },
   { "id": "dokidoki", "label": "ドキドキ（恋愛）", "group": "story" },
   { "id": "tsuzuki", "label": "続きが気になる", "group": "story" },
   { "id": "sekai", "label": "世界観がすごい", "group": "story" }
