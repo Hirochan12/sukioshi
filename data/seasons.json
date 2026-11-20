@@ -4856,6 +4856,134 @@
           "note": "Season 1"
         }
       ]
+    },
+    {
+      "id": "2021-winter",
+      "name": "2021冬",
+      "label": "2021冬アニメ",
+      "months": "2021年1〜3月",
+      "eventName": "",
+      "voteStart": "2026-11-20",
+      "voteEnd": "2099-12-31",
+      "article": "<h2>2021冬アニメの作品まとめ</h2>\n<p>2021年冬アニメを一覧にしました。原作が漫画の作品16、小説/ライトノベルの作品10、ゲームが原作の作品1、オリジナルアニメ2、その他（カードゲーム・シリーズ作品など）0の、計29作品です。気になる作品名を押すと、作品ページで「すき」の投票と作品の情報を見られます。</p>\n<h2>冬アニメの傾向</h2>\n<p>漫画が原作の作品が16作品、小説/ライトノベルが10作品で、原作がある作品が全体の大半です。続編や続きのシーズン（2期・3期、第2クールなど）は16作品あり、前のシーズンから見ていた人は、続きの作品を探す楽しみがあります。</p>\n<h2>原作が漫画のアニメ</h2>\n<ul><li><a href=\"/works/w934/\">7SEEDS</a></li><li><a href=\"/works/w936/\">BEASTARS</a></li><li><a href=\"/works/w938/\">天地創造デザイン部</a></li><li><a href=\"/works/w940/\">約束のネバーランド</a></li><li><a href=\"/works/w942/\">怪病医ラムネ</a></li><li><a href=\"/works/w943/\">怪物事変</a></li><li><a href=\"/works/w944/\">ワールドトリガー</a></li><li><a href=\"/works/w945/\">のんのんびより</a></li><li><a href=\"/works/w946/\">七つの大罪 憤怒の審判</a></li><li><a href=\"/works/w677/\">ゆるキャン△</a></li><li><a href=\"/works/w747/\">五等分の花嫁</a></li><li><a href=\"/works/w313/\">はたらく細胞</a></li><li><a href=\"/works/w818/\">ホリミヤ</a></li><li><a href=\"/works/w151/\">Dr.STONE</a></li><li><a href=\"/works/w032/\">文豪ストレイドッグス わん！</a></li><li><a href=\"/works/w254/\">僕のヒーローアカデミア</a></li></ul>\n<h2>原作が小説/ライトノベルのアニメ</h2>\n<ul><li><a href=\"/works/w933/\">裏世界ピクニック</a></li><li><a href=\"/works/w935/\">たとえばラストダンジョン前の村の少年が序盤の街で暮らすような物語</a></li><li><a href=\"/works/w937/\">蜘蛛ですが、なにか？</a></li><li><a href=\"/works/w939/\">2.43 清陰高校男子バレー部</a></li><li><a href=\"/works/w941/\">俺だけ入れる隠しダンジョン 〜こっそり鍛えて世界最強〜</a></li><li><a href=\"/works/w947/\">ログ・ホライズン 円卓崩壊</a></li><li><a href=\"/works/w057/\">転生したらスライムだった件</a></li><li><a href=\"/works/w071/\">Re:ゼロから始める異世界生活</a></li><li><a href=\"/works/w068/\">無職転生 ～異世界行ったら本気だす～</a></li><li><a href=\"/works/w641/\">弱キャラ友崎くん</a></li></ul>\n<h2>原作がゲームのアニメ</h2>\n<ul><li><a href=\"/works/w855/\">ウマ娘 プリティーダービー</a></li></ul>\n<h2>オリジナルアニメ</h2>\n<ul><li><a href=\"/works/w948/\">ワンダーエッグ・プライオリティ</a></li><li><a href=\"/works/w949/\">SK∞ エスケーエイト</a></li></ul>",
+      "works": [
+        {
+          "workId": "w933",
+          "note": ""
+        },
+        {
+          "workId": "w934",
+          "note": "第2期"
+        },
+        {
+          "workId": "w935",
+          "note": ""
+        },
+        {
+          "workId": "w936",
+          "note": "第2期"
+        },
+        {
+          "workId": "w937",
+          "note": ""
+        },
+        {
+          "workId": "w938",
+          "note": ""
+        },
+        {
+          "workId": "w939",
+          "note": ""
+        },
+        {
+          "workId": "w940",
+          "note": "第2期"
+        },
+        {
+          "workId": "w941",
+          "note": ""
+        },
+        {
+          "workId": "w942",
+          "note": ""
+        },
+        {
+          "workId": "w943",
+          "note": ""
+        },
+        {
+          "workId": "w944",
+          "note": "2ndシーズン"
+        },
+        {
+          "workId": "w945",
+          "note": "のんすとっぷ"
+        },
+        {
+          "workId": "w946",
+          "note": "憤怒の審判"
+        },
+        {
+          "workId": "w947",
+          "note": "円卓崩壊"
+        },
+        {
+          "workId": "w948",
+          "note": ""
+        },
+        {
+          "workId": "w949",
+          "note": ""
+        },
+        {
+          "workId": "w677",
+          "note": "第2期"
+        },
+        {
+          "workId": "w057",
+          "note": "第2期第1部"
+        },
+        {
+          "workId": "w071",
+          "note": "第2期第2クール"
+        },
+        {
+          "workId": "w747",
+          "note": "第2期"
+        },
+        {
+          "workId": "w313",
+          "note": "第2期"
+        },
+        {
+          "workId": "w818",
+          "note": ""
+        },
+        {
+          "workId": "w068",
+          "note": "第1クール"
+        },
+        {
+          "workId": "w151",
+          "note": "第2期"
+        },
+        {
+          "workId": "w855",
+          "note": "Season2"
+        },
+        {
+          "workId": "w641",
+          "note": ""
+        },
+        {
+          "workId": "w032",
+          "note": ""
+        },
+        {
+          "workId": "w254",
+          "note": "第5期"
+        }
+      ]
     }
   ]
 }
