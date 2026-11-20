@@ -468,6 +468,7 @@ ${list}
 
 // ---- 主題歌からさがすページ（紹介文のオープニング・エンディングの記載から作る） ----
 function songsOf(w) {
+  if (Array.isArray(w.songs) && w.songs.length) return w.songs.map((x) => String(x).replace(/<[^>]+>/g, '').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&amp;/g, '&').trim()).filter(Boolean);
   if (!w.intro) return [];
   const paras = String(w.intro).split('</p>').map((x) => x.replace(/<[^>]+>/g, '').trim()).filter(Boolean);
   const songs = [];
