@@ -488,7 +488,7 @@ function topAttrs(id) {
   return names.filter((n) => (a.v[n] || 0) === max).slice(0, 2);
 }
 
-const ATTR_FRIENDLY = { 友情: '友情があつい', 努力: '努力・修行', 勝利: '勝負・勝利', 恋愛: '恋愛', 青春: '青春・学園', 感動: '泣ける・感動', ギャグ: 'コメディ', ミステリー: '謎解き・ミステリー', 日常系: 'のんびり日常', ファミリー: '家族', バトル: 'バトル', シリアス: '重め・シリアス' };
+const ATTR_FRIENDLY = { 友情: '友情があつい', 努力: '努力・修行', 勝利: '勝負・勝利', 恋愛: '恋愛', 青春: '青春・学園', 感動: '泣ける・感動', コメディ: 'コメディ', ミステリー: '謎解き・ミステリー', 日常系: 'のんびり日常', ファミリー: '家族', バトル: 'バトル', シリアス: '重め・シリアス' };
 
 function seasonSongsHtml(s) {
   const all = s.works.map((e) => workById.get(e.workId)).filter(Boolean);
@@ -547,7 +547,7 @@ ${list}
 // ---- 好みから探す診断（属性の評価から、気分に合う作品をえらぶ） ----
 function buildQuiz() {
   if (!ATTRS.items.length) return;
-  const LABEL = { 友情: '仲間との友情', 努力: '努力・修行', 勝利: '勝負・目標達成', 恋愛: 'ドキドキの恋愛', 青春: '学園・青春', 感動: '泣ける・感動', ギャグ: '笑える/ギャグ', ミステリー: '謎解き・ミステリー', 日常系: 'のんびり日常', ファミリー: '家族・ほのぼの', バトル: '手に汗にぎるバトル', シリアス: '重めのシリアス' };
+  const LABEL = { 友情: '仲間との友情', 努力: '努力・修行', 勝利: '勝負・目標達成', 恋愛: 'ドキドキの恋愛', 青春: '学園・青春', 感動: '泣ける・感動', コメディ: '笑える/ギャグ', ミステリー: '謎解き・ミステリー', 日常系: 'のんびり日常', ファミリー: '家族・ほのぼの', バトル: '手に汗にぎるバトル', シリアス: '重めのシリアス' };
   const rows = works
     .filter((w) => seasonsOf(w.id).length && ATTRS.works[w.id])
     .map((w) => [w.id, w.title, w.type, ATTRS.items.map((it) => ATTRS.works[w.id].v[it.name] || 0)]);
@@ -795,7 +795,7 @@ const GENRE_GUIDE = {
   ]
  ]
 };
-const GENRE_ATTR = {"battle": ["バトル"], "love": ["恋愛"], "comedy": ["ギャグ", "日常系"], "mystery": ["ミステリー"], "sports": ["勝利"], "youth": ["青春"], "tears": ["感動"]};
+const GENRE_ATTR = {"battle": ["バトル"], "love": ["恋愛"], "comedy": ["コメディ", "日常系"], "mystery": ["ミステリー"], "sports": ["勝利"], "youth": ["青春"], "tears": ["感動"]};
 function genreGuideHtml(g, list) {
   const secs = (GENRE_GUIDE[g.id] || []).map(([h, t]) => `<h2>${esc(g.name)}${esc(h)}</h2>\n<p>${esc(t)}</p>`).join('\n');
   const names = GENRE_ATTR[g.id] || [];
