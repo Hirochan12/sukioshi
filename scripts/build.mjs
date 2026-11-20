@@ -906,6 +906,58 @@ ${list.map((o) => `      <li><a href="/works/${o.w.id}/"><span class="sm-main"><
   `;
 }
 
+// ---- 作品ごとの「もっと詳しく」（既存データから組み立てる事実のまとめ） ----
+function workDigest(w, ss) {
+  const real = ss.filter((x) => /^\d{4}-/.test(x.id)).sort((a, b) => a.id.localeCompare(b.id));
+  const first = real[0];
+  const parts = [];
+  const hash = [...w.id].reduce((n, c) => n + c.charCodeAt(0), 0);
+  // 放送
+  if (first) {
+    const note = noteOf(first, w.id);
+    let t = `『${esc(w.title)}』のテレビアニメは、${esc(first.months)}（${esc(first.label)}）の放送分として、すきおしに掲載しています。`;
+    if (note) t += `このシーズンは「${esc(note)}」にあたります。`;
+    if (real.length > 1) t += `ほかに${real.slice(1).map((x) => esc(x.name)).join('、')}にも載っており、合わせて${real.length}シーズン分の順位を見られます。`;
+    parts.push(t);
+  }
+  // 原作
+  const au = w.rakutenAuthor ? esc(w.rakutenAuthor) : '';
+  const mg = w.magazine ? esc(w.magazine) : '';
+  const pb = w.publisher ? esc(w.publisher) : '';
+  let o = '';
+  if (w.type === 'manga') o = `原作は${au ? au + 'による' : ''}漫画${mg ? 'で、「' + mg + '」' + (pb ? '（' + pb + '）' : '') + 'で連載されました' : pb ? 'で、' + pb + 'から刊行されています' : 'です'}。`;
+  else if (w.type === 'novel') o = `原作は${au ? au + 'による' : ''}小説/ライトノベル${mg ? 'で、' + mg + (pb ? '（' + pb + '）' : '') + 'のレーベルから刊行されています' : pb ? 'で、' + pb + 'から刊行されています' : 'です'}。`;
+  else if (w.type === 'original') o = '特定の原作を持たない、オリジナルのテレビアニメです。';
+  else if (w.type === 'game') o = `原作はゲームです。${pb ? '制作は' + pb + 'です。' : ''}`;
+  else o = `原作は漫画・小説以外の作品やシリーズです。${pb ? '制作は' + pb + 'です。' : ''}`;
+  if (VOLUMES[w.id]) o += `原作の巻数は、${esc(VOLUMES[w.id])}です。`;
+  if (mediaText(w.id)) o += `アニメ以外にも、${esc(mediaText(w.id))}の展開があります。`;
+  parts.push(o);
+  // 属性
+  const a = ATTRS.works[w.id];
+  if (a) {
+    const strong = ATTRS.items.filter((it) => (a.v[it.name] || 0) >= 4).sort((x, y) => a.v[y.name] - a.v[x.name]).slice(0, 3);
+    if (strong.length) {
+      const lv = (n) => esc(ATTRS.levels[a.v[n]] || '');
+      parts.push(`運営者の評価では、${strong.map((it) => `${esc(it.name)}（${lv(it.name)}）`).join('、')}が高くなっています。`);
+    }
+  }
+  // サイト内での位置
+  const g = genresOf(w.id).map((x) => esc(x.name));
+  if (g.length) parts.push(`ジャンルは${g.join('・')}です。`);
+  if (first) {
+    const same = first.works.filter((e) => workById.get(e.workId)?.type === w.type).length;
+    parts.push(`${esc(first.label)}には、${{ manga: '同じ漫画原作の作品', novel: '同じ小説/ライトノベル原作の作品', game: '同じゲーム原作の作品', original: '同じオリジナルアニメ', other: '漫画・小説以外が原作の作品' }[w.type]}が${same}作品あり、『${esc(w.title)}』はその1つです。`);
+  }
+  const sm = w.magazine || w.publisher || '';
+  if (sm) {
+    const n = works.filter((x) => x.id !== w.id && (x.magazine || x.publisher || '') === sm).length;
+    if (n > 0) parts.push(`すきおしには、同じ${esc(sm)}の作品が、ほかに${n}作品あります。`);
+  }
+  if (hash % 2) { const k = parts.length > 3 ? 2 : 1; parts.splice(0, 0, ...parts.splice(k, 1)); }
+  return `<section class="prose work-digest"><h2>『${esc(w.title)}』をもっと詳しく</h2><p>${parts.join('</p><p>')}</p></section>`;
+}
+
 function buildWork(w) {
   const ss = seasonsOf(w.id).sort((a, b) => b.voteStart.localeCompare(a.voteStart));
   const main = ss[0];
@@ -951,6 +1003,8 @@ ${isBook(w) ? `    <a class="btn btn-rakuten" data-book-link href="#" rel="spons
   ${w.intro ? `<section class="prose work-intro"><h2>どんな作品？</h2>${w.intro}${REC.has(w.id) ? recHtml(w.id) : ''}${SONGS.has(w.id) ? `<h3>主題歌</h3><ul class="work-songs">${SONGS.get(w.id).map((t) => `<li>${t}</li>`).join('')}</ul>` : ''}</section>` : ''}
 
   ${attrHtml(w)}
+
+  ${workDigest(w, ss)}
 
   <section class="work-tags" data-work-tags data-season="${main.id}">
     <h2>みんなのおすすめポイント</h2>
