@@ -5516,6 +5516,666 @@
           "note": "Season2"
         }
       ]
+    },
+    {
+      "id": "2020-winter",
+      "name": "2020冬",
+      "label": "2020冬アニメ",
+      "months": "2020年1〜3月",
+      "eventName": "",
+      "voteStart": "2026-11-20",
+      "voteEnd": "2099-12-31",
+      "article": "<h2>2020冬アニメの作品まとめ</h2>\n<p>2020年冬アニメを一覧にしました。原作が漫画の作品20、小説/ライトノベルの作品6、ゲームが原作の作品1、オリジナルアニメ5、その他（カードゲーム・シリーズ作品など）7の、計39作品です。気になる作品名を押すと、作品ページで「すき」の投票と作品の情報を見られます。</p>\n<h2>冬アニメの傾向</h2>\n<p>漫画が原作の作品が20作品、小説/ライトノベルが6作品で、原作がある作品が全体の大半です。続編や続きのシーズン（2期・3期、第2クールなど）は7作品あり、前のシーズンから見ていた人は、続きの作品を探す楽しみがあります。</p>\n<h2>原作が漫画のアニメ</h2>\n<ul><li><a href=\"/works/w1000/\">八十亀ちゃんかんさつにっき</a></li><li><a href=\"/works/w350/\">地縛少年花子くん</a></li><li><a href=\"/works/w308/\">とある科学の超電磁砲</a></li><li><a href=\"/works/w324/\">ハイキュー!!</a></li><li><a href=\"/works/w893/\">理系が恋に落ちたので証明してみた。</a></li><li><a href=\"/works/w934/\">7SEEDS</a></li><li><a href=\"/works/w1040/\">恋する小惑星</a></li><li><a href=\"/works/w1041/\">ダーウィンズゲーム</a></li><li><a href=\"/works/w1044/\">映像研には手を出すな！</a></li><li><a href=\"/works/w1047/\">群れなせ！シートン学園</a></li><li><a href=\"/works/w1050/\">空挺ドラゴンズ</a></li><li><a href=\"/works/w1052/\">プランダラ</a></li><li><a href=\"/works/w1055/\">推しが武道館いってくれたら死ぬ</a></li><li><a href=\"/works/w1056/\">ソマリと森の神様</a></li><li><a href=\"/works/w1057/\">織田シナモン信長</a></li><li><a href=\"/works/w1058/\">ケンガンアシュラ</a></li><li><a href=\"/works/w1059/\">ぼくのとなりに暗黒破壊神がいます。</a></li><li><a href=\"/works/w1060/\">ランウェイで笑って</a></li><li><a href=\"/works/w1061/\">ドロヘドロ</a></li><li><a href=\"/works/w1066/\">大家さんと僕</a></li></ul>\n<h2>原作が小説/ライトノベルのアニメ</h2>\n<ul><li><a href=\"/works/w783/\">魔術士オーフェンはぐれ旅</a></li><li><a href=\"/works/w304/\">痛いのは嫌なので防御力に極振りしたいと思います。</a></li><li><a href=\"/works/w292/\">虚構推理</a></li><li><a href=\"/works/w1049/\">＜Infinite Dendrogram＞-インフィニット・デンドログラム-</a></li><li><a href=\"/works/w1051/\">はてな☆イリュージョン</a></li><li><a href=\"/works/w1053/\">宝石商リチャード氏の謎鑑定</a></li></ul>\n<h2>原作がゲームのアニメ</h2>\n<ul><li><a href=\"/works/w1062/\">A3!</a></li></ul>\n<h2>オリジナルアニメ</h2>\n<ul><li><a href=\"/works/w1043/\">ID:INVADED イド：インヴェイデッド</a></li><li><a href=\"/works/w1045/\">なつなぐ！</a></li><li><a href=\"/works/w1048/\">number24</a></li><li><a href=\"/works/w1054/\">うちタマ?! 〜うちのタマ知りませんか?〜</a></li><li><a href=\"/works/w1065/\">ヒーリングっど♥プリキュア</a></li></ul>\n<h2>その他（カードゲーム・シリーズ作品など）</h2>\n<ul><li><a href=\"/works/w982/\">マギアレコード 魔法少女まどか☆マギカ外伝</a></li><li><a href=\"/works/w1005/\">SHOW BY ROCK!!</a></li><li><a href=\"/works/w1042/\">へんたつ</a></li><li><a href=\"/works/w1046/\">ブレーカーズ</a></li><li><a href=\"/works/w1063/\">異世界かるてっと</a></li><li><a href=\"/works/w1064/\">BanG Dream!</a></li><li><a href=\"/works/w1067/\">ロノー先生の悪魔な神授業</a></li></ul>",
+      "works": [
+        {
+          "workId": "w982",
+          "note": "第1期"
+        },
+        {
+          "workId": "w1000",
+          "note": "2さつめ"
+        },
+        {
+          "workId": "w783",
+          "note": ""
+        },
+        {
+          "workId": "w304",
+          "note": "第1期"
+        },
+        {
+          "workId": "w1005",
+          "note": "ましゅまいれっしゅ!!"
+        },
+        {
+          "workId": "w350",
+          "note": ""
+        },
+        {
+          "workId": "w308",
+          "note": "T"
+        },
+        {
+          "workId": "w324",
+          "note": "TO THE TOP（第1クール）"
+        },
+        {
+          "workId": "w893",
+          "note": ""
+        },
+        {
+          "workId": "w292",
+          "note": ""
+        },
+        {
+          "workId": "w934",
+          "note": "第1期"
+        },
+        {
+          "workId": "w1040",
+          "note": ""
+        },
+        {
+          "workId": "w1041",
+          "note": ""
+        },
+        {
+          "workId": "w1042",
+          "note": ""
+        },
+        {
+          "workId": "w1043",
+          "note": ""
+        },
+        {
+          "workId": "w1044",
+          "note": ""
+        },
+        {
+          "workId": "w1045",
+          "note": ""
+        },
+        {
+          "workId": "w1046",
+          "note": ""
+        },
+        {
+          "workId": "w1047",
+          "note": ""
+        },
+        {
+          "workId": "w1048",
+          "note": ""
+        },
+        {
+          "workId": "w1049",
+          "note": ""
+        },
+        {
+          "workId": "w1050",
+          "note": ""
+        },
+        {
+          "workId": "w1051",
+          "note": ""
+        },
+        {
+          "workId": "w1052",
+          "note": ""
+        },
+        {
+          "workId": "w1053",
+          "note": ""
+        },
+        {
+          "workId": "w1054",
+          "note": ""
+        },
+        {
+          "workId": "w1055",
+          "note": ""
+        },
+        {
+          "workId": "w1056",
+          "note": ""
+        },
+        {
+          "workId": "w1057",
+          "note": ""
+        },
+        {
+          "workId": "w1058",
+          "note": ""
+        },
+        {
+          "workId": "w1059",
+          "note": ""
+        },
+        {
+          "workId": "w1060",
+          "note": ""
+        },
+        {
+          "workId": "w1061",
+          "note": ""
+        },
+        {
+          "workId": "w1062",
+          "note": ""
+        },
+        {
+          "workId": "w1063",
+          "note": ""
+        },
+        {
+          "workId": "w1064",
+          "note": ""
+        },
+        {
+          "workId": "w1065",
+          "note": ""
+        },
+        {
+          "workId": "w1066",
+          "note": ""
+        },
+        {
+          "workId": "w1067",
+          "note": ""
+        }
+      ]
+    },
+    {
+      "id": "2020-spring",
+      "name": "2020春",
+      "label": "2020春アニメ",
+      "months": "2020年4〜6月",
+      "eventName": "",
+      "voteStart": "2026-11-20",
+      "voteEnd": "2099-12-31",
+      "article": "<h2>2020春アニメの作品まとめ</h2>\n<p>2020年春アニメを一覧にしました。原作が漫画の作品17、小説/ライトノベルの作品5、ゲームが原作の作品7、オリジナルアニメ4、その他（カードゲーム・シリーズ作品など）11の、計44作品です。気になる作品名を押すと、作品ページで「すき」の投票と作品の情報を見られます。</p>\n<h2>春アニメの傾向</h2>\n<p>漫画が原作の作品が17作品、小説/ライトノベルが5作品で、原作がある作品が全体の大半です。続編や続きのシーズン（2期・3期、第2クールなど）は23作品あり、前のシーズンから見ていた人は、続きの作品を探す楽しみがあります。</p>\n<h2>原作が漫画のアニメ</h2>\n<ul><li><a href=\"/works/w718/\">神之塔 -Tower of God- 王子の帰還</a></li><li><a href=\"/works/w601/\">キングダム</a></li><li><a href=\"/works/w903/\">かぐや様は告らせたい -ウルトラロマンティック-</a></li><li><a href=\"/works/w1066/\">大家さんと僕</a></li><li><a href=\"/works/w1068/\">球詠</a></li><li><a href=\"/works/w1069/\">かくしごと</a></li><li><a href=\"/works/w1074/\">波よ聞いてくれ</a></li><li><a href=\"/works/w1082/\">MAJOR 2nd</a></li><li><a href=\"/works/w1078/\">イエスタデイをうたって</a></li><li><a href=\"/works/w1086/\">邪神ちゃんドロップキック</a></li><li><a href=\"/works/w1102/\">フルーツバスケット</a></li><li><a href=\"/works/w1090/\">放課後ていぼう日誌</a></li><li><a href=\"/works/w1091/\">困ったじいさん</a></li><li><a href=\"/works/w1101/\">無限の住人</a></li><li><a href=\"/works/w1099/\">食戟のソーマ</a></li><li><a href=\"/works/w1097/\">ゾゾゾ ゾンビーくん</a></li><li><a href=\"/works/w1098/\">オリンピア・キュクロス</a></li></ul>\n<h2>原作が小説/ライトノベルのアニメ</h2>\n<ul><li><a href=\"/works/w967/\">乙女ゲームの破滅フラグしかない悪役令嬢に転生してしまった…</a></li><li><a href=\"/works/w065/\">本好きの下剋上 第三部 領主の養女</a></li><li><a href=\"/works/w1071/\">八男って、それはないでしょう！</a></li><li><a href=\"/works/w1094/\">富豪刑事</a></li><li><a href=\"/works/w1096/\">啄木鳥探偵處</a></li></ul>\n<h2>原作がゲームのアニメ</h2>\n<ul><li><a href=\"/works/w1033/\">アイドリッシュセブン</a></li><li><a href=\"/works/w1072/\">新サクラ大戦</a></li><li><a href=\"/works/w1075/\">文豪とアルケミスト</a></li><li><a href=\"/works/w1079/\">社長、バトルの時間です！</a></li><li><a href=\"/works/w1087/\">白猫プロジェクト</a></li><li><a href=\"/works/w1088/\">Shadowverse</a></li><li><a href=\"/works/w1089/\">プリンセスコネクト！Re:Dive</a></li></ul>\n<h2>オリジナルアニメ</h2>\n<ul><li><a href=\"/works/w1073/\">アサティール 未来の昔ばなし</a></li><li><a href=\"/works/w1077/\">LISTENERS リスナーズ</a></li><li><a href=\"/works/w1092/\">BNA ビー・エヌ・エー</a></li><li><a href=\"/works/w1093/\">天晴爛漫！</a></li></ul>\n<h2>その他（カードゲーム・シリーズ作品など）</h2>\n<ul><li><a href=\"/works/w1015/\">おしりたんてい</a></li><li><a href=\"/works/w1014/\">もっと！まじめにふまじめ かいけつゾロリ</a></li><li><a href=\"/works/w1070/\">のりものまん モービルランドのカークン</a></li><li><a href=\"/works/w1076/\">遊☆戯☆王SEVENS</a></li><li><a href=\"/works/w1080/\">デジモンアドベンチャー:</a></li><li><a href=\"/works/w1081/\">デュエル・マスターズ</a></li><li><a href=\"/works/w1083/\">トミカ絆合体 アースグランナー</a></li><li><a href=\"/works/w1084/\">ミュークルドリーミー</a></li><li><a href=\"/works/w1085/\">ガル学。</a></li><li><a href=\"/works/w1100/\">ガンダムビルドダイバーズRe:RISE</a></li><li><a href=\"/works/w1095/\">ハクション大魔王</a></li></ul>",
+      "works": [
+        {
+          "workId": "w718",
+          "note": "第1期"
+        },
+        {
+          "workId": "w1015",
+          "note": "第4期"
+        },
+        {
+          "workId": "w1033",
+          "note": "Second BEAT!"
+        },
+        {
+          "workId": "w967",
+          "note": "第1期"
+        },
+        {
+          "workId": "w1014",
+          "note": "第1期"
+        },
+        {
+          "workId": "w601",
+          "note": "第3シリーズ"
+        },
+        {
+          "workId": "w065",
+          "note": "第2期"
+        },
+        {
+          "workId": "w903",
+          "note": "第2期"
+        },
+        {
+          "workId": "w1066",
+          "note": "第2期"
+        },
+        {
+          "workId": "w1068",
+          "note": ""
+        },
+        {
+          "workId": "w1069",
+          "note": ""
+        },
+        {
+          "workId": "w1070",
+          "note": ""
+        },
+        {
+          "workId": "w1071",
+          "note": ""
+        },
+        {
+          "workId": "w1072",
+          "note": "the Animation"
+        },
+        {
+          "workId": "w1073",
+          "note": ""
+        },
+        {
+          "workId": "w1074",
+          "note": ""
+        },
+        {
+          "workId": "w1075",
+          "note": "審判ノ歯車"
+        },
+        {
+          "workId": "w1082",
+          "note": "第2期"
+        },
+        {
+          "workId": "w1076",
+          "note": ""
+        },
+        {
+          "workId": "w1077",
+          "note": ""
+        },
+        {
+          "workId": "w1078",
+          "note": ""
+        },
+        {
+          "workId": "w1079",
+          "note": ""
+        },
+        {
+          "workId": "w1080",
+          "note": ""
+        },
+        {
+          "workId": "w1081",
+          "note": "キング"
+        },
+        {
+          "workId": "w1083",
+          "note": ""
+        },
+        {
+          "workId": "w1084",
+          "note": ""
+        },
+        {
+          "workId": "w1085",
+          "note": "聖ガールズスクエア学院"
+        },
+        {
+          "workId": "w1086",
+          "note": ""
+        },
+        {
+          "workId": "w1087",
+          "note": "ZERO CHRONICLE"
+        },
+        {
+          "workId": "w1088",
+          "note": ""
+        },
+        {
+          "workId": "w1089",
+          "note": ""
+        },
+        {
+          "workId": "w1102",
+          "note": "2nd season"
+        },
+        {
+          "workId": "w1090",
+          "note": ""
+        },
+        {
+          "workId": "w1091",
+          "note": ""
+        },
+        {
+          "workId": "w1101",
+          "note": "-IMMORTAL-"
+        },
+        {
+          "workId": "w1092",
+          "note": ""
+        },
+        {
+          "workId": "w1093",
+          "note": ""
+        },
+        {
+          "workId": "w1094",
+          "note": "Balance:UNLIMITED"
+        },
+        {
+          "workId": "w1100",
+          "note": "第2期"
+        },
+        {
+          "workId": "w1099",
+          "note": "豪の皿"
+        },
+        {
+          "workId": "w1095",
+          "note": "2020"
+        },
+        {
+          "workId": "w1096",
+          "note": ""
+        },
+        {
+          "workId": "w1097",
+          "note": ""
+        },
+        {
+          "workId": "w1098",
+          "note": "別冊"
+        }
+      ]
+    },
+    {
+      "id": "2020-summer",
+      "name": "2020夏",
+      "label": "2020夏アニメ",
+      "months": "2020年7〜9月",
+      "eventName": "",
+      "voteStart": "2026-11-20",
+      "voteEnd": "2099-12-31",
+      "article": "<h2>2020夏アニメの作品まとめ</h2>\n<p>2020年夏アニメを一覧にしました。原作が漫画の作品8、小説/ライトノベルの作品6、ゲームが原作の作品3、オリジナルアニメ3、その他（カードゲーム・シリーズ作品など）4の、計24作品です。気になる作品名を押すと、作品ページで「すき」の投票と作品の情報を見られます。</p>\n<h2>夏アニメの傾向</h2>\n<p>漫画が原作の作品が8作品、小説/ライトノベルが6作品で、原作がある作品が全体の大半です。続編や続きのシーズン（2期・3期、第2クールなど）は13作品あり、前のシーズンから見ていた人は、続きの作品を探す楽しみがあります。</p>\n<h2>原作が漫画のアニメ</h2>\n<ul><li><a href=\"/works/w135/\">炎炎ノ消防隊</a></li><li><a href=\"/works/w297/\">ムヒョとロージーの魔法律相談事務所</a></li><li><a href=\"/works/w921/\">宇崎ちゃんは遊びたい!ω</a></li><li><a href=\"/works/w150/\">彼女、お借りします</a></li><li><a href=\"/works/w1106/\">ゴッド・オブ・ハイスクール</a></li><li><a href=\"/works/w1107/\">耐え子の日常</a></li><li><a href=\"/works/w1112/\">ノー・ガンズ・ライフ</a></li><li><a href=\"/works/w1114/\">ピーター・グリルと賢者の時間</a></li></ul>\n<h2>原作が小説/ライトノベルのアニメ</h2>\n<ul><li><a href=\"/works/w700/\">魔王学院の不適合者</a></li><li><a href=\"/works/w071/\">Re:ゼロから始める異世界生活</a></li><li><a href=\"/works/w303/\">ソードアート・オンライン</a></li><li><a href=\"/works/w1109/\">異常生物見聞録</a></li><li><a href=\"/works/w1111/\">やはり俺の青春ラブコメはまちがっている。</a></li><li><a href=\"/works/w1117/\">ふしぎ駄菓子屋 銭天堂</a></li></ul>\n<h2>原作がゲームのアニメ</h2>\n<ul><li><a href=\"/works/w855/\">ウマ娘 プリティーダービー</a></li><li><a href=\"/works/w1108/\">BanG Dream! ガルパ☆ピコ</a></li><li><a href=\"/works/w1116/\">恋とプロデューサー〜EVOL×LOVE〜</a></li></ul>\n<h2>オリジナルアニメ</h2>\n<ul><li><a href=\"/works/w1104/\">HERO MASK</a></li><li><a href=\"/works/w1110/\">GREAT PRETENDER</a></li><li><a href=\"/works/w1115/\">A.I.C.O. Incarnation</a></li></ul>\n<h2>その他（カードゲーム・シリーズ作品など）</h2>\n<ul><li><a href=\"/works/w1103/\">おばけずかん</a></li><li><a href=\"/works/w1105/\">ラピスリライツ 〜この世界のアイドルは魔法が使える〜</a></li><li><a href=\"/works/w1113/\">GETUP! GETLIVE!</a></li><li><a href=\"/works/w1118/\">かいじゅうステップ</a></li></ul>",
+      "works": [
+        {
+          "workId": "w135",
+          "note": "弐ノ章"
+        },
+        {
+          "workId": "w700",
+          "note": ""
+        },
+        {
+          "workId": "w297",
+          "note": "第2期"
+        },
+        {
+          "workId": "w071",
+          "note": "第2期第1クール"
+        },
+        {
+          "workId": "w921",
+          "note": "第1期"
+        },
+        {
+          "workId": "w150",
+          "note": "第1期"
+        },
+        {
+          "workId": "w303",
+          "note": "Alicization War of Underworld 第2クール"
+        },
+        {
+          "workId": "w855",
+          "note": "うまよん"
+        },
+        {
+          "workId": "w1103",
+          "note": ""
+        },
+        {
+          "workId": "w1104",
+          "note": ""
+        },
+        {
+          "workId": "w1105",
+          "note": ""
+        },
+        {
+          "workId": "w1106",
+          "note": ""
+        },
+        {
+          "workId": "w1107",
+          "note": "第2期"
+        },
+        {
+          "workId": "w1108",
+          "note": "大盛り"
+        },
+        {
+          "workId": "w1109",
+          "note": ""
+        },
+        {
+          "workId": "w1110",
+          "note": ""
+        },
+        {
+          "workId": "w1111",
+          "note": "完"
+        },
+        {
+          "workId": "w1112",
+          "note": "第2期"
+        },
+        {
+          "workId": "w1113",
+          "note": "#げらげら"
+        },
+        {
+          "workId": "w1114",
+          "note": ""
+        },
+        {
+          "workId": "w1115",
+          "note": ""
+        },
+        {
+          "workId": "w1116",
+          "note": ""
+        },
+        {
+          "workId": "w1117",
+          "note": ""
+        },
+        {
+          "workId": "w1118",
+          "note": "ワンダバダ（第2期）"
+        }
+      ]
+    },
+    {
+      "id": "2020-autumn",
+      "name": "2020秋",
+      "label": "2020秋アニメ",
+      "months": "2020年10〜12月",
+      "eventName": "",
+      "voteStart": "2026-11-20",
+      "voteEnd": "2099-12-31",
+      "article": "<h2>2020秋アニメの作品まとめ</h2>\n<p>2020年秋アニメを一覧にしました。原作が漫画の作品16、小説/ライトノベルの作品8、ゲームが原作の作品4、オリジナルアニメ7、その他（カードゲーム・シリーズ作品など）11の、計46作品です。気になる作品名を押すと、作品ページで「すき」の投票と作品の情報を見られます。</p>\n<h2>秋アニメの傾向</h2>\n<p>漫画が原作の作品が16作品、小説/ライトノベルが8作品で、原作がある作品が全体の大半です。続編や続きのシーズン（2期・3期、第2クールなど）は14作品あり、前のシーズンから見ていた人は、続きの作品を探す楽しみがあります。</p>\n<h2>原作が漫画のアニメ</h2>\n<ul><li><a href=\"/works/w969/\">100万の命の上に俺は立っている</a></li><li><a href=\"/works/w139/\">呪術廻戦</a></li><li><a href=\"/works/w803/\">トニカクカワイイ</a></li><li><a href=\"/works/w324/\">ハイキュー!!</a></li><li><a href=\"/works/w137/\">ゴールデンカムイ</a></li><li><a href=\"/works/w956/\">憂国のモリアーティ</a></li><li><a href=\"/works/w782/\">進撃の巨人</a></li><li><a href=\"/works/w1120/\">兄に付ける薬はない！</a></li><li><a href=\"/works/w1122/\">犬と猫どっちも飼ってると毎日たのしい</a></li><li><a href=\"/works/w1126/\">ドラゴンクエスト ダイの大冒険</a></li><li><a href=\"/works/w1127/\">いわかける！</a></li><li><a href=\"/works/w1129/\">無能なナナ</a></li><li><a href=\"/works/w1130/\">モグモグモギュー</a></li><li><a href=\"/works/w1134/\">魔王城でおやすみ</a></li><li><a href=\"/works/w1141/\">ご注文はうさぎですか？</a></li><li><a href=\"/works/w1145/\">おちこぼれフルーツタルト</a></li></ul>\n<h2>原作が小説/ライトノベルのアニメ</h2>\n<ul><li><a href=\"/works/w730/\">ダンジョンに出会いを求めるのは間違っているだろうか</a></li><li><a href=\"/works/w770/\">神達に拾われた男</a></li><li><a href=\"/works/w680/\">魔法科高校の劣等生</a></li><li><a href=\"/works/w522/\">キミと僕の最後の戦場、あるいは世界が始まる聖戦</a></li><li><a href=\"/works/w791/\">くまクマ熊ベアー</a></li><li><a href=\"/works/w1121/\">魔女の旅々</a></li><li><a href=\"/works/w1131/\">池袋ウエストゲートパーク</a></li><li><a href=\"/works/w1139/\">安達としまむら</a></li></ul>\n<h2>原作がゲームのアニメ</h2>\n<ul><li><a href=\"/works/w1031/\">ひぐらしのなく頃に</a></li><li><a href=\"/works/w1062/\">A3!</a></li><li><a href=\"/works/w1123/\">キングスレイド</a></li><li><a href=\"/works/w1147/\">禍つヴァールハイト</a></li></ul>\n<h2>オリジナルアニメ</h2>\n<ul><li><a href=\"/works/w1104/\">HERO MASK</a></li><li><a href=\"/works/w1124/\">戦翼のシグルドリーヴァ</a></li><li><a href=\"/works/w1137/\">アクダマドライブ</a></li><li><a href=\"/works/w1142/\">神様になった日</a></li><li><a href=\"/works/w1143/\">体操ザムライ</a></li><li><a href=\"/works/w1144/\">まえせつ！</a></li><li><a href=\"/works/w1146/\">それだけがネック</a></li></ul>\n<h2>その他（カードゲーム・シリーズ作品など）</h2>\n<ul><li><a href=\"/works/w1039/\">半妖の夜叉姫</a></li><li><a href=\"/works/w592/\">おそ松さん</a></li><li><a href=\"/works/w1119/\">アサルトリリィ</a></li><li><a href=\"/works/w1125/\">ヒプノシスマイク -Division Rap Battle-</a></li><li><a href=\"/works/w1128/\">かえるのピクルス</a></li><li><a href=\"/works/w1132/\">D4DJ</a></li><li><a href=\"/works/w1133/\">どうしても干支にはいりたい</a></li><li><a href=\"/works/w1135/\">One Room</a></li><li><a href=\"/works/w1136/\">ツキウタ。</a></li><li><a href=\"/works/w1138/\">ストライクウィッチーズ</a></li><li><a href=\"/works/w1140/\">最響カミズモード！</a></li></ul>",
+      "works": [
+        {
+          "workId": "w1031",
+          "note": "業"
+        },
+        {
+          "workId": "w969",
+          "note": "第1期"
+        },
+        {
+          "workId": "w139",
+          "note": "第1期"
+        },
+        {
+          "workId": "w730",
+          "note": "III"
+        },
+        {
+          "workId": "w803",
+          "note": "第1期"
+        },
+        {
+          "workId": "w324",
+          "note": "TO THE TOP（第2クール）"
+        },
+        {
+          "workId": "w1039",
+          "note": "壱の章"
+        },
+        {
+          "workId": "w770",
+          "note": ""
+        },
+        {
+          "workId": "w680",
+          "note": "来訪者編"
+        },
+        {
+          "workId": "w137",
+          "note": "第3期"
+        },
+        {
+          "workId": "w522",
+          "note": ""
+        },
+        {
+          "workId": "w791",
+          "note": ""
+        },
+        {
+          "workId": "w956",
+          "note": "第1クール"
+        },
+        {
+          "workId": "w592",
+          "note": "第3期"
+        },
+        {
+          "workId": "w782",
+          "note": "The Final Season（Part 1）"
+        },
+        {
+          "workId": "w1062",
+          "note": "SEASON AUTUMN & WINTER"
+        },
+        {
+          "workId": "w1104",
+          "note": "PartII"
+        },
+        {
+          "workId": "w1119",
+          "note": ""
+        },
+        {
+          "workId": "w1120",
+          "note": ""
+        },
+        {
+          "workId": "w1121",
+          "note": ""
+        },
+        {
+          "workId": "w1122",
+          "note": ""
+        },
+        {
+          "workId": "w1123",
+          "note": ""
+        },
+        {
+          "workId": "w1124",
+          "note": ""
+        },
+        {
+          "workId": "w1125",
+          "note": ""
+        },
+        {
+          "workId": "w1126",
+          "note": ""
+        },
+        {
+          "workId": "w1127",
+          "note": ""
+        },
+        {
+          "workId": "w1128",
+          "note": ""
+        },
+        {
+          "workId": "w1129",
+          "note": ""
+        },
+        {
+          "workId": "w1130",
+          "note": ""
+        },
+        {
+          "workId": "w1131",
+          "note": ""
+        },
+        {
+          "workId": "w1132",
+          "note": ""
+        },
+        {
+          "workId": "w1133",
+          "note": ""
+        },
+        {
+          "workId": "w1134",
+          "note": ""
+        },
+        {
+          "workId": "w1135",
+          "note": ""
+        },
+        {
+          "workId": "w1136",
+          "note": ""
+        },
+        {
+          "workId": "w1137",
+          "note": ""
+        },
+        {
+          "workId": "w1138",
+          "note": ""
+        },
+        {
+          "workId": "w1139",
+          "note": ""
+        },
+        {
+          "workId": "w1140",
+          "note": ""
+        },
+        {
+          "workId": "w1141",
+          "note": ""
+        },
+        {
+          "workId": "w1142",
+          "note": ""
+        },
+        {
+          "workId": "w1143",
+          "note": ""
+        },
+        {
+          "workId": "w1144",
+          "note": ""
+        },
+        {
+          "workId": "w1145",
+          "note": ""
+        },
+        {
+          "workId": "w1146",
+          "note": ""
+        },
+        {
+          "workId": "w1147",
+          "note": ""
+        }
+      ]
     }
   ]
 }
