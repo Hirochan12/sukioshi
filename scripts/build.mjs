@@ -407,7 +407,6 @@ ${seasonIntro(s)}
 </article>
 ${s.id === 'recommend' && REC_GENRES.length ? `<section class="genre-pick"><h2>ジャンルから選ぶ</h2>${genreGrid(REC_GENRES)}</section>` : ''}
 ${rankingSection(s, { heading: isEvent ? '投票・ランキング' : `${s.label}原作ランキング` })}
-${isEvent ? '' : seasonOpEdHtml(s)}
 ${isEvent ? '' : seasonSongsHtml(s)}
 ${shareBar(`/season/${s.id}/`, `${isEvent ? s.eventName : `${s.label}の原作 人気ランキング`} 推しに「すき」を送ろう♡ #すきおし`, { label: 'このランキングをシェア' })}
 ${s.article ? `<details class="season-more"><summary>${esc(s.label)}の原作まとめを読む</summary><div class="prose">${s.article}</div></details>` : ''}
@@ -513,16 +512,6 @@ function topAttrs(id) {
 }
 
 const ATTR_FRIENDLY = { 友情: '友情があつい', 努力: '努力・修行', 勝利: '勝負・勝利', 恋愛: '恋愛', 青春: '青春・学園', 感動: '泣ける・感動', コメディ: 'コメディ', ミステリー: '謎解き・ミステリー', 日常系: 'のんびり日常', ファミリー: '家族', バトル: 'バトル', シリアス: '重め・シリアス' };
-
-function seasonOpEdHtml(s) {
-  const rows = s.works.map((e) => workById.get(e.workId)).filter((w) => w && SONGS.has(w.id));
-  if (rows.length < 3) return '';
-  return `<section class="season-songs"><h2>${esc(s.label)}のオープニング・エンディング</h2>
-<p>${esc(s.label)}の作品のうち、主題歌の情報がある${rows.length}作品の曲を一覧にしました。アーティスト名から、同じ人が歌っているほかの作品も探せます。</p>
-<ul class="search-list">
-${rows.map((w) => `  <li class="search-item"><a href="/works/${w.id}/"><span class="si-title">${esc(w.title)}</span></a><ul class="work-songs">${SONGS.get(w.id).map((t) => `<li>${linkSong(t)}</li>`).join('')}</ul></li>`).join('\n')}
-</ul></section>`;
-}
 
 function seasonSongsHtml(s) {
   const all = s.works.map((e) => workById.get(e.workId)).filter(Boolean);
