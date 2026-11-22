@@ -338,7 +338,7 @@ function buildIndex() {
     <button type="submit" class="ts-btn" aria-label="さがす">さがす</button>
     <ul class="ts-suggest" data-ts-suggest hidden></ul>
   </form>
-  <p class="ts-links"><a href="/search/">すべての作品</a><a href="/songs/">主題歌から探す</a><a href="/quiz/">好みから診断</a><a href="/recommend/">おすすめ</a><a href="/database/">作品データベース</a><a href="/genre/">ジャンル別</a><a href="/publishers/">出版社・作者</a><a href="/seasons/">シーズンを選ぶ</a><a href="/random/" rel="nofollow">ランダムでさがす</a></p>
+  <p class="ts-links"><a href="/search/">すべての作品</a><a href="/songs/">主題歌から探す</a><a href="/quiz/">好みから診断</a><a href="/recommend/">おすすめ</a><a href="/database/">作品データベース</a><a href="/genre/">ジャンル別</a><a href="/publishers/">出版社・作者</a><a href="/seasons/">シーズンを選ぶ</a><a href="/random/" rel="nofollow">ランダムでさがす</a><a href="/stats/">データで見る</a></p>
 </section>
 <section class="hero">
   <h1>${esc(currentSeason.label)}の原作、どれがすき？</h1>
@@ -637,6 +637,63 @@ function buildRandom() {
 })();
 </script>`;
   addPage('/random/', layout({ path: '/random/', title: 'ランダムでさがす', description: 'ランダムに選んだ作品のページへ移動します。', body, noindex: true }), { priority: 0.1, noindex: true });
+}
+
+// ---- データで見るアニメ原作（統計ページ。数字はすべてビルド時にデータから計算する） ----
+function buildStats() {
+  const live = works.filter((w) => seasonsOf(w.id).length);
+  const COLOR = { manga: '#d2527d', novel: '#4a8f6a', game: '#e0a030', original: '#5b7fd6', other: '#9a9a9a' };
+  const TYPES = ['manga', 'novel', 'game', 'original', 'other'];
+  const byType = Object.fromEntries(TYPES.map((t) => [t, live.filter((w) => w.type === t).length]));
+  const pct = (n, d) => (d ? Math.round((n / d) * 1000) / 10 : 0);
+  const SEAS = { winter: 1, spring: 2, summer: 3, autumn: 4 };
+  const key = (x) => { const m = String(x.id).match(/^(\d{4})-(winter|spring|summer|autumn)$/); return m ? +m[1] * 10 + SEAS[m[2]] : null; };
+  const seas = seasons.filter((x) => !x.eventName && key(x) !== null).slice().sort((a, b) => key(b) - key(a));
+  const legend = TYPES.filter((t) => byType[t]).map((t) => `<span style="display:inline-flex;align-items:center;gap:4px;margin-right:12px"><i style="display:inline-block;width:12px;height:12px;border-radius:2px;background:${COLOR[t]}"></i>${TYPE_LABEL[t]}</span>`).join('');
+  const bar = (counts, total) => `<span style="display:flex;height:14px;border-radius:7px;overflow:hidden;background:#eee;flex:1;min-width:120px" aria-hidden="true">${TYPES.filter((t) => counts[t]).map((t) => `<span style="width:${pct(counts[t], total)}%;background:${COLOR[t]}"></span>`).join('')}</span>`;
+  const ROW = 'display:grid;grid-template-columns:8.5em 1fr 5em;gap:10px;align-items:center;padding:7px 0;border-bottom:1px solid #eee';
+  const fbar = (parts) => `<span style="display:flex;height:16px;border-radius:8px;overflow:hidden;background:#eee" aria-hidden="true">${parts.filter((x) => x.v).map((x) => `<span style="width:${x.w}%;background:${x.c}"></span>`).join('')}</span>`;
+  const typeRows = TYPES.filter((t) => byType[t]).map((t) => `<div style="${ROW}"><span><i style="display:inline-block;width:11px;height:11px;border-radius:2px;background:${COLOR[t]};margin-right:5px"></i>${TYPE_LABEL[t]}</span>${fbar([{ v: 1, w: pct(byType[t], live.length), c: COLOR[t] }])}<span style="text-align:right"><b>${byType[t]}</b>作品 ${pct(byType[t], live.length)}%</span></div>`).join('\n');
+  const years = [...new Set(seas.map((x) => Math.floor(key(x) / 10)))].sort((a, b) => b - a);
+  const NAME = { 1: '冬', 2: '春', 3: '夏', 4: '秋' };
+  const G3 = [['漫画', '#d2527d'], ['小説', '#4a8f6a'], ['ほか', '#8a8a8a']];
+  const yearRows = years.map((y) => {
+    const xs = seas.filter((x) => Math.floor(key(x) / 10) === y);
+    const ws = xs.flatMap((x) => x.works.map((e) => workById.get(e.workId)).filter(Boolean));
+    const ids = new Set(); const uniq = ws.filter((w) => !ids.has(w.id) && ids.add(w.id));
+    const m = uniq.filter((w) => w.type === 'manga').length, n = uniq.filter((w) => w.type === 'novel').length, o = uniq.length - m - n;
+    const seg = [m, n, o].map((v, i) => v ? `<span style="width:${pct(v, uniq.length)}%;background:${G3[i][1]};color:#fff;font-size:12px;font-weight:700;line-height:24px;text-align:center;overflow:hidden;white-space:nowrap">${pct(v, uniq.length) >= 12 ? Math.round(pct(v, uniq.length)) + '%' : ''}</span>` : '').join('');
+    const links = xs.slice().sort((a, b) => key(a) - key(b)).map((x) => `<a href="/season/${x.id}/" style="margin-right:10px">${NAME[key(x) % 10]}</a>`).join('');
+    return `<div style="padding:10px 0;border-bottom:1px solid #eee"><div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:5px"><b style="font-size:1.1em">${y}年</b><span><b>${uniq.length}</b>作品（漫画${m}・小説${n}・ほか${o}）</span></div><span style="display:flex;height:24px;border-radius:6px;overflow:hidden;background:#eee" aria-hidden="true">${seg}</span><div style="margin-top:5px;font-size:.9em">${links}</div></div>`;
+  }).join('\n');
+  const top = (map, n) => [...map.entries()].filter(([k]) => k).sort((a, b) => b[1] - a[1] || (a[0] < b[0] ? -1 : 1)).slice(0, n);
+  const count = (arr) => { const m = new Map(); for (const k of arr) m.set(k, (m.get(k) || 0) + 1); return m; };
+  const authors = top(count(live.map((w) => (w.rakutenAuthor || '').trim())), 10);
+  const mags = top(count(live.filter((w) => isBook(w)).map((w) => (w.magazine || '').trim())), 10);
+  const arts = [...ARTIST_SLUG.entries()].map(([name, slug]) => ({ name, slug, n: live.filter((w) => songsOf(w).some((l) => l.includes('／' + name))).length })).sort((a, b) => b.n - a.n || (a.name < b.name ? -1 : 1)).slice(0, 10);
+  const rank = (rows) => { const mx = Math.max(...rows.map((r) => r.n)) || 1; return rows.map((r, i) => `<div style="display:grid;grid-template-columns:1.6em 1fr 4.5em;gap:8px;align-items:center;padding:6px 0;border-bottom:1px solid #eee"><b>${i + 1}</b><span><span style="display:block;margin-bottom:3px">${r.label}</span>${fbar([{ v: 1, w: Math.round((r.n / mx) * 100), c: '#d2527d' }])}</span><span style="text-align:right"><b>${r.n}</b>作品</span></div>`).join('\n'); };
+  const withSongs = live.filter((w) => songsOf(w).length).length;
+  const body = `
+<nav class="crumbs" aria-label="パンくずリスト"><a href="/">トップ</a><span aria-hidden="true">›</span><span>データで見るアニメ原作</span></nav>
+<article class="prose page">
+<h1>データで見るアニメ原作</h1>
+<p>すきおしにのっているアニメ${live.length}作品（${seas.length}シーズン分）のデータから、原作の傾向をまとめました。数字は、サイトのデータから自動で数えています。</p>
+<h2>原作の種類のわりあい</h2>
+<p>${TYPES.filter((t) => byType[t]).map((t) => `${TYPE_LABEL[t]}が${byType[t]}作品（${pct(byType[t], live.length)}%）`).join('、')}です。</p>
+${typeRows}
+<h2>年ごとの原作の内訳</h2>
+<p>棒は <b style="color:#d2527d">■漫画</b> <b style="color:#4a8f6a">■小説</b> <b style="color:#8a8a8a">■ほか（ゲーム・オリジナルなど）</b> の割合です。冬・春・夏・秋を押すと、そのシーズンのランキングへ移れます。</p>
+${yearRows}
+<h2>作品数が多い原作者（上位10人）</h2>
+${rank(authors.map(([n, c]) => ({ label: esc(n), n: c })))}
+<h2>作品数が多い掲載誌・レーベル（上位10）</h2>
+${rank(mags.map(([n, c]) => ({ label: esc(n), n: c })))}
+<h2>曲が使われた作品数が多いアーティスト（上位10組）</h2>
+<p>オープニング・エンディングの情報がある${withSongs}作品から数えました。</p>
+${rank(arts.map((a) => ({ label: `<a href="/artist/${a.slug}/">${esc(a.name)}</a>`, n: a.n })))}
+<p class="fine"><a href="/artists/">アーティスト一覧</a>・<a href="/publishers/">出版社・作者</a>・<a href="/seasons/">シーズン一覧</a></p>
+</article>`;
+  addPage('/stats/', layout({ path: '/stats/', title: 'データで見るアニメ原作', description: `アニメ${live.length}作品の原作を数えました。漫画・小説などの種類のわりあい、シーズンごとの内訳、作品数が多い原作者・掲載誌・アーティストをまとめています。`, body }), { priority: 0.6 });
 }
 
 // ---- 好みから探す診断（属性の評価から、気分に合う作品をえらぶ） ----
@@ -1631,6 +1688,7 @@ buildSearch();
 buildSongs();
 buildArtists();
 buildRandom();
+buildStats();
 buildQuiz();
 buildGenres();
 buildPublishers();
