@@ -131,6 +131,16 @@ const recHtml = (id) => {
   if (!parts.length) return '';
   return `<h3>運営者のおすすめポイント</h3>${parts.join('')}<p class="fine"><a href="/recommend/">運営者おすすめの作品をもっと見る</a></p>`;
 };
+const ARTIST_SLUG = new Map(); // アーティスト名 -> ページのスラッグ（buildArtists で埋める）
+const unesc = (t) => String(t).replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"').replace(/&amp;/g, '&');
+// 主題歌1行の「／アーティスト」部分を、アーティストページへのリンクにする
+function linkSong(line) {
+  const m = String(line).match(/^(.+?)／([^<>]+)$/);
+  if (!m) return line;
+  const name = unesc(m[2]).replace(/（[^）]*$/, '').trim();
+  const slug = ARTIST_SLUG.get(name);
+  return slug ? `${m[1]}／<a href="/artist/${slug}/">${m[2]}</a>` : line;
+}
 const SONGS = new Map(works.filter((w) => Array.isArray(w.songs) && w.songs.length).map((w) => [w.id, w.songs]));
 const airText = (s) => (s.id === 'recommend' ? '過去の作品もふくむ' : `${s.months}放送`);
 const openEnded = (s) => s.id === 'recommend' || s.voteEnd >= '2099-01-01';
@@ -386,6 +396,7 @@ ${seasonIntro(s)}
 </article>
 ${s.id === 'recommend' && REC_GENRES.length ? `<section class="genre-pick"><h2>ジャンルから選ぶ</h2>${genreGrid(REC_GENRES)}</section>` : ''}
 ${rankingSection(s, { heading: isEvent ? '投票・ランキング' : `${s.label}原作ランキング` })}
+${isEvent ? '' : seasonOpEdHtml(s)}
 ${isEvent ? '' : seasonSongsHtml(s)}
 ${shareBar(`/season/${s.id}/`, `${isEvent ? s.eventName : `${s.label}の原作 人気ランキング`} 推しに「すき」を送ろう♡ #すきおし`, { label: 'このランキングをシェア' })}
 ${s.article ? `<details class="season-more"><summary>${esc(s.label)}の原作まとめを読む</summary><div class="prose">${s.article}</div></details>` : ''}
@@ -491,6 +502,16 @@ function topAttrs(id) {
 
 const ATTR_FRIENDLY = { 友情: '友情があつい', 努力: '努力・修行', 勝利: '勝負・勝利', 恋愛: '恋愛', 青春: '青春・学園', 感動: '泣ける・感動', コメディ: 'コメディ', ミステリー: '謎解き・ミステリー', 日常系: 'のんびり日常', ファミリー: '家族', バトル: 'バトル', シリアス: '重め・シリアス' };
 
+function seasonOpEdHtml(s) {
+  const rows = s.works.map((e) => workById.get(e.workId)).filter((w) => w && SONGS.has(w.id));
+  if (rows.length < 3) return '';
+  return `<section class="season-songs"><h2>${esc(s.label)}のオープニング・エンディング</h2>
+<p>${esc(s.label)}の作品のうち、主題歌の情報がある${rows.length}作品の曲を一覧にしました。アーティスト名から、同じ人が歌っているほかの作品も探せます。</p>
+<ul class="search-list">
+${rows.map((w) => `  <li class="search-item"><a href="/works/${w.id}/"><span class="si-title">${esc(w.title)}</span></a><ul class="work-songs">${SONGS.get(w.id).map((t) => `<li>${linkSong(t)}</li>`).join('')}</ul></li>`).join('\n')}
+</ul></section>`;
+}
+
 function seasonSongsHtml(s) {
   const all = s.works.map((e) => workById.get(e.workId)).filter(Boolean);
   const groups = new Map();
@@ -566,6 +587,7 @@ function buildArtists() {
     .filter((a) => a.items.length >= 2)
     .sort((a, b) => b.items.length - a.items.length || (a.name < b.name ? -1 : 1));
   if (!arts.length) return;
+  for (const a of arts) ARTIST_SLUG.set(a.name, a.slug);
   const crumb = (last) => `<nav class="crumbs" aria-label="パンくずリスト"><a href="/">トップ</a><span aria-hidden="true">›</span>${last ? `<a href="/artists/">アーティストから探す</a><span aria-hidden="true">›</span><span>${esc(last)}</span>` : '<span>アーティストから探す</span>'}</nav>`;
   const body = `
 ${crumb('')}
@@ -1057,7 +1079,7 @@ ${isBook(w) ? `    <a class="btn btn-rakuten" data-book-link href="#" rel="spons
 
   ${shareBar(`/works/${w.id}/`, share, { label: 'この作品をシェア' })}
 
-  ${w.intro ? `<section class="prose work-intro"><h2>どんな作品？</h2>${w.intro}${REC.has(w.id) ? recHtml(w.id) : ''}${SONGS.has(w.id) ? `<h3>主題歌</h3><ul class="work-songs">${SONGS.get(w.id).map((t) => `<li>${t}</li>`).join('')}</ul>` : ''}</section>` : ''}
+  ${w.intro ? `<section class="prose work-intro"><h2>どんな作品？</h2>${w.intro}${REC.has(w.id) ? recHtml(w.id) : ''}${SONGS.has(w.id) ? `<h3>主題歌</h3><ul class="work-songs">${SONGS.get(w.id).map((t) => `<li>${linkSong(t)}</li>`).join('')}</ul>` : ''}</section>` : ''}
 
   ${attrHtml(w)}
 
