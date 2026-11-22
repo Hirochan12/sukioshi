@@ -338,7 +338,7 @@ function buildIndex() {
     <button type="submit" class="ts-btn" aria-label="さがす">さがす</button>
     <ul class="ts-suggest" data-ts-suggest hidden></ul>
   </form>
-  <p class="ts-links"><a href="/search/">すべての作品</a><a href="/songs/">主題歌から探す</a><a href="/quiz/">好みから診断</a><a href="/recommend/">おすすめ</a><a href="/database/">作品データベース</a><a href="/genre/">ジャンル別</a><a href="/publishers/">出版社・作者</a><a href="/seasons/">シーズンを選ぶ</a></p>
+  <p class="ts-links"><a href="/search/">すべての作品</a><a href="/songs/">主題歌から探す</a><a href="/quiz/">好みから診断</a><a href="/recommend/">おすすめ</a><a href="/database/">作品データベース</a><a href="/genre/">ジャンル別</a><a href="/publishers/">出版社・作者</a><a href="/seasons/">シーズンを選ぶ</a><a href="/random/" rel="nofollow">ランダムでさがす</a></p>
 </section>
 <section class="hero">
   <h1>${esc(currentSeason.label)}の原作、どれがすき？</h1>
@@ -379,6 +379,17 @@ function seasonIntro(s) {
 const genreGrid = (genres) => `<ul class="genre-grid">${genres.map((g) => `<li><a class="btn" href="/recommend/${g.id}/"><span>${esc(g.name)}</span><small>${g.items.length}作品</small></a></li>`).join('')}</ul>`;
 const REC_GENRES = existsSync(join(ROOT, 'data/recommend.json')) ? readJson('data/recommend.json').genres : [];
 
+function seasonPagerHtml(s) {
+  const SEAS = { winter: 1, spring: 2, summer: 3, autumn: 4 };
+  const key = (x) => { const m = String(x.id).match(/^(\d{4})-(winter|spring|summer|autumn)$/); return m ? +m[1] * 10 + SEAS[m[2]] : null; };
+  const order = seasons.filter((x) => !x.eventName && key(x) !== null).slice().sort((a, b) => key(a) - key(b));
+  const i = order.findIndex((x) => x.id === s.id);
+  if (i < 0) return '';
+  const prev = order[i - 1], next = order[i + 1];
+  if (!prev && !next) return '';
+  return `<nav class="season-pager" aria-label="前後のシーズン" style="display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;margin:20px 0">${prev ? `<a rel="prev" href="/season/${prev.id}/">← ${esc(prev.label)}</a>` : '<span></span>'}${next ? `<a rel="next" href="/season/${next.id}/">${esc(next.label)} →</a>` : '<span></span>'}</nav>`;
+}
+
 function buildSeason(s) {
   const isEvent = Boolean(s.eventName);
   const h1 = isEvent ? s.eventName : `${s.label}の原作 人気ランキング`;
@@ -401,6 +412,7 @@ ${isEvent ? '' : seasonSongsHtml(s)}
 ${shareBar(`/season/${s.id}/`, `${isEvent ? s.eventName : `${s.label}の原作 人気ランキング`} 推しに「すき」を送ろう♡ #すきおし`, { label: 'このランキングをシェア' })}
 ${s.article ? `<details class="season-more"><summary>${esc(s.label)}の原作まとめを読む</summary><div class="prose">${s.article}</div></details>` : ''}
 ${adSlot('season-bottom')}
+${isEvent ? '' : seasonPagerHtml(s)}
 <p class="back-link"><a href="/seasons/">アーカイブでほかのシーズンを見る</a></p>`;
   const pageTitle = isEvent ? h1 : `${s.label}の原作 人気ランキング｜漫画・小説/ライトノベル${s.works.length}作品一覧`;
   const jsonLd = {
@@ -619,6 +631,23 @@ ${list}
 </article>`;
     addPage(path, layout({ path, title: `${a.name}が主題歌を歌ったアニメ ${a.items.length}作品`, description: `${a.name}がOP・EDを担当したアニメ${a.items.length}作品（${nSongs}曲）の一覧です。`, body: b }), { priority: 0.5 });
   });
+}
+
+// ---- ランダムでさがす（作品ページへ、ランダムに移動する） ----
+function buildRandom() {
+  const ids = works.filter((w) => seasonsOf(w.id).length).map((w) => w.id);
+  const body = `
+<article class="prose page">
+<h1>ランダムでさがす</h1>
+<p>ランダムに選んだ作品のページへ移動しています。移動しないときは、<a href="/search/">すべての作品</a>からさがしてください。</p>
+</article>
+<script>
+(function () {
+  var ids = ${JSON.stringify(ids)};
+  location.replace('/works/' + ids[Math.floor(Math.random() * ids.length)] + '/');
+})();
+</script>`;
+  addPage('/random/', layout({ path: '/random/', title: 'ランダムでさがす', description: 'ランダムに選んだ作品のページへ移動します。', body, noindex: true }), { priority: 0.1, noindex: true });
 }
 
 // ---- 好みから探す診断（属性の評価から、気分に合う作品をえらぶ） ----
@@ -1037,6 +1066,30 @@ function workDigest(w, ss) {
   return `<section class="prose work-digest"><h2>『${esc(w.title)}』をもっと詳しく</h2><p>${parts.join('</p><p>')}</p></section>`;
 }
 
+let AUTHOR_WORKS = null;
+// 同じ原作者の、ほかの作品（作品ページの下に出す）
+function sameAuthorHtml(w) {
+  const a = (w.rakutenAuthor || '').trim();
+  if (!a) return '';
+  if (!AUTHOR_WORKS) {
+    AUTHOR_WORKS = new Map();
+    for (const x of works) {
+      const n = (x.rakutenAuthor || '').trim();
+      if (!n || !seasonsOf(x.id).length) continue;
+      if (!AUTHOR_WORKS.has(n)) AUTHOR_WORKS.set(n, []);
+      AUTHOR_WORKS.get(n).push(x);
+    }
+  }
+  const others = (AUTHOR_WORKS.get(a) || []).filter((x) => x.id !== w.id).slice(0, 8);
+  if (!others.length) return '';
+  return `<section class="related same-author">
+    <h2>${esc(a)}のほかの作品</h2>
+    <ul class="related-list">
+${others.map((r) => `      <li><a href="/works/${r.id}/">${esc(r.title)}</a></li>`).join('\n')}
+    </ul>
+  </section>`;
+}
+
 function buildWork(w) {
   const ss = seasonsOf(w.id).sort((a, b) => b.voteStart.localeCompare(a.voteStart));
   const main = ss[0];
@@ -1111,7 +1164,7 @@ ${genresOf(w.id).length ? `      <dt>ジャンル</dt><dd>${genresOf(w.id).map((
 
   ${adSlot('work-bottom')}
 
-  ${similarSection(w)}${related.length ? `<section class="related">
+  ${similarSection(w)}${sameAuthorHtml(w)}${related.length ? `<section class="related">
     <h2>${esc(main.label)}のほかの${typeLong}原作</h2>
     <ul class="related-list">
 ${related.map((r) => `      <li><a href="/works/${r.id}/">${esc(r.title)}</a></li>`).join('\n')}
@@ -1588,6 +1641,7 @@ buildSeasonList();
 buildSearch();
 buildSongs();
 buildArtists();
+buildRandom();
 buildQuiz();
 buildGenres();
 buildPublishers();
