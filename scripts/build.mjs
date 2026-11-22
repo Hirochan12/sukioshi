@@ -541,8 +541,62 @@ function buildSongs() {
 ${list}
   </ul>
 </div>
-<p class="fine">主題歌の情報は、各作品ページの紹介文にのせているものです。作品名でさがしたいときは<a href="/search/">作品名検索</a>へどうぞ。</p>`;
+<p class="fine">主題歌の情報は、各作品ページの紹介文にのせているものです。作品名でさがしたいときは<a href="/search/">作品名検索</a>、アーティストごとに見たいときは<a href="/artists/">アーティストから探す</a>へどうぞ。</p>`;
   addPage('/songs/', layout({ path: '/songs/', title: '主題歌からアニメ・原作をさがす', description: `アニメのオープニング・エンディングの曲名やアーティスト名から、原作の漫画・小説/ライトノベルがあるアニメ${rows.length}作品をさがせます。`, body }), { priority: 0.5 });
+}
+
+// ---- アーティスト別ページ（OP/EDで曲が使われた作品を、アーティストごとにまとめる） ----
+function buildArtists() {
+  const byA = new Map();
+  for (const w of works) {
+    if (!seasonsOf(w.id).length) continue;
+    for (const line of songsOf(w)) {
+      const m = line.match(/^(?:【([^】]+)】)?(OP|ED)：(.+?)／(.+)$/);
+      if (!m) continue;
+      const name = m[4].replace(/（[^）]*$/, '').trim();
+      if (!name || name.length > 24) continue;
+      if (!byA.has(name)) byA.set(name, new Map());
+      const mw = byA.get(name);
+      if (!mw.has(w.id)) mw.set(w.id, { w, songs: [] });
+      mw.get(w.id).songs.push({ label: m[1] || '', role: m[2], title: m[3].trim() });
+    }
+  }
+  const arts = [...byA.entries()]
+    .map(([name, mw]) => ({ name, items: [...mw.values()], slug: 'a' + createHash('sha1').update(name).digest('hex').slice(0, 8) }))
+    .filter((a) => a.items.length >= 2)
+    .sort((a, b) => b.items.length - a.items.length || (a.name < b.name ? -1 : 1));
+  if (!arts.length) return;
+  const crumb = (last) => `<nav class="crumbs" aria-label="パンくずリスト"><a href="/">トップ</a><span aria-hidden="true">›</span>${last ? `<a href="/artists/">アーティストから探す</a><span aria-hidden="true">›</span><span>${esc(last)}</span>` : '<span>アーティストから探す</span>'}</nav>`;
+  const body = `
+${crumb('')}
+<article class="prose page">
+<h1>アーティストから探すアニメ主題歌</h1>
+<p>オープニング・エンディングの曲を歌ったアーティストごとに、使われたアニメ作品をまとめました。2作品以上で曲が使われているアーティスト${arts.length}組を、作品数の多い順にのせています。好きなアーティストが、ほかにどの作品の主題歌を歌っているかを探せます。</p>
+<ul class="genre-others">${arts.map((a) => `<li><a href="/artist/${a.slug}/">${esc(a.name)}</a>（${a.items.length}作品）</li>`).join('')}</ul>
+<p class="fine">曲名や作品名から探したいときは<a href="/songs/">主題歌から探す</a>へどうぞ。主題歌の情報は、各作品の公開情報をもとにまとめています。</p>
+</article>`;
+  addPage('/artists/', layout({ path: '/artists/', title: 'アーティストから探すアニメ主題歌', description: `アニメのOP・EDを歌ったアーティストごとに、曲が使われた作品を一覧にしました。${arts.length}組のアーティストから探せます。`, body }), { priority: 0.6 });
+  arts.forEach((a, i) => {
+    const path = `/artist/${a.slug}/`;
+    const nSongs = a.items.reduce((n, x) => n + x.songs.length, 0);
+    const list = a.items
+      .map(({ w, songs }) => `  <li class="search-item"><a href="/works/${w.id}/"><span class="si-title">${esc(w.title)}</span><span class="si-meta"><span class="tag tag-${w.type}">${TYPE_LABEL[w.type]}</span></span><span class="si-songs">${songs.map((s) => esc((s.label ? '【' + s.label + '】' : '') + s.role + '：' + s.title)).join('')}</span></a></li>`)
+      .join('\n');
+    const near = arts.slice(Math.max(0, i - 4), i + 5).filter((x) => x !== a).slice(0, 8);
+    const b = `
+${crumb(a.name)}
+<article class="prose page">
+<h1>${esc(a.name)}が主題歌を歌ったアニメ（${a.items.length}作品）</h1>
+<p>${esc(a.name)}がオープニング・エンディングなどで曲を担当したアニメのうち、すきおしにのっている${a.items.length}作品（${nSongs}曲）をあつめました。曲名は各作品の名前の下にあります。</p>
+<ul class="search-list">
+${list}
+</ul>
+<h2>ほかのアーティスト</h2>
+<ul class="genre-others">${near.map((x) => `<li><a href="/artist/${x.slug}/">${esc(x.name)}</a></li>`).join('')}</ul>
+<p class="fine"><a href="/artists/">アーティストの一覧へ戻る</a>・<a href="/songs/">主題歌から探す</a></p>
+</article>`;
+    addPage(path, layout({ path, title: `${a.name}が主題歌を歌ったアニメ ${a.items.length}作品`, description: `${a.name}がOP・EDを担当したアニメ${a.items.length}作品（${nSongs}曲）の一覧です。`, body: b }), { priority: 0.5 });
+  });
 }
 
 // ---- 好みから探す診断（属性の評価から、気分に合う作品をえらぶ） ----
@@ -1511,6 +1565,7 @@ buildIndex();
 buildSeasonList();
 buildSearch();
 buildSongs();
+buildArtists();
 buildQuiz();
 buildGenres();
 buildPublishers();
