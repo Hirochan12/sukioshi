@@ -696,6 +696,77 @@ ${rank(arts.map((a) => ({ label: `<a href="/artist/${a.slug}/">${esc(a.name)}</a
   addPage('/stats/', layout({ path: '/stats/', title: 'データで見るアニメ原作', description: `アニメ${live.length}作品の原作を数えました。漫画・小説などの種類のわりあい、シーズンごとの内訳、作品数が多い原作者・掲載誌・アーティストをまとめています。`, body }), { priority: 0.6 });
 }
 
+// ---- 2作品くらべるページ（評価の属性・作者・掲載誌を、2作品ぶん左右に並べる。ブラウザの中だけで動く） ----
+function buildCompare() {
+  if (!ATTRS.items.length) return;
+  const rows = works
+    .filter((w) => seasonsOf(w.id).length && ATTRS.works[w.id])
+    .map((w) => [w.id, w.title, TYPE_LABEL[w.type] || '', ATTRS.items.map((it) => ATTRS.works[w.id].v[it.name] || 0), (w.rakutenAuthor || '').trim(), isBook(w) ? (w.magazine || '').trim() : '']);
+  const data = JSON.stringify({ items: ATTRS.items.map((it) => [it.name, it.color]), works: rows }).replace(/</g, String.fromCharCode(92) + 'u003c');
+  const body = `
+<nav class="crumbs" aria-label="パンくずリスト"><a href="/">トップ</a><span aria-hidden="true">›</span><span>2作品をくらべる</span></nav>
+<h1>2作品をくらべる</h1>
+<p>気になる作品を2つ選ぶと、運営者がつけた属性評価（<a href="/criteria/">評価基準</a>）を並べて見られます。${rows.length}作品から選べます。</p>
+<div class="cmp" data-cmp>
+  <div class="cmp-pick">
+    <div class="cmp-col" data-side="0"><label>作品A<input type="search" placeholder="作品名を入力" autocomplete="off" data-in></label><ul class="cmp-sug" data-sug></ul></div>
+    <div class="cmp-col" data-side="1"><label>作品B<input type="search" placeholder="作品名を入力" autocomplete="off" data-in></label><ul class="cmp-sug" data-sug></ul></div>
+  </div>
+  <div data-out></div>
+</div>
+<script type="application/json" id="cmp-data">${data}</script>
+<script>
+(function(){
+  var root=document.querySelector('[data-cmp]');if(!root)return;
+  var D=JSON.parse(document.getElementById('cmp-data').textContent);
+  var byId={};D.works.forEach(function(w){byId[w[0]]=w;});
+  var sel=[null,null],COL=['#d4537e','#2f6fd6'];
+  var cols=root.querySelectorAll('.cmp-col'),out=root.querySelector('[data-out]');
+  function esc(t){return String(t).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+  function pt(i,r,N){var t=-Math.PI/2+i*2*Math.PI/N;return[(150+Math.cos(t)*85*r/5).toFixed(1),(140+Math.sin(t)*85*r/5).toFixed(1)];}
+  function radar(){var N=D.items.length,g='',k,i;
+    for(k=1;k<=5;k++){g+='<polygon points="'+D.items.map(function(_,i){return pt(i,k,N).join(',');}).join(' ')+'" fill="none" stroke="#e7e5df"/>';}
+    D.items.forEach(function(it,i){var a=pt(i,5,N),l=pt(i,6.3,N);g+='<line x1="150" y1="140" x2="'+a[0]+'" y2="'+a[1]+'" stroke="#e7e5df"/><text x="'+l[0]+'" y="'+(+l[1]+4)+'" text-anchor="'+(l[0]<142?'end':l[0]>158?'start':'middle')+'" font-size="11" font-weight="700" fill="'+it[1]+'">'+esc(it[0])+'</text>';});
+    sel.forEach(function(id,s){if(!id)return;var v=byId[id][3];g+='<polygon points="'+v.map(function(x,i){return pt(i,x,N).join(',');}).join(' ')+'" fill="'+COL[s]+'" fill-opacity=".18" stroke="'+COL[s]+'" stroke-width="2"/>';});
+    return '<svg viewBox="-30 0 360 285" style="width:100%;max-width:380px;display:block;margin:0 auto" role="img" aria-label="属性の重ね合わせチャート">'+g+'</svg>';}
+  function render(){
+    var a=sel[0]&&byId[sel[0]],b=sel[1]&&byId[sel[1]];
+    if(!a&&!b){out.innerHTML='';return;}
+    var h='<div class="cmp-head">'+[a,b].map(function(w,s){return '<div style="border-top:4px solid '+COL[s]+'">'+(w?'<b><a href="/works/'+w[0]+'/">'+esc(w[1])+'</a></b><span>'+esc(w[2])+'</span>':'<span>（未選択）</span>')+'</div>';}).join('')+'</div>';
+    if(a&&b){
+      h+=radar();
+      h+='<ul class="cmp-bars">'+D.items.map(function(it,i){var x=a[3][i],y=b[3][i];return '<li><span class="cmp-n" style="color:'+it[1]+'">'+esc(it[0])+'</span><span class="cmp-v">'+x+'</span><span class="cmp-t"><span style="width:'+x*20+'%;background:'+COL[0]+'"></span><span style="width:'+y*20+'%;background:'+COL[1]+'"></span></span><span class="cmp-v">'+y+'</span></li>';}).join('')+'</ul>';
+      var near=0;D.items.forEach(function(_,i){near+=Math.abs(a[3][i]-b[3][i]);});
+      h+='<p class="fine">12項目の点数の差は、合わせて '+near+' です（0に近いほど似ています）。</p>';
+      h+='<table class="cmp-info"><tr><th>作者</th><td>'+esc(a[4]||'―')+'</td><td>'+esc(b[4]||'―')+'</td></tr><tr><th>掲載誌・レーベル</th><td>'+esc(a[5]||'―')+'</td><td>'+esc(b[5]||'―')+'</td></tr></table>';
+    }
+    out.innerHTML=h;
+  }
+  function setSel(s,id){sel[s]=id;cols[s].querySelector('[data-in]').value=id?byId[id][1]:'';cols[s].querySelector('[data-sug]').innerHTML='';render();
+    try{history.replaceState(null,'','#'+sel.filter(Boolean).join(','));}catch(e){}}
+  Array.prototype.forEach.call(cols,function(c,s){
+    var inp=c.querySelector('[data-in]'),sug=c.querySelector('[data-sug]');
+    inp.addEventListener('input',function(){var q=inp.value.trim().toLowerCase();sug.innerHTML='';if(!q)return;
+      var m=D.works.filter(function(w){return w[1].toLowerCase().indexOf(q)>=0;}).slice(0,8);
+      m.forEach(function(w){var li=document.createElement('li'),bt=document.createElement('button');bt.type='button';bt.textContent=w[1];bt.addEventListener('click',function(){setSel(s,w[0]);});li.appendChild(bt);sug.appendChild(li);});});
+  });
+  var hs=(location.hash||'').replace('#','').split(',');
+  hs.slice(0,2).forEach(function(id,s){if(byId[id])setSel(s,id);});
+})();
+</script>
+<style>
+.cmp-pick{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:14px 0}
+.cmp-col label{display:block;font-weight:700;font-size:14px}.cmp-col input{width:100%;box-sizing:border-box;margin-top:4px;padding:9px;font-size:16px;border:1px solid #ccc;border-radius:8px}
+.cmp-sug{list-style:none;margin:4px 0 0;padding:0}.cmp-sug button{width:100%;text-align:left;padding:8px;border:0;border-bottom:1px solid #eee;background:#fff;font:inherit;cursor:pointer}
+.cmp-head{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:10px 0}.cmp-head>div{padding:8px 0;display:flex;flex-direction:column;gap:2px}.cmp-head span{font-size:13px;color:#666}
+.cmp-bars{list-style:none;padding:0;margin:10px 0;display:grid;gap:7px}.cmp-bars li{display:grid;grid-template-columns:6em 1.4em 1fr 1.4em;gap:6px;align-items:center;font-size:14px}
+.cmp-v{text-align:center;font-weight:700}.cmp-t{display:grid;gap:3px}.cmp-t span{display:block;height:8px;border-radius:4px}
+.cmp-info{width:100%;border-collapse:collapse;font-size:14px;margin-top:10px}.cmp-info th,.cmp-info td{border-bottom:1px solid #eee;padding:8px 6px;text-align:left;vertical-align:top}.cmp-info th{width:28%;color:#666;font-weight:600}
+</style>
+<p class="fine"><a href="/quiz/">好みから診断</a>・<a href="/search/">すべての作品</a></p>`;
+  addPage('/compare/', layout({ path: '/compare/', title: '2作品をくらべる', description: `気になるアニメ原作を2つ選んで、運営者がつけた12項目の属性評価・作者・掲載誌を並べてくらべられます。${rows.length}作品から選べます。`, body }), { priority: 0.5 });
+}
+
 // ---- 好みから探す診断（属性の評価から、気分に合う作品をえらぶ） ----
 function buildQuiz() {
   if (!ATTRS.items.length) return;
@@ -996,6 +1067,7 @@ function attrHtml(w) {
     ${a.c === 'n' ? radarSvg(a.v) : ''}
     ${chips ? `<p class="attr-chips">${chips}</p>` : ''}
     <ul class="attr-bars">${bars}</ul>
+    <p class="fine"><a href="/compare/#${w.id}">この作品をほかの作品とくらべる</a></p>
   </section>`;
 }
 
@@ -1689,6 +1761,7 @@ buildSongs();
 buildArtists();
 buildRandom();
 buildStats();
+buildCompare();
 buildQuiz();
 buildGenres();
 buildPublishers();
