@@ -1273,7 +1273,7 @@ ${ss.map((s) => `      <li data-history data-season="${s.id}"><a href="/season/$
     <h2>『${esc(w.title)}』の作品データ</h2>
     <dl class="data-list">
       <dt>種類</dt><dd>${typeLong}原作</dd>
-${w.rakutenAuthor ? `      <dt>作者</dt><dd>${esc(w.rakutenAuthor)}</dd>\n` : ''}${w.magazine || w.publisher ? `      <dt>${w.magazine ? (w.type === 'manga' ? '掲載誌' : 'レーベル') : isBook(w) ? '出版社' : '制作'}</dt><dd>${esc(w.magazine && w.publisher ? `${w.magazine}（${w.publisher}）` : w.magazine || w.publisher)}</dd>\n` : ''}      <dt>アニメの放送</dt><dd>${main.id === 'recommend' ? '過去の作品もふくむ' : esc(main.label)}</dd>
+${w.rakutenAuthor ? `      <dt>作者</dt><dd>${esc(w.rakutenAuthor)}</dd>\n` : ''}${w.magazine || w.publisher ? `      <dt>${w.magazine ? (w.type === 'manga' ? '掲載誌' : 'レーベル') : isBook(w) ? '出版社' : '制作'}</dt><dd>${(() => { const ms = w.magazine ? magSlugOf(w.magazine) : null; const mt = esc(w.magazine || ''); const ml = ms && isBook(w) ? `<a href="/magazine/${ms}/">${mt}</a>` : mt; return w.magazine && w.publisher ? `${ml}（${esc(w.publisher)}）` : w.magazine ? ml : esc(w.publisher); })()}</dd>\n` : ''}      <dt>アニメの放送</dt><dd>${main.id === 'recommend' ? '過去の作品もふくむ' : esc(main.label)}</dd>
       ${VOLUMES[w.id] ? `<dt>原作の巻数</dt><dd>${esc(VOLUMES[w.id])}（Wikipediaの記載をもとにした目安）</dd>` : ''}
       ${mediaText(w.id) ? `<dt>メディア展開</dt><dd>${esc(mediaText(w.id))}（原作やアニメをもとにした展開）</dd>` : ''}
       <dt>すきおしでの掲載</dt><dd>${ss.map((x) => `<a href="/season/${x.id}/">${esc(x.name)}</a>`).join('、')}</dd>
@@ -1382,6 +1382,62 @@ ${items}
   }
 }
 
+// ---- 掲載誌・レーベルごとのページ（同じ掲載誌の原作アニメをまとめる） ----
+let MAGS = null;
+function magList() {
+  if (MAGS) return MAGS;
+  const by = new Map();
+  for (const w of works) {
+    if (!isBook(w) || !seasonsOf(w.id).length) continue;
+    const m = (w.magazine || '').trim();
+    if (!m) continue;
+    if (!by.has(m)) by.set(m, []);
+    by.get(m).push(w);
+  }
+  const SEAS = { winter: 1, spring: 2, summer: 3, autumn: 4 };
+  const latest = (w) => Math.max(0, ...seasonsOf(w.id).map((x) => { const m = String(x.id).match(/^(\d{4})-(winter|spring|summer|autumn)$/); return m ? +m[1] * 10 + SEAS[m[2]] : 0; }));
+  MAGS = [...by.entries()]
+    .filter(([, l]) => l.length >= 3)
+    .map(([name, l]) => ({ name, list: l.slice().sort((a, b) => latest(b) - latest(a) || a.id.localeCompare(b.id)), slug: 'm' + createHash('sha1').update(name).digest('hex').slice(0, 8) }))
+    .sort((a, b) => b.list.length - a.list.length || (a.name < b.name ? -1 : 1));
+  return MAGS;
+}
+const magSlugOf = (name) => (magList().find((m) => m.name === (name || '').trim()) || {}).slug || null;
+function buildMagazines() {
+  const mags = magList();
+  if (!mags.length) return;
+  const crumb = (last) => `<nav class="crumbs" aria-label="パンくずリスト"><a href="/">トップ</a><span aria-hidden="true">›</span>${last ? `<a href="/magazines/">掲載誌・レーベルから探す</a><span aria-hidden="true">›</span><span>${esc(last)}</span>` : '<span>掲載誌・レーベルから探す</span>'}</nav>`;
+  const body = `
+${crumb('')}
+<article class="prose page">
+<h1>掲載誌・レーベルから探すアニメ原作</h1>
+<p>漫画が連載された雑誌や、小説（ライトノベル）のレーベルごとに、アニメの原作をまとめました。3作品以上ある${mags.length}誌（レーベル）を、作品数の多い順にならべています。</p>
+<ul class="genre-others">${mags.map((m) => `<li><a href="/magazine/${m.slug}/">${esc(m.name)}</a>（${m.list.length}作品）</li>`).join('')}</ul>
+<p class="fine">出版社から探したいときは<a href="/publishers/">出版社・作者</a>へどうぞ。</p>
+</article>`;
+  addPage('/magazines/', layout({ path: '/magazines/', title: '掲載誌・レーベルから探すアニメ原作', description: `アニメ原作の漫画・小説を、掲載誌・レーベル${mags.length}誌ごとにまとめました。週刊少年ジャンプ、電撃文庫などの作品が探せます。`, body }), { priority: 0.6 });
+  mags.forEach((m, i) => {
+    const path = `/magazine/${m.slug}/`;
+    const types = typesIn(m.list).map((x) => `${TYPE_LABEL[x]}${m.list.filter((w) => w.type === x).length}作品`).join('、');
+    const pubs = [...new Set(m.list.map((w) => (w.publisher || '').trim()).filter(Boolean))].slice(0, 3);
+    const item = (w) => `  <li class="search-item"><a href="/works/${w.id}/"><span class="si-title">${esc(w.title)}</span><span class="si-meta"><span class="tag tag-${w.type}">${TYPE_LABEL[w.type]}</span>${w.rakutenAuthor ? `<span>${esc(w.rakutenAuthor)}</span>` : ''}</span></a></li>`;
+    const near = mags.slice(Math.max(0, i - 4), i + 5).filter((x) => x !== m).slice(0, 8);
+    const b = `
+${crumb(m.name)}
+<article class="prose page">
+<h1>${esc(m.name)}が原作のアニメ（${m.list.length}作品）</h1>
+<p>${esc(m.name)}${pubs.length ? `（${esc(pubs.join('・'))}）` : ''}で連載・刊行された原作をもとにしたアニメを、すきおしにのっているなかから${m.list.length}作品あつめました。内訳は${types}です。新しいシーズンの作品から順にならべています。</p>
+<ul class="search-list">
+${m.list.map(item).join('\n')}
+</ul>
+<h2>ほかの掲載誌・レーベル</h2>
+<ul class="genre-others">${near.map((x) => `<li><a href="/magazine/${x.slug}/">${esc(x.name)}</a></li>`).join('')}</ul>
+<p class="fine"><a href="/magazines/">掲載誌・レーベルの一覧へ戻る</a>・<a href="/publishers/">出版社・作者</a></p>
+</article>`;
+    addPage(path, layout({ path, title: `${m.name}が原作のアニメ ${m.list.length}作品`, description: `${m.name}で連載・刊行された原作のアニメ${m.list.length}作品の一覧です。${types}。`, body: b }), { priority: 0.6 });
+  });
+}
+
 // ---- 出版社・掲載誌・作者 ----
 const PUB_SLUG = { 'KADOKAWA': 'kadokawa', '集英社': 'shueisha', '講談社': 'kodansha', '小学館': 'shogakukan', 'スクウェア・エニックス': 'square-enix', '白泉社': 'hakusensha', '秋田書店': 'akita-shoten', '一迅社': 'ichijinsha', 'マイクロマガジン社': 'micro-magazine', 'TOブックス': 'to-books', '双葉社': 'futabasha', 'SBクリエイティブ': 'sb-creative', '芳文社': 'houbunsha', 'アルファポリス': 'alphapolis', 'ブシロード': 'bushiroad', '新潮社': 'shinchosha', 'ホビージャパン': 'hobby-japan' };
 function buildPublishers() {
@@ -1417,7 +1473,7 @@ ${crumb('')}
 <h2>同じ作者の作品が複数ある原作者</h2>
 <p>アニメ化された作品が2つ以上ある原作者を、作品数の多い順にのせています。</p>
 <ul class="guide-top">${authors.map(([n, l]) => `<li>${esc(n)}：${l.map((w) => `<a href="/works/${w.id}/">${esc(w.title)}</a>`).join('、')}</li>`).join('')}</ul>
-<p class="fine">ジャンルから探したいときは<a href="/genre/">ジャンル別</a>へどうぞ。</p>
+<p class="fine">掲載誌・レーベルから探したいときは<a href="/magazines/">掲載誌・レーベル別</a>、ジャンルから探したいときは<a href="/genre/">ジャンル別</a>へどうぞ。</p>
 </article>`;
   addPage('/publishers/', layout({ path: '/publishers/', title: '出版社・作者から探すアニメ原作', description: `アニメ原作の漫画・小説/ライトノベルを、出版社${pubs.length}社と原作者${authors.length}人のまとまりから探せます。`, body }), { priority: 0.6 });
   pubs.forEach(([name, list], i) => {
@@ -1765,6 +1821,7 @@ buildCompare();
 buildQuiz();
 buildGenres();
 buildPublishers();
+buildMagazines();
 for (const s of seasons) buildSeason(s);
 for (const w of works) if (seasonsOf(w.id).length) buildWork(w);
 buildStatic();
